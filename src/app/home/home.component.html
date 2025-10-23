@@ -1,25 +1,33 @@
 <div class="dashboard-container">
   <!-- Sidebar Menu -->
   <aside class="sidebar">
-    <div class="sidebar-header">
-      <span class="logo">SheikPlastic</span>
-    </div>
-
     <div class="menu-items">
       <ng-container *ngFor="let m of menu">
         <div class="menu-item">
+          <!-- Se tiver submenus -->
           <div *ngIf="m.subMenus?.length; else single">
-            <div class="menu-link" data-bs-toggle="collapse" [attr.data-bs-target]="'#m'+m.id">
+            <div
+              class="menu-link"
+              (click)="toggleMenu(m.id)"
+            >
               <i class="fa-solid fa-folder"></i>
               <span>{{ m.descricao }}</span>
-              <i class="fa-solid fa-chevron-down ms-auto"></i>
+              <i
+                class="fa-solid fa-chevron-down ms-auto"
+                [class.rotate]="openedMenu === m.id"
+              ></i>
             </div>
 
-            <div [id]="'m'+m.id" class="collapse submenu">
+            <div 
+              class="submenu"
+              *ngIf="openedMenu === m.id"
+              [@expandCollapse]
+            >
               <app-submenu [nodes]="m.subMenus"></app-submenu>
             </div>
           </div>
 
+          <!-- Se for item simples -->
           <ng-template #single>
             <a [routerLink]="[m.endereco]" class="menu-link">
               <i class="fa-solid fa-circle"></i>
