@@ -1,0 +1,33 @@
+<ul class="submenu-list">
+  <li *ngFor="let n of nodes" class="submenu-item">
+    <div *ngIf="n.subMenus?.length; else single">
+      <div class="menu-link" (click)="toggle(n.id)">
+        <div class="left">
+          <i class="fa-solid fa-folder"></i>
+          <span class="label">{{ n.descricao }}</span>
+        </div>
+        <div class="right">
+          <i
+            class="fa-solid fa-chevron-right"
+            [@rotateChevron]="isOpened(n.id) ? 'expanded' : 'collapsed'"
+          ></i>
+        </div>
+      </div>
+
+      <div
+        class="submenu-children"
+        [@expandCollapse]="isOpened(n.id) ? 'expanded' : 'collapsed'"
+        *ngIf="isOpened(n.id)"
+      >
+        <app-submenu [nodes]="n.subMenus"></app-submenu>
+      </div>
+    </div>
+
+    <ng-template #single>
+      <a [routerLink]="[n.endereco]" class="menu-link single">
+        <i class="fa-regular fa-circle"></i>
+        <span class="label">{{ n.descricao }}</span>
+      </a>
+    </ng-template>
+  </li>
+</ul>

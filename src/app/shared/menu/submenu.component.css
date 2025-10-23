@@ -1,0 +1,46 @@
+.submenu-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.submenu-item {
+  color: #fff;
+  font-size: 14px;
+}
+
+.menu-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+  color: #fff;
+}
+
+.menu-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateX(3px);
+}
+
+.menu-link.single {
+  padding-left: 28px;
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.menu-link i {
+  font-size: 13px;
+}
+
+.label {
+  margin-left: 8px;
+}
+
+.submenu-children {
+  margin-left: 12px;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  padding-left: 8px;
+}

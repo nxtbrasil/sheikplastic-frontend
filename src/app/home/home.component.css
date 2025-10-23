@@ -1,0 +1,82 @@
+/* Container geral */
+.dashboard-container {
+  display: flex;
+  height: calc(100vh - 56px); /* 56px é a altura padrão do .navbar */
+  background-color: #f4f6fa;
+  overflow: hidden;
+  margin-top: 56px; /* empurra o conteúdo para baixo do header */
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+  width: 260px;
+  height: calc(100vh - 56px);
+  background: linear-gradient(180deg, #0052d4 0%, #4364f7 50%, #6fb1fc 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  top: 56px; /* começa logo abaixo do header */
+  left: 0;
+  z-index: 100;
+}
+
+.sidebar:hover {
+  width: 280px;
+}
+
+/* --- ITENS DO MENU --- */
+.menu-items {
+  flex: 1;
+  overflow-y: auto;
+    overflow-x: hidden; 
+  padding: 15px 0;
+}
+
+.menu-item {
+  margin-bottom: 5px;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  padding: 12px 20px;
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.menu-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateX(3px);
+}
+
+.menu-link i {
+  font-size: 1.2rem;
+}
+
+.submenu {
+  margin-left: 25px;
+  margin-top: 5px;
+}
+
+.sidebar-footer {
+  padding: 15px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+/* --- CONTEÚDO PRINCIPAL --- */
+.main-content {
+  flex: 1;
+  margin-left: 260px; /* afasta o conteúdo para não ficar atrás do menu */
+  padding: 40px;
+  text-align: left;
+  background-color: #f4f6fa;
+  min-height: calc(100vh - 56px);
+}

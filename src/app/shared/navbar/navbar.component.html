@@ -1,0 +1,21 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
+  <div class="container-fluid px-3 d-flex align-items-center">
+    <!-- Botão de menu -->
+    <button class="btn btn-link text-white me-3" (click)="onToggleSidebar()">
+      <i class="fa-solid fa-bars fs-4"></i>
+    </button>
+
+    <!-- Logo -->
+    <a class="navbar-brand fw-bold" routerLink="/">SheikPlastic</a>
+
+    <div class="flex-grow-1"></div>
+
+    <!-- Saudação + Logout -->
+    <div class="d-flex align-items-center">
+      <span class="navbar-text me-3" *ngIf="userName">Olá, {{ userName }}</span>
+      <button class="btn btn-outline-light btn-sm" *ngIf="auth.isLogged()" (click)="logout()">
+        <i class="fa-solid fa-right-from-bracket me-1"></i> Sair
+      </button>
+    </div>
+  </div>
+</nav>
