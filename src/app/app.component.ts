@@ -12,7 +12,7 @@ import { Router, NavigationEnd } from '@angular/router';
       <app-navbar></app-navbar>
       <div class="container-fluid">
         <div class="row">
-          <div class="col-12 p-3">
+          <div class="col-12 p-0">
             <router-outlet></router-outlet>
           </div>
         </div>

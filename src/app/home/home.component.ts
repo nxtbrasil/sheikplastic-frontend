@@ -7,6 +7,15 @@ import {
   transition,
   animate
 } from '@angular/animations';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
+
+interface MenuItem {
+  id: number;
+  descricao: string;
+  endereco?: string;
+  subMenus?: MenuItem[];
+}
 
 @Component({
   selector: 'app-home',
@@ -21,19 +30,42 @@ import {
   ]
 })
 export class HomeComponent implements OnInit {
-  menu: any[] = [];
-  openedMenu: number | null = null;
 
-  constructor(private menuService: MenuService) {}
+  menu: MenuItem[] = [];
+  openedMenu: number | null = null;
+  isCollapsed = false;
+
+  constructor(private menuService: MenuService, public auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
+    this.loadMenu();
+  }
+
+  /** Carrega menu do serviço */
+  private loadMenu(): void {
     this.menuService.getMenu().subscribe({
-      next: data => this.menu = data,
-      error: err => console.error(err)
+      next: (data) => (this.menu = data),
+      error: (err) => console.error('Erro ao carregar menu:', err),
     });
   }
 
+  /** Abre/fecha submenus */
   toggleMenu(id: number): void {
     this.openedMenu = this.openedMenu === id ? null : id;
+  }
+
+  /** Colapsa/expande a sidebar */
+  toggleSidebar(): void {
+    this.isCollapsed = !this.isCollapsed;
+
+    // Fecha submenus automaticamente ao colapsar
+    if (this.isCollapsed) {
+      this.openedMenu = null;
+    }
+  }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

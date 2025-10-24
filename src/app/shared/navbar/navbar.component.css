@@ -1,0 +1,94 @@
+/* ===== Navbar ===== */
+.navbar {
+  height: 56px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== Logo ===== */
+.navbar-logo {
+  height: 46px;
+  object-fit: contain;
+}
+
+/* ===== Ícones (notificação, ajuda etc.) ===== */
+.btn-icon {
+  background: none;
+  border: none;
+  color: #4b5563;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.btn-icon:hover {
+  color: #00a8e8;
+}
+
+/* ===== Botão de perfil (imagem + nome + seta) ===== */
+.btn-profile {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-profile:hover {
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+/* ===== Imagem do perfil ===== */
+.profile-pic {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  color: #374151;
+  transition: background-color 0.15s ease;
+}
+
+.dropdown-item i {
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+}
+
+.dropdown-item:hover {
+  background-color: #f3f4f6;
+  color: #00a8e8;
+}
+
+.dropdown-divider {
+  margin: 4px 0;
+  border-color: #e5e7eb;
+}
