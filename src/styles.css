@@ -1,5 +1,11 @@
 /* Global styles */
-body { padding-top: 56px; }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #f2f2f2;
+}
+
 .sidebar { min-width: 220px; max-width: 320px; }
 .menu-link { cursor: pointer; }
 
@@ -11,7 +17,6 @@ header {
   align-items: center;
   padding: 0 15px;
   z-index: 101; /* um pouco acima da sidebar */
-  position: fixed;
   width: 100%;
   top: 0;
   left: 0;

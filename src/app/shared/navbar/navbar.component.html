@@ -1,16 +1,38 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top shadow-sm">
-  <div class="container-fluid px-3 d-flex align-items-center">
-    <!-- Logo -->
-    <a class="navbar-brand fw-bold" routerLink="/">SheikPlastic</a>
-
-    <div class="flex-grow-1"></div>
-
-    <!-- Saudação + Logout -->
+<nav class="navbar navbar-light bg-white border-bottom fixed-top">
+  <div class="container-fluid d-flex align-items-center justify-content-between px-3">
+    
+    <!-- Logo à esquerda -->
     <div class="d-flex align-items-center">
-      <span class="navbar-text me-3" *ngIf="userName">Olá, {{ userName }}</span>
-      <button class="btn btn-outline-light btn-sm" *ngIf="auth.isLogged()" (click)="logout()">
-        <i class="fa-solid fa-right-from-bracket me-1"></i> Sair
+      <img src="assets/img/cabecalho.png" alt="SheikPlastic" class="navbar-logo me-2" />
+      <span class="fw-semibold text-dark fs-6">SheikPlastic CRM</span>
+    </div>
+
+    <!-- Ícones à direita -->
+    <div class="d-flex align-items-center gap-3">
+
+      <!-- Notificações -->
+      <button class="btn-icon" title="Notificações">
+        <i class="fa-regular fa-bell"></i>
       </button>
+
+      <!-- Ajuda -->
+      <button class="btn-icon" title="Ajuda">
+        <i class="fa-regular fa-circle-question"></i>
+      </button>
+
+      <!-- Perfil -->
+      <div class="dropdown">
+        <button class="btn-profile d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="assets/img/user.png" alt="Usuário" class="profile-pic me-2" />
+          <span class="text-dark small fw-semibold">{{ userName || 'Usuário' }}</span>
+          <i class="fa-solid fa-chevron-down ms-1"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+          <li><a class="dropdown-item" routerLink="/perfil">Meu perfil</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><button class="dropdown-item text-danger" (click)="logout()">Sair</button></li>
+        </ul>
+      </div>
     </div>
   </div>
 </nav>
