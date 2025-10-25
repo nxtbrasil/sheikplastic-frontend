@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private api = environment.apiBaseUrl + '/auth';
+  
 
   constructor(private http: HttpClient) {}
 
@@ -39,4 +40,9 @@ export class AuthService {
   getIdFuncionario(): string | null {
     return localStorage.getItem('idFuncionario');
   }
+
+  criarUsuario(usuario: any) {
+  return this.http.post(`${this.api}/funcionarios`, usuario);
+}
+
 }

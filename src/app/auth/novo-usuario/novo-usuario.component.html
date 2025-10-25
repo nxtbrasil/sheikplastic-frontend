@@ -1,0 +1,36 @@
+<div class="novo-usuario-container">
+  <div class="form-card">
+    <h2>Novo Usuário</h2>
+
+    <form [formGroup]="usuarioForm" (ngSubmit)="salvarUsuario()">
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" formControlName="nomeFuncionario" placeholder="Digite o nome completo" />
+      </div>
+
+      <div class="form-group">
+        <label>Função (ID)</label>
+        <input type="number" formControlName="idFuncao" placeholder="Ex: 1" />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" formControlName="emailFuncionario" placeholder="exemplo@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" formControlName="senhaFuncionario" placeholder="Digite uma senha" />
+      </div>
+
+      <button type="submit" [disabled]="loading || usuarioForm.invalid">
+        {{ loading ? 'Salvando...' : 'Criar Usuário' }}
+      </button>
+    </form>
+
+    <div *ngIf="sucesso" class="msg sucesso">Usuário criado com sucesso!</div>
+    <div *ngIf="erro" class="msg erro">{{ erro }}</div>
+
+    <a routerLink="/login" class="voltar">Voltar ao login</a>
+  </div>
+</div>

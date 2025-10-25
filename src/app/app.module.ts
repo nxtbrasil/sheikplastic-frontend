@@ -15,6 +15,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { MenuService } from './home/menu.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NovoUsuarioComponent } from './auth/novo-usuario/novo-usuario.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     HomeComponent,
     NavbarComponent,
-    SubmenuComponent
+    SubmenuComponent,
+    NovoUsuarioComponent
   ],
   imports: [
     BrowserModule,
@@ -34,6 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'login', component: LoginComponent },
       { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+      { path: 'novo-usuario', component: NovoUsuarioComponent},
       { path: '**', redirectTo: 'home' }
     ], { scrollPositionRestoration: 'enabled' })
   ],
