@@ -17,6 +17,8 @@ import { MenuService } from './home/menu.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NovoUsuarioComponent } from './auth/novo-usuario/novo-usuario.component';
 import { TrocaSenhaComponent } from './auth/troca-senha/troca-senha.component';
+import { MeuPerfilComponent } from './auth/meu-perfil/meu-perfil.component';
+
 
 
 @NgModule({
@@ -27,11 +29,13 @@ import { TrocaSenhaComponent } from './auth/troca-senha/troca-senha.component';
     NavbarComponent,
     SubmenuComponent,
     NovoUsuarioComponent,
+    MeuPerfilComponent,
     TrocaSenhaComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     ReactiveFormsModule,
    RouterModule.forRoot([
@@ -46,6 +50,7 @@ import { TrocaSenhaComponent } from './auth/troca-senha/troca-senha.component';
       // Rotas que serão exibidas DENTRO do layout da Home
       { path: 'troca-senha', component: TrocaSenhaComponent },
       { path: 'novo-usuario', component: NovoUsuarioComponent },
+      { path: 'meu-perfil', component: MeuPerfilComponent },
       // você pode incluir aqui outros módulos ou páginas também
     ]
   },

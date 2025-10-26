@@ -18,6 +18,7 @@ export class AuthService {
           localStorage.setItem('token', res.token);
           localStorage.setItem('idFuncionario', res.idFuncionario?.toString() || '');
           localStorage.setItem('userName', res.nomeFuncionario || '');
+          localStorage.setItem('email', email || '');
         }
       })
     );
@@ -44,5 +45,14 @@ export class AuthService {
   criarUsuario(usuario: any) {
   return this.http.post(`${this.api}/funcionarios`, usuario);
 }
+
+  trocarSenha(senhaAtual: string, novaSenha: string) {
+    const emailFuncionario = localStorage.getItem('email'); // ou do token, se preferir
+    return this.http.put(
+      `${this.api}/trocar-senha`,
+      { emailFuncionario, senhaAtual, novaSenha },
+      { responseType: 'text' } // 👈 força tratar como texto
+    );
+  }
 
 }

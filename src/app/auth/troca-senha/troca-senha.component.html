@@ -8,42 +8,33 @@
     <form [formGroup]="formTrocaSenha" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="senhaAtual">Senha Atual</label>
-        <input
-          type="password"
-          id="senhaAtual"
-          formControlName="senhaAtual"
-          placeholder="Digite sua senha atual"
-        />
+        <input type="password" id="senhaAtual" formControlName="senhaAtual" placeholder="Digite sua senha atual" />
       </div>
 
       <div class="form-group">
         <label for="novaSenha">Nova Senha</label>
-        <input
-          type="password"
-          id="novaSenha"
-          formControlName="novaSenha"
-          placeholder="Digite a nova senha"
-        />
+        <input type="password" id="novaSenha" formControlName="novaSenha" placeholder="Digite a nova senha" />
       </div>
 
       <div class="form-group">
         <label for="confirmacao">Confirmação</label>
-        <input
-          type="password"
-          id="confirmacao"
-          formControlName="confirmacao"
-          placeholder="Confirme a nova senha"
-        />
+        <input type="password" id="confirmacao" formControlName="confirmacao" placeholder="Confirme a nova senha" />
+      </div>
+
+      <div *ngIf="formTrocaSenha.errors?.senhasDiferentes" class="alert alert-warning">
+        As senhas não coincidem.
       </div>
 
       <div class="button-group">
-        <button type="submit" class="btn btn-primary" [disabled]="formTrocaSenha.invalid">
-          Trocar
+        <button type="submit" class="btn btn-primary" [disabled]="formTrocaSenha.invalid || carregando">
+          {{ carregando ? 'Aguarde...' : 'Trocar' }}
         </button>
-        <button type="button" class="btn btn-secondary" (click)="onCancelar()">
-          Cancelar
-        </button>
+        <button type="button" class="btn btn-secondary" (click)="onCancelar()">Cancelar</button>
       </div>
     </form>
+
+    <p *ngIf="mensagem" [class.sucesso]="sucesso" [class.erro]="!sucesso">
+      {{ mensagem }}
+    </p>
   </div>
 </div>

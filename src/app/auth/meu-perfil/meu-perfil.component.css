@@ -1,0 +1,100 @@
+.perfil-wrapper {
+  min-height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+
+}
+
+.perfil-card {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  width: 420px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.perfil-header {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1e1e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border 0.3s;
+}
+
+.perfil-header h2{
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 25px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background-color: #6a9bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #5a8bf5;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+p.sucesso {
+  color: #28a745;
+  text-align: center;
+  margin-top: 10px;
+}
+
+p.erro {
+  color: #dc3545;
+  text-align: center;
+  margin-top: 10px;
+}

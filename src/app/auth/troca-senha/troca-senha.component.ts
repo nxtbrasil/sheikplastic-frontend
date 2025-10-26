@@ -21,21 +21,28 @@ export class TrocaSenhaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.formTrocaSenha = this.fb.group({
-      senhaAtual: ['', [Validators.required, Validators.minLength(4)]],
-      novaSenha: ['', [Validators.required, Validators.minLength(6)]],
-      confirmacao: ['', [Validators.required]]
-    }, { validators: this.validarSenhasIguais });
+    this.formTrocaSenha = this.fb.group(
+      {
+        senhaAtual: ['', [Validators.required, Validators.minLength(4)]],
+        novaSenha: ['', [Validators.required, Validators.minLength(4)]],
+        confirmacao: ['', [Validators.required]]
+      },
+      { validators: this.validarSenhasIguais }
+    );
   }
 
-  /** 🔒 Validação de confirmação de senha */
+  /** ✅ Corrigida: agora retorna null corretamente */
   validarSenhasIguais(form: FormGroup) {
     const nova = form.get('novaSenha')?.value;
     const conf = form.get('confirmacao')?.value;
+
+    // só valida se ambos os campos estiverem preenchidos
+    if (!nova || !conf) return null;
+
     return nova === conf ? null : { senhasDiferentes: true };
   }
 
-  /** 🚀 Submissão do formulário */
+  /** 🚀 Submissão */
   onSubmit() {
     if (this.formTrocaSenha.invalid) {
       this.mensagem = 'Preencha todos os campos corretamente.';
@@ -46,22 +53,20 @@ export class TrocaSenhaComponent implements OnInit {
     this.carregando = true;
     const { senhaAtual, novaSenha } = this.formTrocaSenha.value;
 
-    // this.authService.trocarSenha(senhaAtual, novaSenha).subscribe({
-    //   next: () => {
-    //     this.mensagem = 'Senha alterada com sucesso!';
-    //     this.sucesso = true;
-    //     this.carregando = false;
-
-    //     setTimeout(() => this.router.navigate(['/home']), 1500);
-    //   },
-    //   error: (erro) => {
-    //     this.mensagem = erro.error?.message || 'Erro ao alterar senha.';
-    //     this.sucesso = false;
-    //     this.carregando = false;
-    //   }
-    // });
+    this.authService.trocarSenha(senhaAtual, novaSenha).subscribe({
+      next: () => {
+        this.mensagem = 'Senha alterada com sucesso!';
+        this.sucesso = true;
+        this.carregando = false;
+        setTimeout(() => this.router.navigate(['/home']), 1500);
+      },
+      error: (erro) => {
+        this.mensagem = erro.error?.message || 'Erro ao alterar senha.';
+        this.sucesso = false;
+        this.carregando = false;
+      }
+    });
   }
-
 
   onCancelar() {
     this.router.navigate(['/home']);
