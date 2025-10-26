@@ -5,22 +5,40 @@
     <form [formGroup]="usuarioForm" (ngSubmit)="salvarUsuario()">
       <div class="form-group">
         <label>Nome</label>
-        <input type="text" formControlName="nomeFuncionario" placeholder="Digite o nome completo" />
+        <input
+          type="text"
+          formControlName="nomeFuncionario"
+          placeholder="Digite o nome completo"
+        />
       </div>
 
       <div class="form-group">
-        <label>Função (ID)</label>
-        <input type="number" formControlName="idFuncao" placeholder="Ex: 1" />
+        <label>Função</label>
+        <select formControlName="idFuncao">
+          <option value="" disabled selected>Selecione uma função</option>
+          <option value="1">Básico</option>
+          <option value="2">Vendedor</option>
+          <option value="3">Administrador</option>
+          <option value="4">Testador</option>
+        </select>
       </div>
 
       <div class="form-group">
         <label>Email</label>
-        <input type="email" formControlName="emailFuncionario" placeholder="exemplo@email.com" />
+        <input
+          type="email"
+          formControlName="emailFuncionario"
+          placeholder="exemplo@email.com"
+        />
       </div>
 
       <div class="form-group">
         <label>Senha</label>
-        <input type="password" formControlName="senhaFuncionario" placeholder="Digite uma senha" />
+        <input
+          type="password"
+          formControlName="senhaFuncionarioTexto"
+          placeholder="Digite uma senha"
+        />
       </div>
 
       <button type="submit" [disabled]="loading || usuarioForm.invalid">

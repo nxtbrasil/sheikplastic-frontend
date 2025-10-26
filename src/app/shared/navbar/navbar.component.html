@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light bg-white border-bottom fixed-top">
   <div class="container-fluid d-flex align-items-center justify-content-between px-3">
-    
+
     <!-- Logo à esquerda -->
     <div class="d-flex align-items-center">
       <img src="assets/img/cabecalho.png" alt="SheikPlastic" class="navbar-logo me-2" />
@@ -20,38 +20,37 @@
       </button>
 
       <!-- Perfil -->
-<div class="dropdown" [class.show]="dropdownOpen">
-  <button
-    class="btn-profile d-flex align-items-center"
-    (click)="toggleDropdown()"
-  >
-    <img src="assets/img/persona.png" alt="Usuário" class="profile-pic me-2" />
-    <span class="text-dark small fw-semibold">{{ userName || 'Usuário' }}</span>
-    <i class="fa-solid fa-chevron-down ms-1"></i>
-  </button>
+      <div class="dropdown" [class.show]="dropdownOpen">
+        <button class="btn-profile d-flex align-items-center" (click)="toggleDropdown()">
+          <img src="assets/img/persona.png" alt="Usuário" class="profile-pic me-2" />
+          <span class="text-dark small fw-semibold">{{ userName || 'Usuário' }}</span>
+          <i class="fa-solid fa-chevron-down ms-1"></i>
+        </button>
 
-  <ul class="dropdown-menu dropdown-menu-end shadow-sm" [class.show]="dropdownOpen">
-    <li>
-      <a class="dropdown-item" routerLink="/perfil">
-        <i class="fa-solid fa-user me-2 text-secondary"></i> Meu perfil
-      </a>
-    </li>
+        <ul class="dropdown-menu dropdown-menu-end shadow-sm" [class.show]="dropdownOpen">
+          <li>
+            <a class="dropdown-item" routerLink="/perfil">
+              <i class="fa-solid fa-user me-2 text-secondary"></i> Meu perfil
+            </a>
+          </li>
 
-    <li>
-      <a class="dropdown-item" routerLink="/usuarios/novo">
-        <i class="fa-solid fa-user-plus me-2 text-success"></i> Cadastrar novo usuário
-      </a>
-    </li>
+          <li>
+            <a class="dropdown-item" routerLink="/home/troca-senha">
+              <i class="fa-solid fa-key me-2 text-warning icon"></i> Trocar de senha
+            </a>
+          </li>
 
-    <li><hr class="dropdown-divider" /></li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
 
-    <li>
-      <button class="dropdown-item text-danger" (click)="logout()">
-        <i class="fa-solid fa-right-from-bracket me-2"></i> Sair
-      </button>
-    </li>
-  </ul>
-</div>
+          <li>
+            <button class="dropdown-item text-danger" (click)="logout()">
+              <i class="fa-solid fa-right-from-bracket me-2"></i> Sair
+            </button>
+          </li>
+        </ul>
+      </div>
 
 
     </div>

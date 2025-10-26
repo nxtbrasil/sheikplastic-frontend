@@ -18,14 +18,14 @@ export class NovoUsuarioComponent {
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.usuarioForm = this.fb.group({
       nomeFuncionario: ['', Validators.required],
-      idFuncao: [0, Validators.required],
+      idFuncao: ['', Validators.required],
       emailFuncionario: ['', [Validators.required, Validators.email]],
-      senhaFuncionario: ['', [Validators.required, Validators.minLength(4)]],
+      senhaFuncionarioTexto: ['', [Validators.required, Validators.minLength(4)]],
       ativo: [true]
     });
   }
@@ -34,7 +34,19 @@ export class NovoUsuarioComponent {
     if (this.usuarioForm.invalid) return;
 
     this.loading = true;
-    const novoUsuario = this.usuarioForm.value;
+
+    const formValue = this.usuarioForm.value;
+
+    // Monta o payload com idFuncao também em idGrupoUsuario
+    const novoUsuario = {
+      nomeFuncionario: formValue.nomeFuncionario,
+      idFuncao: formValue.idFuncao,
+      idGrupoUsuario: formValue.idFuncao, // mesmo valor de idFuncao
+      emailFuncionario: formValue.emailFuncionario,
+      senhaFuncionarioTexto: formValue.senhaFuncionarioTexto,
+      senhaFuncionario: formValue.senhaFuncionarioTexto,
+      ativo: formValue.ativo
+    };
 
     this.usuarioService.criarUsuario(novoUsuario).subscribe({
       next: () => {

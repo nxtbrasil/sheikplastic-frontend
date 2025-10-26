@@ -16,6 +16,7 @@ import { TokenInterceptor } from './auth/token.interceptor';
 import { MenuService } from './home/menu.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NovoUsuarioComponent } from './auth/novo-usuario/novo-usuario.component';
+import { TrocaSenhaComponent } from './auth/troca-senha/troca-senha.component';
 
 
 @NgModule({
@@ -25,20 +26,32 @@ import { NovoUsuarioComponent } from './auth/novo-usuario/novo-usuario.component
     HomeComponent,
     NavbarComponent,
     SubmenuComponent,
-    NovoUsuarioComponent
+    NovoUsuarioComponent,
+    TrocaSenhaComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    RouterModule.forRoot([
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'login', component: LoginComponent },
-      { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-      { path: 'novo-usuario', component: NovoUsuarioComponent},
-      { path: '**', redirectTo: 'home' }
-    ], { scrollPositionRestoration: 'enabled' })
+   RouterModule.forRoot([
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+
+  {
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [AuthGuard],
+    children: [
+      // Rotas que serão exibidas DENTRO do layout da Home
+      { path: 'troca-senha', component: TrocaSenhaComponent },
+      { path: 'novo-usuario', component: NovoUsuarioComponent },
+      // você pode incluir aqui outros módulos ou páginas também
+    ]
+  },
+
+  { path: '**', redirectTo: 'home' }
+], { scrollPositionRestoration: 'enabled' })
   ],
   providers: [
     AuthService,
