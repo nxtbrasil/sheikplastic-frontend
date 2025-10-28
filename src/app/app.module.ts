@@ -56,6 +56,14 @@ import { MeuPerfilComponent } from './auth/meu-perfil/meu-perfil.component';
                 import('./pages/funcionarios/funcionarios-routing.module').then(
                   (m) => m.FuncionariosRoutingModule
                 )
+            },
+             // ✅ Módulo lazy de Grupos de Usuários
+            {
+              path: '_adm',
+              loadChildren: () =>
+                import('./pages/grupos-usuarios/grupos-usuarios-routing.module').then(
+                  (m) => m.GruposUsuariosRoutingModule
+                )
             }
           ]
         },

@@ -1,0 +1,300 @@
+/* === Ajuste para o menu lateral fixo === */
+.container-funcionarios {
+  margin-left: 250px; /* mesma largura do menu lateral */
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - 70px); /* evita que o conteúdo "grude" no topo */
+}
+
+.container {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.header h2 {
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.btn-add {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-add:hover {
+  background-color: #0056b3;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  background-color: #f4f6f8;
+  color: #555;
+  font-weight: 600;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.badge.ativo {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge.inativo {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.acoes {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.btn-acao {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 6px;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.btn-acao.editar {
+  color: #007bff;
+}
+
+.btn-acao.excluir {
+  color: #dc3545;
+}
+
+.btn-acao:hover {
+  opacity: 0.8;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #555;
+}
+
+.error {
+  color: #dc3545;
+  text-align: center;
+  font-weight: 500;
+}
+
+.sem-registro {
+  text-align: center;
+  color: #888;
+  margin-top: 1rem;
+}
+
+.container-funcionarios {
+  padding: 20px;
+}
+
+.card {
+  border: none;
+  background-color: #f8f9fa; /* igual ao fundo do painel de assinatura */
+}
+
+.card-body {
+  padding: 2rem 2.5rem;
+}
+
+.vr {
+  width: 1px;
+  height: 50px;
+  background-color: #dee2e6; /* divisória suave */
+}
+
+.text-muted {
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.fs-5 {
+  font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .d-flex {
+    flex-direction: column;
+  }
+
+  .vr {
+    display: none;
+  }
+
+  .px-3 {
+    margin-bottom: 1rem;
+  }
+}
+
+.painel-detalhes {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  flex-wrap: nowrap;
+  gap: 2rem;
+}
+
+.painel-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.painel-item i {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+
+.painel-item .valor {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.painel-divider {
+  width: 1px;
+  height: 40px;
+  background-color: #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .painel-detalhes {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .painel-divider {
+    display: none;
+  }
+}
+
+.btn-acao {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-color: #fff;
+  margin: 0 3px;
+  cursor: pointer;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  vertical-align: middle;
+}
+
+/* Hover com leve efeito */
+.btn-acao:hover {
+  transform: scale(1.08);
+}
+
+/* Ícones todos do mesmo tamanho */
+.btn-acao i {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* Botões por cor */
+.btn-acao.editar {
+  color: #007bff;
+  border-color: #007bff;
+}
+.btn-acao.editar:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-acao.excluir {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+.btn-acao.excluir:hover {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-acao.visualizar {
+  color: #17a2b8;
+  border-color: #17a2b8;
+}
+.btn-acao.visualizar:hover {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+.btn-acao.permissoes {
+  color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+.btn-acao.permissoes:hover {
+  background-color: #f0ad4e;
+  color: #fff;
+}
+
+.btn-acao.usuarios {
+  color: #28a745;
+  border-color: #28a745;
+}
+.btn-acao.usuarios:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+td.text-end {
+  vertical-align: middle;
+}

@@ -1,0 +1,82 @@
+<div class="container-funcionarios mt-4">
+
+    <!-- ===== CABEÇALHO ===== -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0">Adminstração > Grupos de Usuário</h3>
+        <button class="btn btn-primary" (click)="novoGrupoUsuario()">
+            <i class="fa-solid fa-plus"></i> Novo Grupo
+        </button>
+    </div>
+
+    <!-- ===== PAINEL DE QUANTIDADE ===== -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h6 class="text-muted mb-1">VISÃO GERAL</h6>
+            <h5 class="fw-bold mb-4">Painel de Controle</h5>
+
+            <div class="painel-detalhes flex-wrap">
+                <div class="painel-item">
+                    <i class="fa-solid fa-layer-group text-primary"></i>
+                    <div>Total de Grupos</div>
+                    <div class="valor">{{ grupos.length }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TABELA ===== -->
+    <div class="table-responsive bg-white shadow-sm rounded mt-4">
+        <table class="table align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Nome do Grupo</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let g of gruposPaginados">
+                    <td>{{ g.nomeGrupoUsuario }}</td>
+
+                    <td class="text-end">
+                        <button class="btn-acao editar" title="Editar" (click)="editar(g)"><i
+                                class="fa-solid fa-pen"></i></button>
+                        <button class="btn-acao excluir" title="Excluir" (click)="excluir(g)"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn-acao visualizar" title="Visualizar"><i
+                                class="fa-solid fa-eye"></i></button>
+                        <button class="btn-acao permissoes" title="Permissões" (click)="configurarPermissoes(g)"><i
+                                class="fa-solid fa-lock"></i></button>
+                        <button class="btn-acao usuarios" title="Usuários" (click)="gerenciarUsuarios(g)"><i
+                                class="fa-solid fa-users"></i></button>
+                    </td>
+                </tr>
+                <tr *ngIf="grupos.length === 0">
+                    <td colspan="3" class="text-center text-muted py-3">Nenhum grupo encontrado</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ===== PAGINAÇÃO ===== -->
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="text-muted small">
+            Mostrando {{ paginaAtual * itensPorPagina + 1 }} -
+            {{ Math.min((paginaAtual + 1) * itensPorPagina, grupos.length) }}
+            de {{ grupos.length }}
+        </div>
+
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" [class.disabled]="paginaAtual === 0">
+                    <a class="page-link" (click)="mudarPagina(paginaAtual - 1)">Anterior</a>
+                </li>
+                <li class="page-item" *ngFor="let p of paginas" [class.active]="p === paginaAtual">
+                    <a class="page-link" (click)="mudarPagina(p)">{{ p + 1 }}</a>
+                </li>
+                <li class="page-item" [class.disabled]="(paginaAtual + 1) * itensPorPagina >= grupos.length">
+                    <a class="page-link" (click)="mudarPagina(paginaAtual + 1)">Próxima</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>

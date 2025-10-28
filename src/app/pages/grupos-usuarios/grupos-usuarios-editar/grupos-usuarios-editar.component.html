@@ -1,0 +1,31 @@
+<div class="card-form shadow p-4 rounded mx-auto mt-5" style="max-width: 720px;">
+  <h4 class="text-center mb-4 fw-semibold">
+    👥 {{ idGrupo ? 'Editar Grupo de Usuário' : 'Cadastro de Grupo de Usuário' }}
+  </h4>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+    <div class="row g-3">
+
+      <!-- NOME DO GRUPO -->
+      <div class="col-md-6">
+        <label class="form-label">Nome do Grupo</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="nomeGrupoUsuario"
+          placeholder="Digite o nome do grupo"
+        />
+      </div>
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <button type="submit" class="btn btn-primary px-4">
+        {{ idGrupo ? 'Atualizar' : 'Salvar' }}
+      </button>
+      <button type="button" class="btn btn-secondary px-4" (click)="cancelar()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>
