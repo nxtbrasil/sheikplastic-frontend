@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './auth/login/login.component';
@@ -14,12 +15,9 @@ import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth.guard';
 import { TokenInterceptor } from './auth/token.interceptor';
 import { MenuService } from './home/menu.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NovoUsuarioComponent } from './auth/novo-usuario/novo-usuario.component';
 import { TrocaSenhaComponent } from './auth/troca-senha/troca-senha.component';
 import { MeuPerfilComponent } from './auth/meu-perfil/meu-perfil.component';
-
-
 
 @NgModule({
   declarations: [
@@ -37,26 +35,34 @@ import { MeuPerfilComponent } from './auth/meu-perfil/meu-perfil.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ReactiveFormsModule,
-   RouterModule.forRoot([
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
 
-  {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [AuthGuard],
-    children: [
-      // Rotas que serão exibidas DENTRO do layout da Home
-      { path: 'troca-senha', component: TrocaSenhaComponent },
-      { path: 'novo-usuario', component: NovoUsuarioComponent },
-      { path: 'meu-perfil', component: MeuPerfilComponent },
-      // você pode incluir aqui outros módulos ou páginas também
-    ]
-  },
+    RouterModule.forRoot(
+      [
+        { path: '', redirectTo: 'home', pathMatch: 'full' },
+        { path: 'login', component: LoginComponent },
+        {
+          path: 'home',
+          component: HomeComponent,
+          canActivate: [AuthGuard],
+          children: [
+            { path: 'troca-senha', component: TrocaSenhaComponent },
+            { path: 'novo-usuario', component: NovoUsuarioComponent },
+            { path: 'meu-perfil', component: MeuPerfilComponent },
 
-  { path: '**', redirectTo: 'home' }
-], { scrollPositionRestoration: 'enabled' })
+            // ✅ Módulo lazy de funcionários com os paths da API
+            {
+              path: '_adm',
+              loadChildren: () =>
+                import('./pages/funcionarios/funcionarios-routing.module').then(
+                  (m) => m.FuncionariosRoutingModule
+                )
+            }
+          ]
+        },
+        { path: '**', redirectTo: 'home' }
+      ],
+      { scrollPositionRestoration: 'enabled' }
+    )
   ],
   providers: [
     AuthService,
@@ -66,4 +72,4 @@ import { MeuPerfilComponent } from './auth/meu-perfil/meu-perfil.component';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

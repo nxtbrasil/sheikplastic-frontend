@@ -44,9 +44,18 @@ export class HomeComponent implements OnInit {
   /** Carrega menu do serviço */
   private loadMenu(): void {
     this.menuService.getMenu().subscribe({
-      next: (data) => (this.menu = data),
+    next: (data) => {
+            this.menu = this.removeAspRecursively(data);
+          },
       error: (err) => console.error('Erro ao carregar menu:', err),
     });
+  }
+    private removeAspRecursively(items: MenuItem[]): MenuItem[] {
+    return items.map(item => ({
+      ...item,
+      endereco: item.endereco ? item.endereco.replace(/\.asp$/i, '') : null,
+      subMenus: item.subMenus ? this.removeAspRecursively(item.subMenus) : []
+    }));
   }
 
   /** Abre/fecha submenus */

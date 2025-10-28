@@ -4,7 +4,13 @@
   height: calc(100vh - 56px);
   background-color: #f9fbfd; /* fundo geral */
   margin-top: 56px;
-  overflow: hidden;
+  overflow: auto;
+}
+.content-body {
+  padding: 20px;
+  overflow-x: auto;
+  overflow-y: auto;
+
 }
 
 /* ===== SIDEBAR ===== */

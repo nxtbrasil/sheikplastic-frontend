@@ -1,0 +1,83 @@
+<div class="card-form shadow p-4 rounded mx-auto mt-5" style="max-width: 720px;">
+  <h4 class="text-center mb-4 fw-semibold">
+    👤 {{ isEdicao ? 'Editar Funcionário' : 'Cadastro de Funcionário' }}
+  </h4>
+
+  <form [formGroup]="formFuncionario" (ngSubmit)="onSubmit()">
+    <div class="row g-3">
+      <!-- NOME -->
+      <div class="col-md-6">
+        <label class="form-label">Nome</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="nomeFuncionario"
+          placeholder="Digite o nome completo"
+        />
+      </div>
+
+      <!-- FUNÇÃO -->
+      <div class="col-md-6">
+        <label class="form-label">Função</label>
+        <select class="form-select" formControlName="idFuncao">
+          <option value="">Selecione...</option>
+          <option *ngFor="let funcao of funcoes" [value]="funcao.idFuncao">
+            {{ funcao.nomeFuncao }}
+          </option>
+        </select>
+      </div>
+
+      <!-- E-MAIL -->
+      <div class="col-md-6">
+        <label class="form-label">E-mail</label>
+        <input
+          type="email"
+          class="form-control"
+          formControlName="emailFuncionario"
+          placeholder="Digite o e-mail"
+        />
+      </div>
+
+      <!-- STATUS -->
+      <div class="col-md-6 d-flex flex-column justify-content-end">
+        <label class="form-label mb-2">Status</label>
+        <div class="toggle-switch align-items-center">
+          <input type="checkbox" id="ativo" formControlName="ativo" />
+          <label for="ativo" class="switch"></label>
+          <span class="status-text ms-2">
+            {{ formFuncionario.get('ativo')?.value ? 'Ativo' : 'Inativo' }}
+          </span>
+        </div>
+      </div>
+
+      <!-- SENHA (somente no modo cadastro) -->
+      <div class="col-md-6">
+        <label class="form-label">Senha</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="senhaFuncionario"
+          placeholder="Digite a senha"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Confirmação da Senha</label>
+        <input
+          type="password"
+          class="form-control"
+          formControlName="senhaFuncionarioTexto"
+          placeholder="Confirme a senha"
+        />
+      </div>
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <button type="submit" class="btn btn-primary px-4">
+        {{ isEdicao ? 'Atualizar' : 'Salvar' }}
+      </button>
+      <button type="button" class="btn btn-secondary px-4" (click)="cancelar()">Cancelar</button>
+    </div>
+  </form>
+</div>
