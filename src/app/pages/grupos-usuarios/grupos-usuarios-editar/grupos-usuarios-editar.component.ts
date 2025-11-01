@@ -68,7 +68,7 @@ export class GruposUsuariosEditarComponent implements OnInit {
     request.subscribe({
       next: () => {
         Swal.fire('Sucesso', 'Grupo salvo com sucesso!', 'success').then(() =>
-          this.router.navigate(['/home/_adm/grupos-usuarios'])
+          this.router.navigate(['/home/_adm/gruposUsuarioListar'])
         );
       },
       error: () => Swal.fire('Erro', 'Não foi possível salvar o grupo.', 'error')
@@ -76,6 +76,6 @@ export class GruposUsuariosEditarComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/home/_adm/grupos-usuarios']);
+    this.router.navigate(['/home/_adm/gruposUsuarioListar']);
   }
 }

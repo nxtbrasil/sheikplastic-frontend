@@ -72,6 +72,9 @@ export class ListaGrupoUsuarioComponent implements OnInit {
     this.router.navigate([`/home/_adm/gruposUsuarioForm/`, g.idGrupoUsuario]);
   }
 
+vinculo(g: GrupoUsuario): void {
+  this.router.navigate([`/home/_adm/vinculoFuncionario`, g.idGrupoUsuario]);
+}
   excluir(g: GrupoUsuario): void {
     Swal.fire({
       title: 'Excluir grupo?',
