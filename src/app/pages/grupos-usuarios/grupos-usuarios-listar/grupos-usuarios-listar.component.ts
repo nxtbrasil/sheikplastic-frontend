@@ -98,10 +98,10 @@ vinculo(g: GrupoUsuario): void {
       }
     });
   }
-  // 🔒 Ações extras (placeholders)
-  configurarPermissoes(g: GrupoUsuario): void {
-    this.router.navigate([`/home/_adm/grupos-usuarios/editar/${g.idGrupoUsuario}/permissoes`]);
-  }
+// 🔒 Ações extras (placeholders)
+configurarPermissoes(g: GrupoUsuario): void {
+  this.router.navigate([`/home/_adm/vinculoRegras/${g.idGrupoUsuario}`]);
+}
 
   gerenciarUsuarios(g: GrupoUsuario): void {
     this.router.navigate([`/home/_adm/grupos-usuarios/editar/${g.idGrupoUsuario}/usuarios`]);

@@ -1,0 +1,60 @@
+<div class="container-funcionarios mt-4">
+    <div class="header">
+  <h3 class="fw-bold mb-0">Grupos de Usuário > Vincular Regras ao Grupo</h3>
+           <button class="btn btn-primary" (click)="voltar()">
+            <i class="fa-solid fa-arrow-left"></i>Voltar
+        </button>
+    </div>
+
+    <div *ngIf="carregando" class="loading">Carregando regras...</div>
+
+    <div *ngIf="!carregando && modulosFiltrados.length === 0" class="sem-registro">
+      Nenhuma regra encontrada.
+    </div>
+<input
+        type="text"
+        class="input-busca"
+        placeholder="🔍 Buscar regra..."
+        [(ngModel)]="busca"
+        (input)="filtrar()"
+      />
+      <br>
+    <div *ngIf="!carregando && modulosFiltrados.length > 0" class="table-container">
+      <div *ngFor="let modulo of modulosFiltrados" class="modulo-card">
+        <h3 class="modulo-titulo">{{ modulo.nome }}</h3>
+
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width: 70%">Descrição da Regra</th>
+                <th style="width: 15%">Status</th>
+                <th style="width: 15%" class="text-center">Vincular</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let regra of modulo.regras">
+                <td>{{ regra.descricaoRegra }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [class.ativo]="regra.vinculada"
+                    [class.inativo]="!regra.vinculada"
+                  >
+                    {{ regra.vinculada ? 'Vinculada' : 'Não vinculada' }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <input
+                    type="checkbox"
+                    [checked]="regra.vinculada"
+                    (change)="alternarVinculo(regra)"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+</div>

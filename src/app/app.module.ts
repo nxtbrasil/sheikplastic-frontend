@@ -18,6 +18,7 @@ import { MenuService } from './home/menu.service';
 import { NovoUsuarioComponent } from './auth/novo-usuario/novo-usuario.component';
 import { TrocaSenhaComponent } from './auth/troca-senha/troca-senha.component';
 import { MeuPerfilComponent } from './auth/meu-perfil/meu-perfil.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { MeuPerfilComponent } from './auth/meu-perfil/meu-perfil.component';
     AuthService,
     MenuService,
     AuthGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    provideAnimationsAsync()
   ],
   bootstrap: [AppComponent]
 })
