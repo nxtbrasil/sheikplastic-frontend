@@ -1,0 +1,46 @@
+<div class="container-funcionarios"> 
+    <div class="header">
+      <h3 class="fw-bold mb-0">Grupos de Usuário > Gerenciar Heranças de Grupo: {{ grupoPaiNome }}</h3>
+                <button class="btn btn-primary" (click)="voltar()">
+            <i class="fa-solid fa-arrow-left"></i>Voltar
+        </button>
+    </div>
+
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID Grupo</th>
+            <th>Nome do Grupo</th>
+            <th>Status</th>
+            <th class="text-end">Selecionar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let h of herancas">
+            <td>{{ h.idGrupoUsuario }}</td>
+            <td>{{ h.nomeGrupoUsuario }}</td>
+            <td>
+              <span class="badge" [ngClass]="h.vinculado ? 'ativo' : 'inativo'">
+                {{ h.vinculado ? 'Vinculado' : 'Não vinculado' }}
+              </span>
+            </td>
+            <td class="text-end">
+              <input
+                type="checkbox"
+                [checked]="h.vinculado"
+                (change)="onCheckboxChange($event, h)"
+                class="checkbox-heranca"
+              />
+            </td>
+          </tr>
+
+          <tr *ngIf="!herancas || herancas.length === 0">
+            <td colspan="4" class="sem-registro">
+              Nenhum grupo encontrado.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</div>

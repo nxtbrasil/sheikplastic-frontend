@@ -104,6 +104,6 @@ configurarPermissoes(g: GrupoUsuario): void {
 }
 
   gerenciarUsuarios(g: GrupoUsuario): void {
-    this.router.navigate([`/home/_adm/grupos-usuarios/editar/${g.idGrupoUsuario}/usuarios`]);
+    this.router.navigate([`/home/_adm/vinculoHeranca/${g.idGrupoUsuario}`]);
   }
 }

@@ -10,13 +10,15 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { GrupoUsuarioHerancaComponent } from './grupo-usuario-heranca/grupo-usuario-heranca.component';
 
 
 
 @NgModule({
   declarations: [
     VinculoFuncionarioGrupoComponent,
-    VinculoRegraGrupoComponent
+    VinculoRegraGrupoComponent,
+    GrupoUsuarioHerancaComponent 
   ],
   imports: [
     CommonModule,
