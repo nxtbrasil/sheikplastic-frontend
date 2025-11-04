@@ -27,17 +27,13 @@ export class VinculoFuncionarioGrupoComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      console.log('Parâmetros da rota:', params);
       const idGrupo = params.get('id');
-
       if (idGrupo) {
         this.grupoSelecionado = Number(idGrupo);
         this.carregarGrupoSelecionado(this.grupoSelecionado);
       } else {
         this.carregarGrupos();
       }
-
-      this.carregarFuncionarios();
     });
   }
 
@@ -45,15 +41,18 @@ export class VinculoFuncionarioGrupoComponent implements OnInit {
     this.router.navigate(['/home/_adm/gruposUsuarioListar']);
   }
 
-  // 🔹 Busca o grupo específico da URL
+  /** 🔹 Busca o grupo específico e carrega funcionários via /api/grupos-usuario/{id}/funcionarios */
   carregarGrupoSelecionado(idGrupo: number) {
     this.http.get<any>(`${this.apiUrl}/grupos-usuario/${idGrupo}`).subscribe({
       next: (grupo) => {
         this.grupoAtual = grupo;
-        this.grupos = [grupo]; // preenche o select com apenas esse grupo
+        this.grupos = [grupo];
         this.carregarFuncionariosVinculados();
       },
-      error: (err) => console.error('Erro ao carregar grupo selecionado', err),
+      error: (err) => {
+        console.error('Erro ao carregar grupo', err);
+        Swal.fire('Erro', 'Não foi possível carregar o grupo selecionado.', 'error');
+      },
     });
   }
 
@@ -64,48 +63,27 @@ export class VinculoFuncionarioGrupoComponent implements OnInit {
     });
   }
 
-  alternarVinculo(func: any) {
-    if (!this.grupoSelecionado) {
-      Swal.fire('Atenção', 'Selecione um grupo antes de vincular.', 'warning');
-      return;
-    }
-
-    if (func.idGrupoUsuario) {
-      this.desvincularFuncionario(func.idFuncionario);
-    } else {
-      this.vincularFuncionario(func.idFuncionario);
-    }
-  }
-
-  carregarFuncionarios() {
-    this.http.get<any[]>(`${this.apiUrl}/funcionarios`).subscribe({
-      next: (data) => {
-        this.funcionarios = data.map((f) => ({
-          ...f,
-          vinculado: false,
-        }));
-        if (this.grupoSelecionado) this.carregarFuncionariosVinculados();
-      },
-      error: (err) => console.error('Erro ao carregar funcionários', err),
-    });
-  }
-
+  /** 🔹 Chama o endpoint /api/grupos-usuario/{id}/funcionarios */
   carregarFuncionariosVinculados() {
     if (!this.grupoSelecionado) return;
+
+    this.carregando = true;
     this.http
-      .get<any[]>(`${this.apiUrl}/grupo-usuario-funcionario/${this.grupoSelecionado}`)
+      .get<any[]>(`${this.apiUrl}/grupos-usuario/${this.grupoSelecionado}/funcionarios`)
       .subscribe({
-        next: (vinculos) => {
-          this.funcionarios.forEach((f) => {
-            f.vinculado = vinculos.some(
-              (v) => v.idFuncionario === f.idFuncionario
-            );
-          });
+        next: (data) => {
+          this.funcionarios = data;
+          this.carregando = false;
         },
-        error: (err) => console.error('Erro ao carregar vínculos', err),
+        error: (err) => {
+          console.error('Erro ao carregar funcionários do grupo', err);
+          Swal.fire('Erro', 'Falha ao carregar funcionários do grupo.', 'error');
+          this.carregando = false;
+        },
       });
   }
 
+  /** 🔍 Filtro de busca */
   funcionariosFiltrados() {
     const termo = this.filtro.toLowerCase();
     return this.funcionarios.filter(
@@ -115,20 +93,27 @@ export class VinculoFuncionarioGrupoComponent implements OnInit {
     );
   }
 
-  vincularFuncionario(funcionarioId: number) {
+  /** 🔄 Alternar vínculo */
+  alternarVinculo(func: any) {
     if (!this.grupoSelecionado) {
       Swal.fire('Atenção', 'Selecione um grupo antes de vincular.', 'warning');
       return;
     }
 
+    func.vinculado
+      ? this.desvincularFuncionario(func)
+      : this.vincularFuncionario(func);
+  }
+
+  /** 🔗 Vincular funcionário */
+  vincularFuncionario(func: any) {
+    const url = `${this.apiUrl}/grupo-usuario-funcionario/vincular?idFuncionario=${func.idFuncionario}&idGrupoUsuario=${this.grupoSelecionado}`;
+
     this.carregando = true;
-
-    const url = `${this.apiUrl}/grupo-usuario-funcionario/vincular?idFuncionario=${funcionarioId}&idGrupoUsuario=${this.grupoSelecionado}`;
-
     this.http.post(url, null).subscribe({
       next: () => {
         Swal.fire('Sucesso', 'Funcionário vinculado com sucesso!', 'success');
-        this.carregarFuncionarios();
+        func.vinculado = true;
         this.carregando = false;
       },
       error: (err) => {
@@ -139,12 +124,8 @@ export class VinculoFuncionarioGrupoComponent implements OnInit {
     });
   }
 
-  desvincularFuncionario(funcionarioId: number) {
-    if (!this.grupoSelecionado) {
-      Swal.fire('Atenção', 'Selecione um grupo antes de desvincular.', 'warning');
-      return;
-    }
-
+  /** 🔓 Desvincular funcionário */
+  desvincularFuncionario(func: any) {
     Swal.fire({
       title: 'Tem certeza?',
       text: 'O funcionário será desvinculado deste grupo.',
@@ -153,24 +134,23 @@ export class VinculoFuncionarioGrupoComponent implements OnInit {
       confirmButtonText: 'Sim, desvincular',
       cancelButtonText: 'Cancelar',
     }).then((result) => {
-      if (result.isConfirmed) {
-        this.carregando = true;
+      if (!result.isConfirmed) return;
 
-        const url = `${this.apiUrl}/grupo-usuario-funcionario/desvincular/${funcionarioId}`;
+      this.carregando = true;
+      const url = `${this.apiUrl}/grupo-usuario-funcionario/desvincular/${func.idFuncionario}?idGrupoUsuario=${this.grupoSelecionado}`;
 
-        this.http.request('DELETE', url).subscribe({
-          next: () => {
-            Swal.fire('Sucesso', 'Funcionário desvinculado!', 'success');
-            this.carregarFuncionarios();
-            this.carregando = false;
-          },
-          error: (err) => {
-            console.error(err);
-            Swal.fire('Erro', 'Não foi possível desvincular o funcionário.', 'error');
-            this.carregando = false;
-          },
-        });
-      }
+      this.http.delete(url).subscribe({
+        next: () => {
+          Swal.fire('Sucesso', 'Funcionário desvinculado!', 'success');
+          func.vinculado = false;
+          this.carregando = false;
+        },
+        error: (err) => {
+          console.error(err);
+          Swal.fire('Erro', 'Não foi possível desvincular o funcionário.', 'error');
+          this.carregando = false;
+        },
+      });
     });
   }
 }
