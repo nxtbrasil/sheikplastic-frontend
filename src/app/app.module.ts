@@ -65,6 +65,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
                 import('./pages/grupos-usuarios/grupos-usuarios-routing.module').then(
                   (m) => m.GruposUsuariosRoutingModule
                 )
+            },
+             // ✅ Módulo lazy de Grupos de Usuários
+            {
+              path: '_cad',
+              loadChildren: () =>
+                import('./pages/cidades/cidades-routing.module').then(
+                  (m) => m.CidadesRoutingModule
+                )
             }
           ]
         },
