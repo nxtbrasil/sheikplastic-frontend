@@ -80,6 +80,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
                 import('./pages/condicao-pagamento/condicoes-pagamento-routing.module').then(
                   (m) => m.CondicoesPagamentoRoutingModule
                 )
+            },
+                         {
+              path: '_cad',
+              loadChildren: () =>
+                import('./pages/estados/estados-routing.module').then(
+                  (m) => m.EstadosRoutingModule
+                )
             }
           ]
         },

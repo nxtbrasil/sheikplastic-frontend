@@ -1,0 +1,18 @@
+<div class="container mt-4">
+  <h2>{{ id ? 'Editar Estado' : 'Novo Estado' }}</h2>
+
+  <form (ngSubmit)="salvar()" #form="ngForm">
+    <div class="mb-3">
+      <label for="sigla" class="form-label">Sigla</label>
+      <input type="text" id="sigla" class="form-control" [(ngModel)]="estado.siglaEstado" name="siglaEstado" maxlength="2" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="nome" class="form-label">Nome</label>
+      <input type="text" id="nome" class="form-control" [(ngModel)]="estado.nomeEstado" name="nomeEstado" maxlength="40" required>
+    </div>
+
+    <button type="submit" class="btn btn-success me-2" [disabled]="form.invalid">Salvar</button>
+    <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+  </form>
+</div>
