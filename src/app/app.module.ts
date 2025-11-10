@@ -73,6 +73,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
                 import('./pages/cidades/cidades-routing.module').then(
                   (m) => m.CidadesRoutingModule
                 )
+            },
+             {
+              path: '_cad',
+              loadChildren: () =>
+                import('./pages/condicao-pagamento/condicoes-pagamento-routing.module').then(
+                  (m) => m.CondicoesPagamentoRoutingModule
+                )
             }
           ]
         },

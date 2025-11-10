@@ -1,0 +1,15 @@
+
+
+<div class="container mt-4">
+  <h2>{{ condicao.idCondicaoPagamento ? 'Editar' : 'Nova' }} Condição de Pagamento</h2>
+
+  <form>
+    <div class="mb-3">
+      <label>Descrição</label>
+      <input type="text" [(ngModel)]="condicao.descricaoCondicaoPagamento" name="descricaoCondicaoPagamento" class="form-control">
+    </div>
+
+    <button class="btn btn-success me-2" (click)="salvar()" type="button">Salvar</button>
+    <button class="btn btn-secondary" (click)="cancelar()" type="button">Cancelar</button>
+  </form>
+</div>
