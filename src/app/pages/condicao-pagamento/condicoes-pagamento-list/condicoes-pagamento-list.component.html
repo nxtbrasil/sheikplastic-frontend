@@ -1,22 +1,43 @@
 <div class="container-funcionarios mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3 class="fw-bold mb-0">Cadastro > Condições de Pagamento</h3>
-    <button class="btn btn-primary" (click)="novo()">
+
+  <!-- ===== BREADCRUMB COM BOTÃO ===== -->
+  <div class="custom-breadcrumb d-flex justify-content-between align-items-center mb-4">
+    <nav>
+      <ol>
+        <li>
+          <a routerLink="/home">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/home/_cad">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>Cadastro</span>
+          </a>
+        </li>
+        <li class="active">
+          <i class="fa-solid fa-money-check-dollar"></i>
+          <span>Condições de Pagamento</span>
+        </li>
+      </ol>
+    </nav>
+
+    <button class="btn btn-primary btn-breadcrumb" (click)="novo()">
       <i class="fa-solid fa-plus"></i> Nova Condição
     </button>
   </div>
 
+  <!-- ===== TABELA ===== -->
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Descrição</th>
         <th>Ações</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let cond of condicoesPaginas">
-        <td>{{ cond.idCondicaoPagamento }}</td>
         <td>{{ cond.descricaoCondicaoPagamento }}</td>
         <td>
           <button class="btn btn-warning btn-sm me-2" (click)="editar(cond.idCondicaoPagamento)">
@@ -26,6 +47,11 @@
             <i class="fa-solid fa-trash"></i>
           </button>
         </td>
+      </tr>
+
+      <!-- Caso não existam registros -->
+      <tr *ngIf="condicoes.length === 0">
+        <td colspan="2" class="text-center text-muted">Nenhuma condição encontrada.</td>
       </tr>
     </tbody>
   </table>
@@ -57,11 +83,15 @@
         </li>
 
         <!-- Próxima -->
-        <li class="page-item"
-            [class.disabled]="(paginaAtual + 1) * itensPorPagina >= condicoes.length || condicoes.length === 0">
-          <button class="page-link"
-                  (click)="mudarPagina(paginaAtual + 1)"
-                  [disabled]="(paginaAtual + 1) * itensPorPagina >= condicoes.length || condicoes.length === 0">
+        <li
+          class="page-item"
+          [class.disabled]="(paginaAtual + 1) * itensPorPagina >= condicoes.length || condicoes.length === 0"
+        >
+          <button
+            class="page-link"
+            (click)="mudarPagina(paginaAtual + 1)"
+            [disabled]="(paginaAtual + 1) * itensPorPagina >= condicoes.length || condicoes.length === 0"
+          >
             Próxima
           </button>
         </li>

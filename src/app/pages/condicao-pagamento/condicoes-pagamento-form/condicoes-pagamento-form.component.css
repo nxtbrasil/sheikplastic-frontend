@@ -1,0 +1,133 @@
+/* ===== CONTAINER DO FORM ===== */
+.card-form {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.card-form:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== TÍTULO ===== */
+.card-form h4 {
+  color: #333;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+/* ===== LABELS E CAMPOS ===== */
+.card-form .form-label {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+.card-form input,
+.card-form select {
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-form input:focus,
+.card-form select:focus {
+  border-color: #5b8ef1;
+  box-shadow: 0 0 0 0.2rem rgba(91, 142, 241, 0.25);
+}
+
+/* ===== BOTÕES ===== */
+.card-form button {
+  min-width: 120px;
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #5b8ef1;
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #4a7de0;
+  opacity: 0.95;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  opacity: 0.95;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 576px) {
+  .card-form {
+    padding: 1.5rem;
+  }
+
+  .card-form .row {
+    flex-direction: column;
+  }
+}
+
+/* ===== STATUS MODERNO ===== */
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+  background-color: #d0d0d0;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 2px;
+  top: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input:checked + .switch {
+  background-color: #5b8ef1;
+}
+
+.toggle-switch input:checked + .switch::after {
+  transform: translateX(22px);
+}
+
+.status-text {
+  font-weight: 500;
+  color: #333;
+}

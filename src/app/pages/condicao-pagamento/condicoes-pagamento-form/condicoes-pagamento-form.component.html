@@ -1,15 +1,45 @@
-
-
-<div class="container mt-4">
-  <h2>{{ condicao.idCondicaoPagamento ? 'Editar' : 'Nova' }} Condição de Pagamento</h2>
-
-  <form>
-    <div class="mb-3">
-      <label>Descrição</label>
-      <input type="text" [(ngModel)]="condicao.descricaoCondicaoPagamento" name="descricaoCondicaoPagamento" class="form-control">
+<div class="container d-flex justify-content-center align-items-start mt-5">
+  <div class="card p-4 shadow-lg rounded-4" style="width: 450px; margin-top: 80px;">
+    <div class="text-center mb-4">
+      <h4 class="fw-bold text-dark">
+        <i class="fa-solid fa-hand-holding-dollar text-primary me-2"></i>
+        {{ condicao.idCondicaoPagamento ? 'Editar Condição de Pagamento' : 'Nova Condição de Pagamento' }}
+      </h4>
     </div>
 
-    <button class="btn btn-success me-2" (click)="salvar()" type="button">Salvar</button>
-    <button class="btn btn-secondary" (click)="cancelar()" type="button">Cancelar</button>
-  </form>
+    <form #form="ngForm">
+      <div class="mb-3">
+        <label for="descricaoCondicaoPagamento" class="form-label fw-semibold">Descrição</label>
+        <input
+          type="text"
+          id="descricaoCondicaoPagamento"
+          class="form-control"
+          [(ngModel)]="condicao.descricaoCondicaoPagamento"
+          name="descricaoCondicaoPagamento"
+          maxlength="60"
+          required
+          placeholder="Ex: À vista / 30 dias"
+        />
+      </div>
+
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <button
+          type="button"
+          class="btn btn-success px-4 fw-semibold"
+          [disabled]="form.invalid"
+          (click)="salvar()"
+        >
+          Salvar
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-secondary px-4 fw-semibold"
+          (click)="cancelar()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
 </div>

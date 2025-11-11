@@ -240,3 +240,82 @@
 .text-muted.small {
   margin-left: 5px;
 }
+
+/* ===== BREADCRUMB COM BOTÃO ===== */
+.custom-breadcrumb {
+  background: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.custom-breadcrumb nav {
+  flex-grow: 1;
+}
+
+.custom-breadcrumb ol {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.custom-breadcrumb li {
+  display: flex;
+  align-items: center;
+  color: #6c757d;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.custom-breadcrumb li i {
+  margin-right: 6px;
+  color: #0d6efd;
+}
+
+.custom-breadcrumb li:not(:last-child)::after {
+  content: "›";
+  color: #adb5bd;
+  margin: 0 8px;
+  font-weight: bold;
+}
+
+.custom-breadcrumb li a {
+  text-decoration: none;
+  color: #0d6efd;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.custom-breadcrumb li a:hover {
+  color: #0a58ca;
+  text-decoration: underline;
+}
+
+.custom-breadcrumb li.active {
+  color: #343a40;
+  font-weight: 600;
+}
+
+.custom-breadcrumb li.active i {
+  color: #343a40;
+}
+
+/* Botão dentro do breadcrumb */
+.btn-breadcrumb {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-breadcrumb:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.35);
+}

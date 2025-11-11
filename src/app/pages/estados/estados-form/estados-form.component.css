@@ -1,0 +1,55 @@
+.container {
+  min-height: 85vh;
+}
+
+.card {
+  background: #fff;
+  border: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #dcdfe3;
+  padding: 10px 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+  outline: none;
+}
+
+.btn-success {
+  background-color: #4caf50;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #43a047;
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #5c636a;
+  box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
+}

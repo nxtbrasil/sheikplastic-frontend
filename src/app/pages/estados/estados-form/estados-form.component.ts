@@ -6,11 +6,12 @@ import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-estados-form',
-  templateUrl: './estados-form.component.html'
+  templateUrl: './estados-form.component.html',
+    styleUrls: ['./estados-form.component.css']
 })
 export class EstadosFormComponent implements OnInit {
 
-  estado: Estado = { siglaEstado: '', nomeEstado: '' };
+  estado: Estado = { idEstado: 0, siglaEstado: '', nomeEstado: '' };
   id?: number;
 
   constructor(
@@ -30,17 +31,17 @@ export class EstadosFormComponent implements OnInit {
     if (this.id) {
       this.estadoService.atualizar(this.id, this.estado).subscribe(() => {
         Swal.fire('Sucesso', 'Estado atualizado com sucesso!', 'success');
-        this.router.navigate(['/estados']);
+        this.router.navigate(['/home/_cad/estadosListar']);
       });
     } else {
       this.estadoService.salvar(this.estado).subscribe(() => {
         Swal.fire('Sucesso', 'Estado cadastrado com sucesso!', 'success');
-        this.router.navigate(['/estados']);
+        this.router.navigate(['/home/_cad/estadosListar']);
       });
     }
   }
 
   cancelar(): void {
-    this.router.navigate(['/estados']);
+    this.router.navigate(['/home/_cad/estadosListar']);
   }
 }

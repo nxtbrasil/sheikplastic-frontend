@@ -1,5 +1,5 @@
 export interface Estado {
-  idEstado?: number;
+  idEstado: number;
   siglaEstado: string;
   nomeEstado: string;
 }
