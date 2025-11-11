@@ -58,7 +58,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
                   (m) => m.FuncionariosRoutingModule
                 )
             },
-             // ✅ Módulo lazy de Grupos de Usuários
+            // ✅ Módulo lazy de Grupos de Usuários
             {
               path: '_adm',
               loadChildren: () =>
@@ -66,7 +66,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
                   (m) => m.GruposUsuariosRoutingModule
                 )
             },
-             // ✅ Módulo lazy de Grupos de Usuários
+            // ✅ Módulo lazy de Grupos de Usuários
             {
               path: '_cad',
               loadChildren: () =>
@@ -74,18 +74,25 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
                   (m) => m.CidadesRoutingModule
                 )
             },
-             {
+            {
               path: '_cad',
               loadChildren: () =>
                 import('./pages/condicao-pagamento/condicoes-pagamento-routing.module').then(
                   (m) => m.CondicoesPagamentoRoutingModule
                 )
             },
-                         {
+            {
               path: '_cad',
               loadChildren: () =>
                 import('./pages/estados/estados-routing.module').then(
                   (m) => m.EstadosRoutingModule
+                )
+            },
+             {
+              path: '_cad',
+              loadChildren: () =>
+                import('./pages/funcoes/funcoes-routing.module').then(
+                  (m) => m.FuncoesRoutingModule
                 )
             }
           ]
@@ -104,4 +111,4 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
