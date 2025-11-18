@@ -19,6 +19,10 @@ import { NovoUsuarioComponent } from './auth/novo-usuario/novo-usuario.component
 import { TrocaSenhaComponent } from './auth/troca-senha/troca-senha.component';
 import { MeuPerfilComponent } from './auth/meu-perfil/meu-perfil.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { NgxCurrencyDirective } from 'ngx-currency';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { ProdutosFormComponent } from './pages/produtos/produtos-form/produtos-form.component';
+
 
 @NgModule({
   declarations: [
@@ -32,11 +36,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     TrocaSenhaComponent
   ],
   imports: [
+    NgxCurrencyDirective,
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+        NgxMaskDirective,
     HttpClientModule,
-
     RouterModule.forRoot(
       [
         { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -94,6 +99,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
                 import('./pages/funcoes/funcoes-routing.module').then(
                   (m) => m.FuncoesRoutingModule
                 )
+            },
+             {
+              path: '_cad',
+              loadChildren: () =>
+                import('./pages/produtos/produtos-routing.module').then(
+                  (m) => m.ProdutosRoutingModule
+                )
             }
           ]
         },
@@ -107,7 +119,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
     MenuService,
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+            provideNgxMask() // Provide the mask service
   ],
   bootstrap: [AppComponent]
 })

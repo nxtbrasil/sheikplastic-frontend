@@ -1,0 +1,56 @@
+<div class="card-form shadow p-4 rounded mx-auto mt-5" style="max-width: 720px;">
+  <h4 class="text-center mb-4 fw-semibold">
+    💲 {{ id ? 'Editar Produto' : 'Novo Produto' }}
+  </h4>
+
+  <form (ngSubmit)="salvar()" #form="ngForm">
+    <div class="mb-3">
+      <label for="nomeProduto" class="form-label">Nome do Produto</label>
+      <input
+        id="nomeProduto"
+        name="nomeProduto"
+        class="form-control"
+        [(ngModel)]="produto.nomeProduto"
+        required
+      />
+    </div>
+<div class="mb-3">
+  <label for="valorCompra" class="form-label">Valor de Compra</label>
+<input
+  id="valorCompra"
+  name="valorCompra"
+  type="text"
+  class="form-control text-end"
+  [(ngModel)]="produto.valorCompra"
+  moneyMask
+/>
+</div>
+
+<div class="mb-3">
+  <label for="valorVenda" class="form-label">Valor de Venda</label>
+<input
+  id="valorVenda"
+  name="valorVenda"
+  type="text"
+  class="form-control text-end"
+  [(ngModel)]="produto.valorVenda"
+  moneyMask
+/>
+</div>
+
+    <div class="mb-3">
+      <label for="unidadeProduto" class="form-label">Unidade do Produto</label>
+      <input
+        id="unidadeProduto"
+        name="unidadeProduto"
+        class="form-control"
+        [(ngModel)]="produto.unidadeProduto"
+        maxlength="5"
+        required
+      />
+    </div>
+
+    <button class="btn btn-success" type="submit">Salvar</button>
+    <button class="btn btn-secondary ms-2" routerLink="/home/_cad/produtosListar">Cancelar</button>
+  </form>
+</div>
