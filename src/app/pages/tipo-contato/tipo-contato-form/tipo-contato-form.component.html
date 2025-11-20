@@ -1,0 +1,22 @@
+<div class="card-form shadow p-4 rounded mx-auto mt-5" style="max-width: 720px;">
+  <h4 class="text-center mb-4 fw-semibold">
+    📞 {{ id ? 'Editar Tipo de Contato' : 'Novo Tipo de Contato' }}
+  </h4>
+
+  <form (ngSubmit)="salvar()" #form="ngForm">
+
+    <div class="mb-3">
+      <label for="descricao" class="form-label">Descrição</label>
+      <input
+        id="descricao"
+        name="descricaoTipoContato"
+        class="form-control"
+        [(ngModel)]="tipo.descricaoTipoContato"
+        required
+      />
+    </div>
+
+    <button class="btn btn-success" type="submit">Salvar</button>
+    <button class="btn btn-secondary ms-2" routerLink="/tipo-contato">Cancelar</button>
+  </form>
+</div>

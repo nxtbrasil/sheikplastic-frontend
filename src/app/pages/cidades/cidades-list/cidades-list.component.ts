@@ -48,7 +48,6 @@ constructor(
 
 
   excluirCidade(cidade: Cidade): void {
-    console.log('Excluir cidade chamada para ID:', cidade);
   Swal.fire({
     title: 'Excluir cidade?',
     html: `Tem certeza que deseja excluir <strong>${cidade.nomeCidade}</strong>?`,
