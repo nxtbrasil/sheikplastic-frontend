@@ -1,0 +1,139 @@
+<div class="card-form shadow p-4 rounded mx-auto mt-5" style="max-width: 820px;">
+  <h4 class="text-center mb-4 fw-semibold">
+    👤 {{ isEdit ? 'Editar Pessoa' : 'Nova Pessoa' }}
+  </h4>
+
+  <form [formGroup]="form" (ngSubmit)="salvar()">
+
+    <!-- Tipo de Pessoa + CPF/CNPJ + RG/IE -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <label class="form-label">Tipo de Pessoa</label>
+        <select class="form-control" formControlName="tipoPessoa">
+          <option value="F">Pessoa Física</option>
+          <option value="J">Pessoa Jurídica</option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">{{ form.get('tipoPessoa')?.value === 'F' ? 'CPF' : 'CNPJ' }}</label>
+        <input class="form-control" formControlName="documentoPessoa">
+                <small class="text-danger" *ngIf="form.get('documentoPessoa')?.touched && form.get('documentoPessoa')?.invalid">
+          CNPJ/CPF é obrigatório.
+        </small>
+      </div>
+
+      <div class="col-md-5">
+        <label class="form-label">{{ form.get('tipoPessoa')?.value === 'F' ? 'RG' : 'Inscrição Estadual' }}</label>
+        <input class="form-control" formControlName="identidadePessoa">
+      </div>
+    </div>
+
+    <!-- Nome + Apelido -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Nome</label>
+        <input class="form-control" formControlName="nomePessoa">
+        <small class="text-danger" *ngIf="form.get('nomePessoa')?.touched && form.get('nomePessoa')?.invalid">
+          Nome é obrigatório.
+        </small>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Apelido</label>
+        <input class="form-control" formControlName="apelidoPessoa">
+      </div>
+    </div>
+
+    <!-- CEP + Logradouro + Número -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <label class="form-label">CEP</label>
+        <input class="form-control" formControlName="cepPessoaString" blueprintMask="00000-000" (blur)="buscarCep()">
+        <small class="text-danger" *ngIf="form.get('cepPessoaString')?.touched && form.get('cepPessoaString')?.invalid">
+          CEP é obrigatório.
+        </small>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Logradouro</label>
+        <input class="form-control" formControlName="logradouroPessoa">
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Número</label>
+        <input class="form-control" formControlName="numeroPessoa">
+      </div>
+    </div>
+
+    <!-- Complemento + Bairro + Estado + Cidade -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-3">
+        <label class="form-label">Complemento</label>
+        <input class="form-control" formControlName="complementoPessoa">
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Bairro</label>
+        <input class="form-control" formControlName="bairroPessoa">
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Estado</label>
+        <select class="form-control" formControlName="estado">
+          <option value="">Selecione</option>
+          <option *ngFor="let uf of estados" [value]="uf.idEstado">{{ uf.nomeEstado }}</option>
+        </select>
+        <small class="text-danger" *ngIf="form.get('estado')?.touched && form.get('estado')?.invalid">
+          Estado é obrigatório.
+        </small>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Cidade</label>
+        <select class="form-control" formControlName="cidade">
+          <option value="">Selecione</option>
+          <option *ngFor="let c of cidades" [value]="c.idCidade">{{ c.nomeCidade }}</option>
+        </select>
+        <small class="text-danger" *ngIf="form.get('cidade')?.touched && form.get('cidade')?.invalid">
+          Cidade é obrigatória.
+        </small>
+      </div>
+    </div>
+
+    <!-- Condição de Pagamento + Status -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <label class="form-label">Condição de Pagamento</label>
+        <select class="form-control" formControlName="idCondicaoPagamento">
+          <option value="">Selecione</option>
+          <option *ngFor="let cond of condicoesPagamento" [value]="cond.idCondicaoPagamento">
+            {{ cond.descricaoCondicaoPagamento }}
+          </option>
+        </select>
+        <small class="text-danger" *ngIf="form.get('idCondicaoPagamento')?.touched && form.get('idCondicaoPagamento')?.invalid">
+          Condição de pagamento é obrigatória.
+        </small>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Status</label>
+        <select class="form-control" formControlName="status">
+          <option [value]="true">Ativa</option>
+          <option [value]="false">Inativa</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Observação -->
+    <div class="row mb-3">
+      <div class="col-12">
+        <label class="form-label">Observação</label>
+        <textarea rows="3" class="form-control" formControlName="observacao"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3 px-4">Salvar</button>
+
+  </form>
+</div>

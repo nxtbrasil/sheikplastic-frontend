@@ -1,4 +1,4 @@
 export interface TipoContato {
-  idTipoContato?: number;
-  descricaoTipoContato: string;
+  id?: number;
+  descricao: string;
 }

@@ -41,10 +41,10 @@
 
     <tbody>
       <tr *ngFor="let t of tipos">
-        <td>{{ t.idTipoContato }}</td>
-        <td>{{ t.descricaoTipoContato }}</td>
+        <td>{{ t.id }}</td>
+        <td>{{ t.descricao }}</td>
         <td>
-          <button class="btn btn-sm btn-warning me-2" (click)="editar(t.idTipoContato!)"> <i
+          <button class="btn btn-sm btn-warning me-2" (click)="editar(t.id!)"> <i
               class="fa fa-pen"></i></button>
           <button class="btn btn-sm btn-danger" (click)="excluir(t!)"> <i class="fa fa-trash"></i></button>
 

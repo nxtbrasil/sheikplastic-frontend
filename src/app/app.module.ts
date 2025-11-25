@@ -113,6 +113,13 @@ import { ProdutosFormComponent } from './pages/produtos/produtos-form/produtos-f
                 import('./pages/tipo-contato/tipo-contato.module').then(
                   (m) => m.TipoContatoModule
                 )
+            },
+            {
+              path: '_cad',
+              loadChildren: () =>
+                import('./pages/pessoa/pessoa.module').then(
+                  (m) => m.PessoaModule
+                )
             }
           ]
         },

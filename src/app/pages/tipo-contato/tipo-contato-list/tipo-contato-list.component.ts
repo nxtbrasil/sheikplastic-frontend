@@ -47,7 +47,7 @@ export class TipoContatoListComponent implements OnInit {
     excluir(tipo: TipoContato): void {
     Swal.fire({
       title: 'Excluir cidade?',
-      html: `Tem certeza que deseja excluir <strong>${tipo.descricaoTipoContato}</strong>?`,
+      html: `Tem certeza que deseja excluir <strong>${tipo.descricao}</strong>?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: '<i class="fa-solid fa-trash"></i> Sim, excluir',
@@ -67,12 +67,12 @@ export class TipoContatoListComponent implements OnInit {
           }
         });
   
-        this.http.delete(`${environment.apiBaseUrl}/tipos-contato/${tipo.idTipoContato}`).subscribe({
+        this.http.delete(`${environment.apiBaseUrl}/tipos-contato/${tipo.id}`).subscribe({
           next: () => {
             this.listar();
             Swal.fire({
               title: 'Excluída!',
-              text: `A cidade ${tipo.descricaoTipoContato} foi removida com sucesso.`,
+              text: `A cidade ${tipo.descricao} foi removida com sucesso.`,
               icon: 'success',
               confirmButtonColor: '#198754',
               timer: 1800,

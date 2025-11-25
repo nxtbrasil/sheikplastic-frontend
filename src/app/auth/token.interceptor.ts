@@ -5,16 +5,38 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
+
   constructor(private auth: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    
     const token = this.auth.getToken();
+
+    // URLs que não devem receber Authorization
+    const noAuthUrls = [
+      'viacep.com.br',
+      'brasilapi.com.br',
+      'mercadolibre.com'
+    ];
+
+    const skipAuth = noAuthUrls.some(url => req.url.includes(url));
+
+    // ✔ Se for uma URL ignorada → NÃO adiciona Authorization
+    if (skipAuth) {
+      return next.handle(req);
+    }
+
+    // ✔ Se tiver token → adiciona Authorization
     if (token) {
       const cloned = req.clone({
-        headers: req.headers.set('Authorization', 'Bearer ' + token)
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
       });
       return next.handle(cloned);
     }
+
+    // ✔ Se não tiver token → segue normal
     return next.handle(req);
   }
 }

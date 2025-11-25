@@ -9,14 +9,14 @@
       <label for="descricao" class="form-label">Descrição</label>
       <input
         id="descricao"
-        name="descricaoTipoContato"
+        name="descricao"
         class="form-control"
-        [(ngModel)]="tipo.descricaoTipoContato"
+        [(ngModel)]="tipo.descricao"
         required
       />
     </div>
 
     <button class="btn btn-success" type="submit">Salvar</button>
-    <button class="btn btn-secondary ms-2" routerLink="/tipo-contato">Cancelar</button>
+    <button class="btn btn-secondary ms-2" (click)="cancelar()">Cancelar</button>
   </form>
 </div>

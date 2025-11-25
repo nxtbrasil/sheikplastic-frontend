@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 })
 export class TipoContatoFormComponent implements OnInit {
 
-  tipo: TipoContato = { descricaoTipoContato: '' };
+  tipo: TipoContato = { descricao: '' };
   id!: number | null;
 
   constructor(
@@ -45,4 +45,7 @@ export class TipoContatoFormComponent implements OnInit {
       }
     }
 
+  cancelar(): void {
+    this.router.navigate(['/home/_cad/tiposContatoListar']);
+  }
 }

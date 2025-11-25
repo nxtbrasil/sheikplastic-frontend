@@ -30,7 +30,7 @@ export class TipoContatoService {
   }
 
   atualizar(tipo: TipoContato): Observable<TipoContato> {
-    return this.http.put<TipoContato>(`${this.apiUrl}/${tipo.idTipoContato}`, tipo);
+    return this.http.put<TipoContato>(`${this.apiUrl}/${tipo.id}`, tipo);
   }
 
   excluir(id: number): Observable<void> {
