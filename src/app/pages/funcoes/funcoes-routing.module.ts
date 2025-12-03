@@ -4,9 +4,9 @@ import { FuncoesListComponent } from './funcoes-list/funcoes-list.component';
 import { FuncoesFormComponent } from './funcoes-form/funcoes-form.component';
 
 const routes: Routes = [
-  { path: 'funcoesListar', component: FuncoesListComponent },
-  { path: 'funcoesForm', component: FuncoesFormComponent },
-  { path: 'funcoesForm/:id', component: FuncoesFormComponent }
+  { path: '', component: FuncoesListComponent },
+  { path: 'form', component: FuncoesFormComponent },
+  { path: 'form/:id', component: FuncoesFormComponent }
 ];
 
 @NgModule({

@@ -52,11 +52,11 @@ export class ProdutosListComponent implements OnInit {
   }
 
   novoProduto(): void {
-    this.router.navigate(['/home/_cad/produtosForm']);
+    this.router.navigate(['/home/produtosForm']);
   }
 
   editarProduto(id: number): void {
-    this.router.navigate(['/home/_cad/produtosForm', id]);
+    this.router.navigate(['/home/produtosForm', id]);
   }
 
   excluirProduto(produto: Produto): void {

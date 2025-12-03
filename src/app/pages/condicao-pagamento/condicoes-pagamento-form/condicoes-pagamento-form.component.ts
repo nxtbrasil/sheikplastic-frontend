@@ -36,13 +36,13 @@ export class CondicoesPagamentoFormComponent implements OnInit {
     operacao.subscribe({
       next: () => {
         Swal.fire('Sucesso', 'Registro salvo com sucesso!', 'success');
-        this.router.navigate(['home/_cad/condicoesPagamentoListar']);
+        this.router.navigate(['home/condicoespagamento']);
       },
       error: () => Swal.fire('Erro', 'Falha ao salvar', 'error')
     });
   }
 
   cancelar(): void {
-    this.router.navigate(['home/_cad/condicoesPagamentoListar']);
+    this.router.navigate(['home/condicoespagamento']);
   }
 }

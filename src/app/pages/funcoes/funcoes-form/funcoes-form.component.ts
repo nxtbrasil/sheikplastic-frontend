@@ -29,14 +29,14 @@ export class FuncoesFormComponent implements OnInit {
   salvar(): void {
     if (this.editando && this.funcao.idFuncao) {
       this.funcoesService.atualizar(this.funcao.idFuncao, this.funcao)
-        .subscribe(() => this.router.navigate(['home/_cad/funcoesListar']));
+        .subscribe(() => this.router.navigate(['/home/funcoes']));
     } else {
       this.funcoesService.criar(this.funcao)
-        .subscribe(() => this.router.navigate(['home/_cad/funcoesListar']));
+        .subscribe(() => this.router.navigate(['/home/funcoes']));
     }
   }
 
   cancelar(): void {
-    this.router.navigate(['home/_cad/funcoesListar']);
+    this.router.navigate(['/home/funcoes']);
   }
 }

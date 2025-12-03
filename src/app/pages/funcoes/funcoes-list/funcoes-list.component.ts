@@ -25,11 +25,11 @@ export class FuncoesListComponent implements OnInit {
   }
 
   novaFuncao(): void {
-    this.router.navigate(['/home/_cad/funcoesForm']);
+    this.router.navigate(['/home/funcoesForm']);
   }
 
   editarFuncao(id: number): void {
-    this.router.navigate(['/home/_cad/funcoesForm', id]);
+    this.router.navigate(['/home/funcoesForm', id]);
   }
 
   excluirFuncao(funcao: Funcao): void {

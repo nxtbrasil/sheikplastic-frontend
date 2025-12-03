@@ -4,13 +4,13 @@ import { CondicoesPagamentoListComponent } from './condicoes-pagamento-list/cond
 import { CondicoesPagamentoFormComponent } from './condicoes-pagamento-form/condicoes-pagamento-form.component';
 
 const routes: Routes = [
-  { path: 'condicoesPagamentoListar', component: CondicoesPagamentoListComponent },
-  { path: 'condicoesPagamentoForm', component: CondicoesPagamentoFormComponent },
-  { path: 'condicoesPagamentoForm/:id', component: CondicoesPagamentoFormComponent }
+  { path: '', component: CondicoesPagamentoListComponent },
+  { path: 'form', component: CondicoesPagamentoFormComponent },
+  { path: 'form/:id', component: CondicoesPagamentoFormComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CondicoesPagamentoRoutingModule {}
+export class CondicaoPagamentoRoutingModule {}

@@ -4,9 +4,9 @@ import { TipoContatoListComponent } from './tipo-contato-list/tipo-contato-list.
 import { TipoContatoFormComponent } from './tipo-contato-form/tipo-contato-form.component';
 
 const routes: Routes = [
-  { path: 'tiposContatoListar', component: TipoContatoListComponent },
-  { path: 'tiposContatoForm', component: TipoContatoFormComponent },
-  { path: 'tiposContatoForm/:id', component: TipoContatoFormComponent }
+  { path: '', component: TipoContatoListComponent },
+  { path: 'form', component: TipoContatoFormComponent },
+  { path: 'form/:id', component: TipoContatoFormComponent }
 ];
 
 @NgModule({

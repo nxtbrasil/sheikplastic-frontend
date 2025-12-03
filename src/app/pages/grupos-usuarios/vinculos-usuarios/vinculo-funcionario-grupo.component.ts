@@ -38,7 +38,7 @@ export class VinculoFuncionarioGrupoComponent implements OnInit {
   }
 
   voltar() {
-    this.router.navigate(['/home/_adm/gruposUsuarioListar']);
+    this.router.navigate(['/home/gruposusuario']);
   }
 
   /** 🔹 Busca o grupo específico e carrega funcionários via /api/grupos-usuario/{id}/funcionarios */

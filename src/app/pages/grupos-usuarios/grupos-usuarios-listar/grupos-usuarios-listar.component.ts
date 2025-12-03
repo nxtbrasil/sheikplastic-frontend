@@ -64,16 +64,16 @@ export class ListaGrupoUsuarioComponent implements OnInit {
 
  // ✅ Corrigido: redireciona corretamente
   novoGrupoUsuario(): void {
-    this.router.navigate(['/home/_adm/gruposUsuarioForm']);
+    this.router.navigate(['/home/gruposusuarioForm']);
   } 
 
   // ✅ Corrigido: rota para edição com ID
   editar(g: GrupoUsuario): void {
-    this.router.navigate([`/home/_adm/gruposUsuarioForm/`, g.idGrupoUsuario]);
+    this.router.navigate([`/home/vinculosusuario/`, g.idGrupoUsuario]);
   }
 
 vinculo(g: GrupoUsuario): void {
-  this.router.navigate([`/home/_adm/vinculoFuncionario`, g.idGrupoUsuario]);
+  this.router.navigate([`/home/vinculousuariogrupo`, g.idGrupoUsuario]);
 }
   excluir(g: GrupoUsuario): void {
     Swal.fire({
@@ -100,10 +100,10 @@ vinculo(g: GrupoUsuario): void {
   }
 // 🔒 Ações extras (placeholders)
 configurarPermissoes(g: GrupoUsuario): void {
-  this.router.navigate([`/home/_adm/vinculoRegras/${g.idGrupoUsuario}`]);
+  this.router.navigate([`/home/vinculoregra/${g.idGrupoUsuario}`]);
 }
 
   gerenciarUsuarios(g: GrupoUsuario): void {
-    this.router.navigate([`/home/_adm/vinculoHeranca/${g.idGrupoUsuario}`]);
+    this.router.navigate([`/home/herancausuario/${g.idGrupoUsuario}`]);
   }
 }

@@ -84,7 +84,7 @@ export class VinculoRegraGrupoComponent implements OnInit {
       .filter((m) => m.regras.length > 0);
   }
     voltar() {
-    this.router.navigate(['/home/_adm/gruposUsuarioListar']);
+    this.router.navigate(['/home/gruposusuario']);
   }
 
 

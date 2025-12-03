@@ -43,14 +43,14 @@ export class CidadesFormComponent implements OnInit {
   salvar(): void {
     if (this.editando && this.cidade.idCidade) {
       this.cidadeService.atualizar(this.cidade.idCidade, this.cidade)
-        .subscribe(() => this.router.navigate(['/home/_cad/cidadesListar']));
+        .subscribe(() => this.router.navigate(['/home/cidades']));
     } else {
       this.cidadeService.criar(this.cidade)
-        .subscribe(() => this.router.navigate(['/home/_cad/cidadesListar']));
+        .subscribe(() => this.router.navigate(['/home/cidades']));
     }
   }
 
   cancelar(): void {
-    this.router.navigate(['/home/_cad/cidadesListar']);
+    this.router.navigate(['/home/cidades']);
   }
 }

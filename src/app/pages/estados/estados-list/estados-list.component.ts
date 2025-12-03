@@ -63,11 +63,11 @@ export class EstadosListComponent implements OnInit {
   }
 
   novoEstado(): void {
-    this.router.navigate(['/home/_cad/estadosForm']);
+    this.router.navigate(['/home/estadosForm']);
   }
 
   editarEstado(id: number): void {
-    this.router.navigate(['home/_cad/estadosForm', id]);
+    this.router.navigate(['home/estadosForm', id]);
   }
 
   excluirEstado(id: number, nome: string): void {

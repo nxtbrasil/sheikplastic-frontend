@@ -1,58 +1,55 @@
-<nav class="navbar navbar-light bg-white border-bottom fixed-top">
-  <div class="container-fluid d-flex align-items-center justify-content-between px-3">
+<nav class="topbar">
+  <div class="left-section">
+    <img src="assets/img/cabecalho.png" class="logo" alt="SheikPlastic" />
 
-    <!-- Logo à esquerda -->
-    <div class="d-flex align-items-center">
-      <img src="assets/img/cabecalho.png" alt="SheikPlastic" class="navbar-logo me-2" />
-    </div>
+    <ul class="menu">
+      <ng-container *ngFor="let m of menu">
 
-    <!-- Ícones à direita -->
-    <div class="d-flex align-items-center gap-3">
+        <!-- MENU COM SUBMENU -->
+        <li class="top-menu-item" *ngIf="m.subMenus?.length; else simpleMenu">
+          <button class="menu-btn"
+                  (click)="toggleTopMenu(m.id, $event)"
+                  [class.active]="openedMenu === m.id">
+            {{ m.descricao }}
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
 
-      <!-- Notificações -->
-      <button class="btn-icon" title="Notificações">
-        <i class="fa-regular fa-bell"></i>
-      </button>
+          <ul class="submenu" *ngIf="openedMenu === m.id">
+            <li *ngFor="let s of m.subMenus">
+              <a [routerLink]="s.endereco" routerLinkActive="active">
+                {{ s.descricao }}
+              </a>
+            </li>
+          </ul>
+        </li>
 
-      <!-- Ajuda -->
-      <button class="btn-icon" title="Ajuda">
-        <i class="fa-regular fa-circle-question"></i>
-      </button>
-
-      <!-- Perfil -->
-      <div class="dropdown" [class.show]="dropdownOpen">
-        <button class="btn-profile d-flex align-items-center" (click)="toggleDropdown()">
-          <img src="assets/img/persona.png" alt="Usuário" class="profile-pic me-2" />
-          <span class="text-dark small fw-semibold">{{ userName || 'Usuário' }}</span>
-          <i class="fa-solid fa-chevron-down ms-1"></i>
-        </button>
-
-        <ul class="dropdown-menu dropdown-menu-end shadow-sm" [class.show]="dropdownOpen">
+        <!-- MENU SEM SUBMENU -->
+        <ng-template #simpleMenu>
           <li>
-            <a class="dropdown-item" routerLink="/home/meu-perfil">
-              <i class="fa-solid fa-user me-2 text-secondary"></i> Meu perfil
+            <a [routerLink]="m.endereco" routerLinkActive="active">
+              {{ m.descricao }}
             </a>
           </li>
+        </ng-template>
 
-          <li>
-            <a class="dropdown-item" routerLink="/home/troca-senha">
-              <i class="fa-solid fa-key me-2 text-warning icon"></i> Trocar de senha
-            </a>
-          </li>
+      </ng-container>
+    </ul>
+  </div>
 
-          <li>
-            <hr class="dropdown-divider" />
-          </li>
+  <div class="right-section">
+    <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+    <button class="icon-btn"><i class="fa-regular fa-circle-question"></i></button>
 
-          <li>
-            <button class="dropdown-item text-danger" (click)="logout()">
-              <i class="fa-solid fa-right-from-bracket me-2"></i> Sair
-            </button>
-          </li>
-        </ul>
-      </div>
+    <div class="user-box" (click)="toggleDropdown()">
+      <img src="assets/img/persona.png" class="avatar"/>
+      <span class="name">{{ userName }}</span>
+      <i class="fa-solid fa-chevron-down arrow"></i>
 
-
+      <ul class="dropdown" [class.show]="dropdownOpen">
+        <li><a routerLink="/home/meu-perfil">Meu Perfil</a></li>
+        <li><a routerLink="/home/troca-senha">Trocar Senha</a></li>
+        <li><button (click)="logout()">Sair</button></li>
+      </ul>
     </div>
   </div>
 </nav>

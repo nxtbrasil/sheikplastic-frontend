@@ -117,11 +117,11 @@ export class FuncionariosListComponent implements OnInit {
   }
 
   novoFuncionario() {
-    this.router.navigate(['/home/_adm/funcionariosForm']);
+    this.router.navigate(['/home/funcionariosForm']);
   }
 
 editar(func: Funcionario) {
-  this.router.navigate([`/home/_adm/funcionariosForm/${func.idFuncionario}`]);
+  this.router.navigate([`/home/funcionariosForm/${func.idFuncionario}`]);
 
 }
   

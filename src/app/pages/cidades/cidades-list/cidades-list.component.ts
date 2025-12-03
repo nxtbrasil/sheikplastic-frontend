@@ -39,11 +39,11 @@ constructor(
   }
 
   novaCidade(): void {
-    this.router.navigate(['/home/_cad/cidadesForm']);
+    this.router.navigate(['/home/cidadesForm']);
   }
 
   editarCidade(id: number): void {
-    this.router.navigate(['/home/_cad/cidadesForm', id]);
+    this.router.navigate(['/home/cidadesForm', id]);
   }
 
 

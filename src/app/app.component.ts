@@ -12,7 +12,9 @@ import { filter } from 'rxjs/operators';
 
     <ng-template #mainLayout>
       <app-navbar></app-navbar>
-      <div class="container-fluid p-0">
+
+      <!-- CONTAINER PRINCIPAL QUE OCUPA A TELA TODA -->
+      <div class="main-wrapper">
         <router-outlet></router-outlet>
       </div>
     </ng-template>
@@ -23,19 +25,29 @@ export class AppComponent implements OnDestroy {
   private routerSub!: Subscription;
 
   constructor(private router: Router) {
-    // Filtra apenas eventos de navegação finalizada
     this.routerSub = this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         const publicRoutes = ['/login', '/recuperar-senha'];
+
         this.isLoginPage = publicRoutes.some(route =>
           event.urlAfterRedirects.startsWith(route)
         );
+
+        this.updateBodyScroll();
       });
   }
 
+  /** Remove o scroll externo quando não estiver no login */
+  updateBodyScroll() {
+    if (this.isLoginPage) {
+      document.body.classList.remove('no-scroll');
+    } else {
+      document.body.classList.add('no-scroll');
+    }
+  }
+
   ngOnDestroy(): void {
-    // Evita memory leaks
     if (this.routerSub) {
       this.routerSub.unsubscribe();
     }

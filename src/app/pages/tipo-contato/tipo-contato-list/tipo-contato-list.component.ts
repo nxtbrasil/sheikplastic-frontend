@@ -36,11 +36,11 @@ export class TipoContatoListComponent implements OnInit {
   }
 
   novo() {
-    this.router.navigate(['/home/_cad/tiposContatoForm']);
+    this.router.navigate(['/home/tiposcontatoForm']);
   }
 
   editar(id: number) {
-    this.router.navigate(['/home/_cad/tiposContatoForm', id]);
+    this.router.navigate(['/home/tiposcontatoForm', id]);
   }
 
 

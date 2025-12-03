@@ -75,5 +75,14 @@ export class PessoaService {
     const cleanCep = cep.replace(/\D/g, '');
     return this.http.get(`https://viacep.com.br/ws/${cleanCep}/json/`);
   }
+  gerarBackupExcel() {
+  return this.http.get(`${environment.apiBaseUrl}/pessoa/backup/csv`, {
+    responseType: 'blob'
+  });
+}
+
+listarContatosPorPessoa(idPessoa: number) {
+  return this.http.get<any[]>(`${environment.apiBaseUrl}/pessoa-contato/${idPessoa}`);
+}
 
 }

@@ -1,3 +1,5 @@
+<div class="page-wrapper">
+  <div class="scroll-area">
 <div class="container-funcionarios mt-4">
 
     <!-- ===== CABEÇALHO ===== -->
@@ -45,8 +47,8 @@
                                 class="fa-solid fa-eye"></i></button>
                         <button class="btn-acao permissoes" title="Permissões" (click)="configurarPermissoes(g)"><i
                                 class="fa-solid fa-lock"></i></button>
-                        <button class="btn-acao usuarios" title="Usuários" (click)="gerenciarUsuarios(g)"><i
-                                class="fa-solid fa-users"></i></button>
+                        <!-- <button class="btn-acao usuarios" title="Usuários" (click)="gerenciarUsuarios(g)"><i
+                                class="fa-solid fa-users"></i></button> -->
                     </td>
                 </tr>
                 <tr *ngIf="grupos.length === 0">
@@ -79,4 +81,6 @@
         </nav>
     </div>
 
+</div>
+  </div>
 </div>

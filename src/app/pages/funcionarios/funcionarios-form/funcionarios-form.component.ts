@@ -82,7 +82,7 @@ export class FuncionarioFormComponent implements OnInit {
           timer: 2000,
           showConfirmButton: false,
         });
-        this.router.navigate(['home/_adm/funcionariosListar']);
+        this.router.navigate(['home/funcionarios']);
       },
       error: (err) => {
         console.error('Erro ao salvar', err);
@@ -92,6 +92,6 @@ export class FuncionarioFormComponent implements OnInit {
   }
 
   cancelar() {
-    this.router.navigate(['home/_adm/funcionariosListar']);
+    this.router.navigate(['home/funcionarios']);
   }
 }

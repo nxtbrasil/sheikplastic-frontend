@@ -31,17 +31,17 @@ export class EstadosFormComponent implements OnInit {
     if (this.id) {
       this.estadoService.atualizar(this.id, this.estado).subscribe(() => {
         Swal.fire('Sucesso', 'Estado atualizado com sucesso!', 'success');
-        this.router.navigate(['/home/_cad/estadosListar']);
+        this.router.navigate(['/home/estados']);
       });
     } else {
       this.estadoService.salvar(this.estado).subscribe(() => {
         Swal.fire('Sucesso', 'Estado cadastrado com sucesso!', 'success');
-        this.router.navigate(['/home/_cad/estadosListar']);
+        this.router.navigate(['/home/estados']);
       });
     }
   }
 
   cancelar(): void {
-    this.router.navigate(['/home/_cad/estadosListar']);
+    this.router.navigate(['/home/estados']);
   }
 }

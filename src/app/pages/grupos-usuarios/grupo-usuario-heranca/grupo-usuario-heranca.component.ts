@@ -89,6 +89,6 @@ export class GrupoUsuarioHerancaComponent implements OnInit {
   }
 
       voltar() {
-    this.router.navigate(['/home/_adm/gruposUsuarioListar']);
+    this.router.navigate(['home/gruposusuario']);
   }
 }

@@ -1,6 +1,5 @@
 /* === Ajuste para o menu lateral fixo === */
 .container-funcionarios {
-  margin-left: 250px; /* mesma largura do menu lateral */
   padding: 20px;
   transition: margin-left 0.3s ease;
   min-height: calc(100vh - 70px); /* evita que o conteúdo "grude" no topo */

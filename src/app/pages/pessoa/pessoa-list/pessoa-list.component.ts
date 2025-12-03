@@ -67,11 +67,11 @@ limparFiltro() {
 }
 
   novo() {
-    this.router.navigate(['/home/_cad/pessoasForm']);
+    this.router.navigate(['/home/pessoasForm']);
   }
 
   editar(id: number) {
-    this.router.navigate(['/home/_cad/pessoasForm', id]);
+    this.router.navigate(['/home/pessoasForm', id]);
   }
 
   // excluir(id: number) {

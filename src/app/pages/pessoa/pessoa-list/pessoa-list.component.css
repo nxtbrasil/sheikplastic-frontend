@@ -1,6 +1,32 @@
 /* === Ajuste para o menu lateral fixo === */
+/* === Ajuste para o menu lateral fixo === */
+/* ===== Wrapper principal que ocupa toda a área disponível ===== */
+.page-wrapper {
+  height: calc(100vh - 56px); /* altura total menos a navbar */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* impede scroll externo */
+}
+
+/* ===== Área rolável apenas dentro da página ===== */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Mantém seu layout atual */
 .container-funcionarios {
-  margin-left: 250px; /* mesma largura do menu lateral */
+  padding: 20px;
+}
+
+/* Permite que a tabela se ajuste */
+.table-responsive,
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+.container-funcionarios {
   padding: 20px;
   transition: margin-left 0.3s ease;
   min-height: calc(100vh - 70px); /* evita que o conteúdo "grude" no topo */

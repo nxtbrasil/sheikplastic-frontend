@@ -1,9 +1,24 @@
-/* Global styles */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100%;
-  background-color: #f2f2f2;
+   font-family: 'Inter', sans-serif;
+}
+
+/* Remove scroll externo em todas páginas do sistema */
+body.no-scroll {
+  overflow: hidden !important;
+}
+
+/* Wrapper que ocupa a tela toda exceto a navbar */
+.main-wrapper {
+  height: calc(100vh - 56px); /* Altura da Navbar */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* impede scroll externo */
 }
 
 

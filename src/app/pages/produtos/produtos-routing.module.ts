@@ -4,9 +4,9 @@ import { ProdutosListComponent } from './produtos-list/produtos-list.component';
 import { ProdutosFormComponent } from './produtos-form/produtos-form.component';
 
 const routes: Routes = [
-  { path: 'produtosListar', component: ProdutosListComponent },
-  { path: 'produtosForm', component: ProdutosFormComponent },
-  { path: 'produtosForm/:id', component: ProdutosFormComponent }
+  { path: '', component: ProdutosListComponent },
+  { path: 'form', component: ProdutosFormComponent },
+  { path: 'form/:id', component: ProdutosFormComponent }
 ];
 
 @NgModule({

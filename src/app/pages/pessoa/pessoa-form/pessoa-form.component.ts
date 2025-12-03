@@ -3,6 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PessoaService } from '../pessoa.service';
 import Swal from 'sweetalert2';
+import { TipoContatoService } from '../../tipo-contato/tipo-contato.service';
+import { PessoaContatoService } from '../pessoa-contato.service';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-pessoa-form',
@@ -18,15 +21,25 @@ export class PessoaFormComponent implements OnInit {
   estados: any[] = [];
   cidades: any[] = [];
   condicoesPagamento: any[] = [];
+  idPessoa!: number;
+
+  contatos: any[] = [];
 
   carregandoEdicao = false;
+
+  formContato!: FormGroup;
+  contatoEditando: any = null;
+
+  tiposContato: any[] = []; // Lista dinâmica
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private pessoaService: PessoaService
-  ) {}
+    private pessoaService: PessoaService,
+    private tipoContatoService: TipoContatoService,
+    private pessoaContatoService: PessoaContatoService
+  ) { }
 
   ngOnInit(): void {
 
@@ -37,6 +50,9 @@ export class PessoaFormComponent implements OnInit {
 
     this.carregarCondicoesPagamento();
     this.carregarEstados();
+    this.criarFormContato();
+    this.carregarTiposContato();
+
 
     // Listener de estado
     this.form.get('estado')?.valueChanges.subscribe(idEstado => {
@@ -46,9 +62,51 @@ export class PessoaFormComponent implements OnInit {
 
     if (this.isEdit) {
       this.carregarPessoa();
+      this.carregarContatos();
     }
 
     this.onChangeTipoPessoa();
+  }
+
+  criarFormContato() {
+    this.formContato = this.fb.group({
+      seqContato: [0],
+      idTipoContato: ['', Validators.required],
+      contato: ['', Validators.required],
+      observacao: ['']
+    });
+  }
+
+
+
+  listarContatosPorPessoa(idPessoa: number) {
+    return this.pessoaService.listarContatosPorPessoa(idPessoa);
+  }
+
+  carregarContatos() {
+    if (!this.pessoaId) return;
+
+    this.pessoaService.listarContatosPorPessoa(this.pessoaId).subscribe({
+      next: (res) => {
+        console.log("Contatos carregados:", res);
+        this.contatos = res;
+      },
+      error: () => {
+        console.warn("Nenhum contato encontrado ou erro ao carregar.");
+        this.contatos = [];
+      }
+    });
+  }
+
+  carregarTiposContato() {
+    this.tipoContatoService.listar().subscribe({
+      next: (dados) => {
+        this.tiposContato = dados;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar tipos de contato', err);
+      }
+    });
   }
 
   criarFormulario() {
@@ -209,12 +267,12 @@ export class PessoaFormComponent implements OnInit {
     if (this.isEdit) {
       this.pessoaService.editar(this.pessoaId, payload).subscribe(() => {
         Swal.fire('Sucesso', 'Pessoa atualizada com sucesso!', 'success');
-        this.router.navigate(['/home/_cad/pessoasListar']);
+        this.router.navigate(['/home/pessoas']);
       });
     } else {
       this.pessoaService.criar(payload).subscribe(() => {
         Swal.fire('Sucesso', 'Pessoa criada com sucesso!', 'success');
-        this.router.navigate(['/home/_cad/pessoasListar']);
+        this.router.navigate(['/home/pessoas']);
       });
     }
   }
@@ -238,4 +296,99 @@ export class PessoaFormComponent implements OnInit {
       });
     }
   }
+  cancelar() {
+    this.router.navigate(['/home/pessoas']);
+  }
+
+  editarFuncao() {
+    this.router.navigate([`/home/pessoa/${this.pessoaId}/funcoes`]);
+  }
+
+  editarContato(c: any) {
+    this.contatoEditando = c;
+
+    this.formContato.patchValue({
+      seqContato: c.seqContato,
+      idTipoContato: c.idTipoContato,
+      contato: c.contato,
+      observacao: c.observacao
+    });
+
+    const modal = new bootstrap.Modal(document.getElementById('modalContato')!);
+    modal.show();
+  }
+  novoContato() {
+    const proximoSeq = (this.contatos.length > 0)
+      ? Math.max(...this.contatos.map(c => c.seqContato)) + 1
+      : 1;
+
+    this.contatoEditando = null;
+
+    this.formContato.reset({
+      seqContato: proximoSeq,
+      idTipoContato: '',
+      contato: '',
+      observacao: ''
+    });
+
+    const modal = new bootstrap.Modal(document.getElementById('modalContato')!);
+    modal.show();
+  }
+
+  salvarContato() {
+
+    if (this.formContato.invalid) {
+      this.formContato.markAllAsTouched();
+      return;
+    }
+
+    const dados = this.formContato.value;
+
+    // Monta objeto que a API espera
+    const payload = {
+      idPessoa: this.idPessoa,
+      seqContato: this.contatoEditando?.seqContato ?? 0, // backend ignora no POST
+      tipoContato: {
+        id: dados.idTipoContato
+      },
+      contato: dados.contato,
+      observacao: dados.observacao
+    };
+
+    // Se estiver editando → PUT
+    if (this.contatoEditando) {
+
+      this.pessoaContatoService
+        .atualizar(this.idPessoa, this.contatoEditando.seqContato, payload)
+        .subscribe({
+          next: () => {
+            Swal.fire('Sucesso', 'Contato atualizado!', 'success');
+            this.carregarContatos();
+            this.fecharModal();
+          },
+          error: () => Swal.fire('Erro', 'Falha ao atualizar contato!', 'error')
+        });
+
+    } else {
+      // Novo contato → POST
+
+      this.pessoaContatoService
+        .criar(payload)
+        .subscribe({
+          next: () => {
+            Swal.fire('Sucesso', 'Contato adicionado!', 'success');
+            this.carregarContatos();
+            this.fecharModal();
+          },
+          error: () => Swal.fire('Erro', 'Falha ao adicionar contato!', 'error')
+        });
+    }
+
+  }
+
+  fecharModal() {
+  const modalElement = document.getElementById('modalContato');
+  const modal = bootstrap.Modal.getInstance(modalElement!);
+  modal?.hide();
+}
 }

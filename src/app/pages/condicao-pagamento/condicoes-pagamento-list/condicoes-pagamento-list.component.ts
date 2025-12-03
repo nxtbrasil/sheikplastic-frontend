@@ -59,11 +59,11 @@ export class CondicoesPagamentoListComponent implements OnInit {
   }
 
   novo(): void {
-    this.router.navigate(['home/_cad/condicoesPagamentoForm']);
+    this.router.navigate(['home/condicoespagamentoForm']);
   }
 
   editar(id: number): void {
-    this.router.navigate(['home/_cad/condicoesPagamentoForm', id]);
+    this.router.navigate(['home/condicoespagamentoForm', id]);
   }
 
   excluir(id: number): void {

@@ -35,39 +35,40 @@ export class HomeComponent implements OnInit {
   openedMenu: number | null = null;
   isCollapsed = false;
 
-  constructor(private menuService: MenuService, public auth: AuthService, private router: Router) {}
+  constructor(
+    private menuService: MenuService,
+    public auth: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadMenu();
   }
 
-  /** Carrega menu do serviço */
   private loadMenu(): void {
     this.menuService.getMenu().subscribe({
-    next: (data) => {
-            this.menu = this.removeAspRecursively(data);
-          },
+      next: (data) => {
+        this.menu = this.removeAspRecursively(data);
+      },
       error: (err) => console.error('Erro ao carregar menu:', err),
     });
   }
-    private removeAspRecursively(items: MenuItem[]): MenuItem[] {
+
+  private removeAspRecursively(items: MenuItem[]): MenuItem[] {
     return items.map(item => ({
       ...item,
-      endereco: item.endereco ? item.endereco.replace(/\.asp$/i, '') : null,
+      endereco: item.endereco ? item.endereco.replace(/\.asp$/i, '') : undefined,
       subMenus: item.subMenus ? this.removeAspRecursively(item.subMenus) : []
     }));
   }
 
-  /** Abre/fecha submenus */
   toggleMenu(id: number): void {
     this.openedMenu = this.openedMenu === id ? null : id;
   }
 
-  /** Colapsa/expande a sidebar */
   toggleSidebar(): void {
     this.isCollapsed = !this.isCollapsed;
 
-    // Fecha submenus automaticamente ao colapsar
     if (this.isCollapsed) {
       this.openedMenu = null;
     }

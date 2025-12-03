@@ -47,7 +47,7 @@ ngOnInit(): void {
       : this.service.salvar(this.produto);
 
     obs.subscribe({
-      next: () => this.router.navigate(['/home/_cad/produtosListar']),
+      next: () => this.router.navigate(['/home/produtos']),
       error: (err) => console.error('Erro ao salvar produto', err)
     });
   }

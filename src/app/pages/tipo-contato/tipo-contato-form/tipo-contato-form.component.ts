@@ -35,17 +35,17 @@ export class TipoContatoFormComponent implements OnInit {
       if (this.id) {
        this.service.atualizar(this.tipo).subscribe(() => {
           Swal.fire('Sucesso', 'Tipo Contato atualizado com sucesso!', 'success');
-          this.router.navigate(['/home/_cad/tiposContatoListar']);
+          this.router.navigate(['/home/_cad/tiposContato']);
         });
       } else {
         this.service.salvar(this.tipo).subscribe(() => {
           Swal.fire('Sucesso', 'Tipo Contato cadastrado com sucesso!', 'success');
-          this.router.navigate(['/home/_cad/tiposContatoListar']);
+          this.router.navigate(['/home/tiposcontato']);
         });
       }
     }
 
   cancelar(): void {
-    this.router.navigate(['/home/_cad/tiposContatoListar']);
+    this.router.navigate(['/home/tiposcontato']);
   }
 }

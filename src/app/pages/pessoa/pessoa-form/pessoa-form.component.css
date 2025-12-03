@@ -1,4 +1,19 @@
 /* ===== CONTAINER DO FORM ===== */
+/* === Ajuste para o menu lateral fixo === */
+.page-wrapper {
+  height: calc(100vh - 56px); /* altura total menos a navbar */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* impede scroll externo */
+}
+
+/* ===== Área rolável apenas dentro da página ===== */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 .card-form {
   background: #ffffff;
   border-radius: 12px;
@@ -44,7 +59,6 @@
 
 /* ===== BOTÕES ===== */
 .card-form button {
-  min-width: 120px;
   border-radius: 8px;
   font-weight: 600;
   padding: 0.5rem 1.25rem;
@@ -133,3 +147,78 @@
 }
 
 
+/* === ÁREA DAS TABS === */
+.pessoa-tabs {
+  border-bottom: none; /* não precisa mais da linha */
+  gap: 4px;
+}
+
+.pessoa-tabs .nav-link {
+  font-weight: 600;
+  color: #6c757d;
+  padding: 10px 22px;
+
+  border: 1px solid #d1d1d1;      /* ⭐ borda em todas */
+  border-radius: 6px 6px 0 0;      /* quadrado superior */
+  background: #f8f9fa;             /* leve cinza */
+  transition: all .25s ease;
+}
+
+/* Hover */
+.pessoa-tabs .nav-link:hover {
+  color: #0d6efd;
+  background: #ffffff;
+  border-color: #0d6efd;
+}
+
+/* ⭐ Aba ativa com borda azul e fundo branco */
+.pessoa-tabs .nav-link.active {
+  color: #0d6efd;
+  background: #ffffff;
+  border-color: #0d6efd;
+
+  font-weight: 700;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.06);
+}
+.pessoa-tabs .nav-link.active:hover {
+  background: #ffffff;
+  border-color: #0d6efd;
+} 
+
+.nav-tabs .nav-link {
+  border: 1px solid #dcdcdc !important;
+  border-radius: 4px 4px 0 0 !important;
+  margin-right: -1px; /* une perfeitamente */
+}
+
+/* Divisor leve entre os botões */
+.nav-tabs .nav-item:not(:last-child) .nav-link {
+  border-right: 1px solid #e6e6e6 !important;
+}
+
+.nav-tabs {
+  border-bottom: none !important; /* remove borda padrão se existir */
+}
+
+.tabs-divider {
+  width: 100%;
+  height: 1px;
+  background: #e6e6e6; /* leve divisor */
+  margin-top: -1px;     /* cola na tab */
+  margin-bottom: 20px;  /* espaçamento pro conteúdo */
+}
+
+.btn-acao {
+  width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acoes-wrapper {
+  display: flex;
+  gap: 8px;   /* Espaço entre os botões */
+}
