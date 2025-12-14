@@ -180,7 +180,6 @@
           <table class="table table-striped table-bordered">
             <thead>
               <tr>
-                <th>Seq</th>
                 <th>Tipo de Contato</th>
                 <th>Contato</th>
                 <th>Observação</th>
@@ -190,7 +189,6 @@
 
             <tbody>
               <tr *ngFor="let c of contatos">
-                <td>{{ c.seqContato }}</td>
                 <td>{{ c.tipoContato.descricao }}</td>
                 <td>{{ c.contato }}</td>
                 <td>{{ c.observacao }}</td>
@@ -200,7 +198,7 @@
                       <i class="fa fa-pen"></i>
                     </button>
 
-                    <button class="btn btn-danger btn-acao">
+                    <button class="btn btn-danger btn-acao" (click)="deletarContato(c)">
                       <i class="fa fa-trash"></i>
                     </button>
                   </div>
@@ -243,7 +241,7 @@
             <div class="col-md-4">
               <label class="form-label">Tipo de Contato</label>
               <select class="form-control" formControlName="idTipoContato">
-                <option *ngFor="let t of tiposContato" [value]="t.idTipoContato">
+                <option *ngFor="let t of tiposContato" [value]="t.id">
                   {{ t.descricao }}
                 </option>
               </select>

@@ -304,19 +304,20 @@ export class PessoaFormComponent implements OnInit {
     this.router.navigate([`/home/pessoa/${this.pessoaId}/funcoes`]);
   }
 
-  editarContato(c: any) {
-    this.contatoEditando = c;
+editarContato(c: any) {
+  this.contatoEditando = c;
 
-    this.formContato.patchValue({
-      seqContato: c.seqContato,
-      idTipoContato: c.idTipoContato,
-      contato: c.contato,
-      observacao: c.observacao
-    });
+  this.formContato.patchValue({
+    seqContato: c.seqContato,
+    idTipoContato: c.tipoContato.id, // <-- CORRETO!
+    contato: c.contato,
+    observacao: c.observacao
+  });
 
-    const modal = new bootstrap.Modal(document.getElementById('modalContato')!);
-    modal.show();
-  }
+  const modal = new bootstrap.Modal(document.getElementById('modalContato')!);
+  modal.show();
+}
+
   novoContato() {
     const proximoSeq = (this.contatos.length > 0)
       ? Math.max(...this.contatos.map(c => c.seqContato)) + 1
@@ -335,6 +336,34 @@ export class PessoaFormComponent implements OnInit {
     modal.show();
   }
 
+  deletarContato(c: any) {
+
+    const dados = this.formContato.value;
+
+    Swal.fire({
+      title: 'Confirmação',
+      text: 'Deseja realmente deletar este contato?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, deletar',
+      cancelButtonText: 'Cancelar'
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.pessoaContatoService
+          .remover(this.pessoaId, c.seqContato)
+          .subscribe({
+
+            next: () => {
+              Swal.fire('Sucesso', 'Contato deletado!', 'success');
+              this.carregarContatos();
+            },
+            error: () => Swal.fire('Erro', 'Falha ao deletar contato!', 'error')
+          });
+      }
+    });
+  }
+
   salvarContato() {
 
     if (this.formContato.invalid) {
@@ -343,23 +372,29 @@ export class PessoaFormComponent implements OnInit {
     }
 
     const dados = this.formContato.value;
+    console.log('Form value:', this.formContato.value);
 
     // Monta objeto que a API espera
     const payload = {
-      idPessoa: this.idPessoa,
+      id: {
+      idPessoa: this.pessoaId,
       seqContato: this.contatoEditando?.seqContato ?? 0, // backend ignora no POST
+      },
       tipoContato: {
-        id: dados.idTipoContato
+        id: dados.idTipoContato,
+        descricao: dados.descricao
       },
       contato: dados.contato,
-      observacao: dados.observacao
+      observacao: dados.observacao,
+      seqContato: this.contatoEditando?.seqContato ?? 0, // backend ignora no POST
     };
 
     // Se estiver editando → PUT
     if (this.contatoEditando) {
+      console.log('Atualizando contato com payload:', this.contatoEditando.seqContato, payload);
 
       this.pessoaContatoService
-        .atualizar(this.idPessoa, this.contatoEditando.seqContato, payload)
+        .atualizar(this.pessoaId, this.contatoEditando.seqContato, payload)
         .subscribe({
           next: () => {
             Swal.fire('Sucesso', 'Contato atualizado!', 'success');
