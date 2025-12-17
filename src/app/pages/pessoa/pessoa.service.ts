@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Pessoa } from './pessoa.model';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { PessoaProduto } from './pessoa-produto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -65,7 +66,7 @@ export class PessoaService {
     return this.http.get<any[]>(`${environment.apiBaseUrl}/cidades/estado/${estadoId}`);
   }
 
-    listarCidades(): Observable<any[]> {
+  listarCidades(): Observable<any[]> {
     return this.http.get<any[]>(`${environment.apiBaseUrl}/cidades`);
   }
   /** --------------------------
@@ -76,13 +77,52 @@ export class PessoaService {
     return this.http.get(`https://viacep.com.br/ws/${cleanCep}/json/`);
   }
   gerarBackupExcel() {
-  return this.http.get(`${environment.apiBaseUrl}/pessoa/backup/csv`, {
-    responseType: 'blob'
-  });
-}
+    return this.http.get(`${environment.apiBaseUrl}/pessoa/backup/csv`, {
+      responseType: 'blob'
+    });
+  }
 
-listarContatosPorPessoa(idPessoa: number) {
-  return this.http.get<any[]>(`${environment.apiBaseUrl}/pessoa-contato/${idPessoa}`);
-}
+  listarContatosPorPessoa(idPessoa: number) {
+    return this.http.get<any[]>(`${environment.apiBaseUrl}/pessoa-contato/${idPessoa}`);
+  }
+
+  listarProdutosPessoa(idPessoa: number): Observable<PessoaProduto[]> {
+    return this.http.get<PessoaProduto[]>(
+      `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos`
+    );
+  }
+
+  buscarHistoricoPreco(idPessoa: number, seqProduto: number) {
+    return this.http.get<any[]>(
+      `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/${seqProduto}/historico`
+    );
+  }
+
+  buscarPorPessoaESeq(
+    idPessoa: number,
+    seqProduto: number
+  ): Observable<PessoaProduto> {
+    return this.http.get<PessoaProduto>(
+      `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/${seqProduto}`
+    );
+  }
+
+
+  salvarProdutoPessoa(
+    idPessoa: number,
+    payload: any
+  ) {
+    return this.http.post(
+      `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos`,
+      payload
+    );
+
+  }
+
+  deletarProduto(idPessoa: number, seqProduto: number) {
+    return this.http.delete<void>(
+      `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/${seqProduto}`
+    );
+  }
 
 }

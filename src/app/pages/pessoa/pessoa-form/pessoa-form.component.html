@@ -20,7 +20,16 @@
             CONTATOS
           </button>
         </li>
+
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabProdutos" type="button"
+            (click)="carregarProdutos()">
+            PRODUTOS
+          </button>
+        </li>
       </ul>
+
+
 
       <div class="tabs-divider"></div> <!-- 🔥 Divisor abaixo das tabs -->
 
@@ -77,7 +86,8 @@
             <div class="row g-3 mb-3">
               <div class="col-md-3">
                 <label class="form-label">CEP</label>
-                <input class="form-control" formControlName="cepPessoaString" blueprintMask="00000-000" (blur)="buscarCep()">
+                <input class="form-control" formControlName="cepPessoaString" blueprintMask="00000-000"
+                  (blur)="buscarCep()">
               </div>
 
               <div class="col-md-6">
@@ -127,8 +137,7 @@
                 <label class="form-label">Condição de Pagamento</label>
                 <select class="form-control" formControlName="idCondicaoPagamento">
                   <option value="">Selecione</option>
-                  <option *ngFor="let cond of condicoesPagamento"
-                    [value]="cond.idCondicaoPagamento">
+                  <option *ngFor="let cond of condicoesPagamento" [value]="cond.idCondicaoPagamento">
                     {{ cond.descricaoCondicaoPagamento }}
                   </option>
                 </select>
@@ -165,17 +174,96 @@
         </div>
 
         <!-- ==================================================== -->
+        <!-- ABA 3 — PRODUTOS -->
+        <!-- ==================================================== -->
+        <div class="tab-pane fade" id="tabProdutos">
+          <div class="d-flex justify-content-end mb-2">
+            <button class="btn btn-primary" (click)="novoProduto()">
+              <i class="fa fa-plus"></i> Novo Produto
+            </button>
+          </div>
+          <!-- TABELA -->
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Seq</th>
+                <th>Produto</th>
+                <th>Complemento</th>
+                <th>UNP</th>
+                <th>UNV</th>
+                <th class="text-end">Valor</th>
+                <th class="text-center">Ações</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let produto of produtosPaginados">
+                <td>{{ produto.seqProduto }}</td>
+                <td>{{ produto.nomeProduto }}</td>
+                <td>{{ produto.complementoProduto }}</td>
+                <td>{{ produto.unpProduto }}</td>
+                <td>{{ produto.unvProduto }}</td>
+                <td>{{ produto.valorVenda | currency:'BRL' }}</td>
+
+                <!-- AÇÕES -->
+                <td class="col-acoes">
+                  <div class="acoes-wrapper">
+
+                    <button class="btn btn-warning btn-acao" (click)="editarProduto(produto)">
+                      <i class="fa fa-pen"></i>
+                    </button>
+
+                    <button class="btn btn-info btn-acao" (click)="verHistorico(produto)">
+                      <i class="fa fa-clock-rotate-left"></i>
+                    </button>
+
+                    <button *ngIf="produto.qtdItens === 0" class="btn btn-danger btn-acao"
+                      (click)="deletarProduto(produto)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <!-- PAGINAÇÃO -->
+          <div class="d-flex justify-content-between align-items-center mt-2">
+
+            <div class="text-muted">
+              Mostrando {{ inicioRegistro }} - {{ fimRegistro }} de {{ totalRegistros }}
+            </div>
+
+            <div class="btn-group">
+              <button class="btn btn-light" [disabled]="paginaAtual === 1" (click)="paginaAnterior()">
+                ‹ Anterior
+              </button>
+
+              <button class="btn btn-light" [disabled]="paginaAtual === totalPaginas" (click)="proximaPagina()">
+                Próxima ›
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        <!-- ==================================================== -->
         <!-- ABA 2 — CONTATOS -->
         <!-- ==================================================== -->
         <div class="tab-pane fade" id="tabContatos">
 
           <div class="d-flex justify-content-end mb-3">
-          <button class="btn btn-primary btn-breadcrumb" (click)="novoContato()">
-          <i class="fa-solid fa-plus"></i> Adicionar Contato
-        </button>
+            <button class="btn btn-primary btn-breadcrumb" (click)="novoContato()">
+              <i class="fa-solid fa-plus"></i> Adicionar Contato
+            </button>
           </div>
 
-          
+
 
           <table class="table table-striped table-bordered">
             <thead>
@@ -210,68 +298,215 @@
         </div>
 
       </div>
-    </div>
-  </div>
-</div>
 
 
-<!-- ===================== MODAL CONTATO ===================== -->
-<div class="modal fade" id="modalContato" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title">
-          {{ contatoEditando ? 'Editar Contato' : 'Novo Contato' }}
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
 
-      <div class="modal-body">
 
-        <form [formGroup]="formContato">
+      <!-- ===================== MODAL CONTATO ===================== -->
+      <div class="modal fade" id="modalContato" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
 
-          <div class="row g-3">
-
-            <div class="col-md-2">
-              <label class="form-label">Seq</label>
-              <input class="form-control" formControlName="seqContato" readonly>
+            <div class="modal-header">
+              <h5 class="modal-title">
+                {{ contatoEditando ? 'Editar Contato' : 'Novo Contato' }}
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="col-md-4">
-              <label class="form-label">Tipo de Contato</label>
-              <select class="form-control" formControlName="idTipoContato">
-                <option *ngFor="let t of tiposContato" [value]="t.id">
-                  {{ t.descricao }}
-                </option>
-              </select>
+            <div class="modal-body">
+
+              <form [formGroup]="formContato">
+
+                <div class="row g-3">
+
+                  <div class="col-md-2">
+                    <label class="form-label">Seq</label>
+                    <input class="form-control" formControlName="seqContato" readonly>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label">Tipo de Contato</label>
+                    <select class="form-control" formControlName="idTipoContato">
+                      <option *ngFor="let t of tiposContato" [value]="t.id">
+                        {{ t.descricao }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label">Contato</label>
+                    <input class="form-control" formControlName="contato">
+                  </div>
+
+                  <div class="col-md-12">
+                    <label class="form-label">Observação</label>
+                    <input class="form-control" formControlName="observacao">
+                  </div>
+
+                </div>
+
+              </form>
+
             </div>
 
-            <div class="col-md-6">
-              <label class="form-label">Contato</label>
-              <input class="form-control" formControlName="contato">
-            </div>
-
-            <div class="col-md-12">
-              <label class="form-label">Observação</label>
-              <input class="form-control" formControlName="observacao">
+            <div class="modal-footer">
+              <button class="btn btn-primary" (click)="salvarContato()">
+                Salvar
+              </button>
+              <button class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
             </div>
 
           </div>
-
-        </form>
-
+        </div>
       </div>
 
-      <div class="modal-footer">
-        <button class="btn btn-primary" (click)="salvarContato()">
-          Salvar
-        </button>
-        <button class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancelar
-        </button>
+      <!-- ===================== MODAL HISTÓRICO DE PREÇOS ===================== -->
+      <div class="modal fade" id="modalHistoricoProduto" tabindex="-1">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+              <h5 class="modal-title">
+                Histórico de Preços
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+
+              <!-- IDENTIFICAÇÃO -->
+              <div class="mb-3 text-muted">
+                <strong>{{ historicoProdutoSelecionado?.nomeProduto }}</strong>
+                <span *ngIf="historicoProdutoSelecionado?.complementoProduto">
+                  [{{ historicoProdutoSelecionado?.complementoProduto }}]
+                </span>
+              </div>
+
+              <!-- TABELA -->
+              <table class="table table-sm table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Válido Até</th>
+                    <th class="text-end">Valor de Venda</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngIf="historicoPrecos.length === 0">
+                    <td colspan="2" class="text-center text-muted">
+                      Nenhum histórico encontrado
+                    </td>
+                  </tr>
+
+                  <tr *ngFor="let h of historicoPrecos">
+                    <td class="text-center">
+                      {{ h.dtValidade ? (h.dtValidade | date:'dd/MM/yyyy') : 'Atual' }}
+                    </td>
+                    <td class="text-end">
+                      {{ h.valorVenda | currency:'BRL' }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal">
+                Fechar
+              </button>
+            </div>
+
+          </div>
+        </div>
       </div>
 
-    </div>
-  </div>
-</div>
+      <!-- ===================== MODAL PRODUTO ===================== -->
+      <div class="modal fade" id="modalProduto" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+              <h5 class="modal-title">
+                {{ produtoEditando ? 'Editar Produto' : 'Novo Produto' }}
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+              <form [formGroup]="formProduto">
+
+                <div class="row g-3">
+
+                  <!-- SEQ -->
+                  <div class="col-md-2">
+                    <label class="form-label">Seq</label>
+                    <input class="form-control" formControlName="seqProduto" readonly>
+                  </div>
+
+                  <!-- PRODUTO -->
+                  <div class="col-md-6">
+                    <label class="form-label">Produto</label>
+                    <select class="form-control" formControlName="idProduto">
+                      <option [ngValue]="null">Selecione</option>
+                      <option *ngFor="let p of produtosCatalogo" [ngValue]="p.idProduto">
+                        {{ p.nomeProduto }}
+                      </option>
+                    </select>
+                  </div>
+
+
+
+
+
+                  <!-- COMPLEMENTO -->
+                  <div class="col-md-4">
+                    <label class="form-label">Complemento</label>
+                    <input class="form-control" formControlName="complementoProduto">
+                  </div>
+
+                  <!-- UNP -->
+                  <div class="col-md-3">
+                    <label class="form-label">UNP</label>
+                    <input class="form-control" formControlName="unpProduto">
+                  </div>
+
+                  <!-- UNV -->
+                  <div class="col-md-3">
+                    <label class="form-label">UNV</label>
+                    <input class="form-control" formControlName="unvProduto">
+                  </div>
+
+                  <!-- VALOR -->
+                  <div class="col-md-3">
+                    <label class="form-label">Valor Venda</label>
+                    <input type="number" step="0.01" class="form-control" formControlName="valorVenda">
+                  </div>
+
+                </div>
+
+              </form>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+              <button class="btn btn-primary" (click)="salvarProduto()">
+                Salvar
+              </button>
+              <button class="btn btn-secondary" data-bs-dismiss="modal">
+                Cancelar
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>

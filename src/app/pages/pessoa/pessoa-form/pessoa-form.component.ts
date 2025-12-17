@@ -5,6 +5,9 @@ import { PessoaService } from '../pessoa.service';
 import Swal from 'sweetalert2';
 import { TipoContatoService } from '../../tipo-contato/tipo-contato.service';
 import { PessoaContatoService } from '../pessoa-contato.service';
+import { PessoaProduto } from '../pessoa-produto.model';
+import { Produto } from '../../produtos/produto.model';
+import { ProdutoService } from '../../produtos/produto.service';
 declare var bootstrap: any;
 
 @Component({
@@ -18,12 +21,31 @@ export class PessoaFormComponent implements OnInit {
   isEdit = false;
   pessoaId!: number;
 
+  formProduto!: FormGroup;
+  produtoEditando: any | null = null;
+
   estados: any[] = [];
   cidades: any[] = [];
   condicoesPagamento: any[] = [];
   idPessoa!: number;
 
   contatos: any[] = [];
+
+  produtos: any[] = [];
+  produtosPaginados: any[] = [];
+
+  produtosCatalogo: Produto[] = [];
+
+  paginaAtual = 1;
+  tamanhoPagina = 10;
+  totalRegistros = 0;
+  totalPaginas = 0;
+  inicioRegistro = 0;
+  fimRegistro = 0;
+
+  historicoPrecos: any[] = [];
+  historicoProdutoSelecionado: any = null;
+
 
   carregandoEdicao = false;
 
@@ -38,7 +60,9 @@ export class PessoaFormComponent implements OnInit {
     private router: Router,
     private pessoaService: PessoaService,
     private tipoContatoService: TipoContatoService,
-    private pessoaContatoService: PessoaContatoService
+    private pessoaContatoService: PessoaContatoService,
+    private produtoService: ProdutoService,
+
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +76,8 @@ export class PessoaFormComponent implements OnInit {
     this.carregarEstados();
     this.criarFormContato();
     this.carregarTiposContato();
+    this.carregarProdutos();
+    this.criarFormProduto();
 
 
     // Listener de estado
@@ -75,6 +101,99 @@ export class PessoaFormComponent implements OnInit {
       contato: ['', Validators.required],
       observacao: ['']
     });
+  }
+
+
+  carregarCatalogoProdutos() {
+    this.produtoService.listar().subscribe({
+      next: (dados) => this.produtosCatalogo = dados,
+      error: () => this.produtosCatalogo = []
+    });
+  }
+
+  carregarProdutos() {
+    this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
+    if (!this.pessoaId) return;
+
+    this.pessoaService
+      .listarProdutosPessoa(this.pessoaId)
+      .subscribe({
+        next: (res) => {
+          this.produtos = res || [];
+          this.totalRegistros = this.produtos.length;
+          this.totalPaginas = Math.ceil(this.totalRegistros / this.tamanhoPagina);
+          this.paginaAtual = 1;
+          this.atualizarPaginacao();
+        },
+        error: (err) => console.error('Erro ao carregar produtos', err)
+      });
+  }
+
+  atualizarPaginacao() {
+    const inicio = (this.paginaAtual - 1) * this.tamanhoPagina;
+    const fim = inicio + this.tamanhoPagina;
+
+    this.produtosPaginados = this.produtos.slice(inicio, fim);
+
+    this.inicioRegistro = inicio + 1;
+    this.fimRegistro = Math.min(fim, this.totalRegistros);
+  }
+
+  paginaAnterior() {
+    if (this.paginaAtual > 1) {
+      this.paginaAtual--;
+      this.atualizarPaginacao();
+    }
+  }
+
+  proximaPagina() {
+    if (this.paginaAtual < this.totalPaginas) {
+      this.paginaAtual++;
+      this.atualizarPaginacao();
+    }
+  }
+
+  editarProduto(produto: any) {
+
+    this.carregarCatalogoProdutos();
+
+    // garante que o catálogo já foi carregado
+    const produtoCatalogo = this.produtosCatalogo.find(
+      p => p.idProduto === produto.idProduto
+    );
+
+    this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
+    this.pessoaService
+      .buscarPorPessoaESeq(this.pessoaId, produto.seqProduto)
+      .subscribe({
+        next: (res: any) => {
+          this.produtoEditando = res;
+
+          this.formProduto.patchValue({
+            seqProduto: res.seqProduto,
+            idProduto: res.idProduto, // <-- AGORA FUNCIONA
+            complementoProduto: res.complementoProduto,
+            unpProduto: res.unpProduto,
+            unvProduto: res.unvProduto,
+            valorVenda: res.valorVenda
+          });
+
+          const modal = new bootstrap.Modal(
+            document.getElementById('modalProduto')
+          );
+          modal.show();
+        }
+      });
+  }
+
+  historicoProduto(produto: any) {
+    console.log('Histórico', produto);
+  }
+
+  excluirProduto(produto: any) {
+    if (confirm(`Excluir o produto ${produto.nomeProduto}?`)) {
+      console.log('Excluir', produto);
+    }
   }
 
 
@@ -304,19 +423,19 @@ export class PessoaFormComponent implements OnInit {
     this.router.navigate([`/home/pessoa/${this.pessoaId}/funcoes`]);
   }
 
-editarContato(c: any) {
-  this.contatoEditando = c;
+  editarContato(c: any) {
+    this.contatoEditando = c;
 
-  this.formContato.patchValue({
-    seqContato: c.seqContato,
-    idTipoContato: c.tipoContato.id, // <-- CORRETO!
-    contato: c.contato,
-    observacao: c.observacao
-  });
+    this.formContato.patchValue({
+      seqContato: c.seqContato,
+      idTipoContato: c.tipoContato.id, // <-- CORRETO!
+      contato: c.contato,
+      observacao: c.observacao
+    });
 
-  const modal = new bootstrap.Modal(document.getElementById('modalContato')!);
-  modal.show();
-}
+    const modal = new bootstrap.Modal(document.getElementById('modalContato')!);
+    modal.show();
+  }
 
   novoContato() {
     const proximoSeq = (this.contatos.length > 0)
@@ -377,8 +496,8 @@ editarContato(c: any) {
     // Monta objeto que a API espera
     const payload = {
       id: {
-      idPessoa: this.pessoaId,
-      seqContato: this.contatoEditando?.seqContato ?? 0, // backend ignora no POST
+        idPessoa: this.pessoaId,
+        seqContato: this.contatoEditando?.seqContato ?? 0, // backend ignora no POST
       },
       tipoContato: {
         id: dados.idTipoContato,
@@ -422,8 +541,130 @@ editarContato(c: any) {
   }
 
   fecharModal() {
-  const modalElement = document.getElementById('modalContato');
-  const modal = bootstrap.Modal.getInstance(modalElement!);
-  modal?.hide();
+    const modalElement = document.getElementById('modalContato');
+    const modal = bootstrap.Modal.getInstance(modalElement!);
+    modal?.hide();
+  }
+
+  verHistorico(produto: any) {
+    this.historicoProdutoSelecionado = produto;
+    this.historicoPrecos = [];
+
+    this.pessoaService
+      .buscarHistoricoPreco(this.form.get('idPessoa')?.value, produto.seqProduto)
+      .subscribe({
+        next: (dados) => {
+          this.historicoPrecos = dados || [];
+          this.abrirModalHistorico();
+        },
+        error: () => {
+          this.historicoPrecos = [];
+          this.abrirModalHistorico();
+        }
+      });
+  }
+
+  abrirModalHistorico() {
+    const modalEl = document.getElementById('modalHistoricoProduto');
+    if (modalEl) {
+      const modal = new (window as any).bootstrap.Modal(modalEl);
+      modal.show();
+    }
+  }
+
+
+
+  private criarFormProduto() {
+    this.formProduto = this.fb.group({
+      seqProduto: [{ value: null, disabled: true }],
+      idProduto: [null, Validators.required], // objeto Produto
+      complementoProduto: [''],
+      unpProduto: [''],
+      unvProduto: [''],
+      valorVenda: [null, Validators.required]
+    });
+  }
+
+  compareProduto = (p1: any, p2: any): boolean => {
+    return p1 && p2 ? p1.idProduto === p2.idProduto : p1 === p2;
+  };
+
+  novoProduto() {
+    this.carregarCatalogoProdutos();
+    this.formProduto.reset({
+      seqProduto: 0
+    });
+
+    const modal = new bootstrap.Modal(
+      document.getElementById('modalProduto')!
+    );
+    modal.show();
+  }
+
+
+  salvarProduto() {
+    if (this.formProduto.invalid) {
+      this.formProduto.markAllAsTouched();
+      return;
+    }
+    this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
+
+    const f = this.formProduto.getRawValue();
+
+    const payload = {
+      idPessoa: this.pessoaId,
+      seqProduto: f.seqProduto ?? 0,
+      idProduto: f.idProduto,
+      complementoProduto: f.complementoProduto,
+      unpProduto: f.unpProduto,
+      unvProduto: f.unvProduto,
+      valorVenda: f.valorVenda,
+      valorVendaAnterior: f.valorVenda
+    };
+
+    this.pessoaService
+      .salvarProdutoPessoa(this.pessoaId, payload)
+      .subscribe({
+        next: () => {
+          this.carregarProdutos();
+          this.produtoEditando = null;
+
+          bootstrap.Modal.getInstance(
+            document.getElementById('modalProduto')!
+          )?.hide();
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Erro ao salvar produto');
+        }
+      });
+  }
+
+deletarProduto(produto: any) {
+
+  Swal.fire({
+    title: 'Confirmação',
+    text: `Deseja excluir o produto ${produto.nomeProduto}?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, excluir',
+    cancelButtonText: 'Cancelar'
+  }).then(result => {
+
+    if (result.isConfirmed) {
+      this.pessoaService
+        .deletarProduto(this.pessoaId, produto.seqProduto)
+        .subscribe({
+          next: () => {
+            Swal.fire('Sucesso', 'Produto excluído!', 'success');
+            this.carregarProdutos();
+          },
+          error: () => {
+            Swal.fire('Erro', 'Falha ao excluir produto', 'error');
+          }
+        });
+    }
+  });
 }
+
 }
