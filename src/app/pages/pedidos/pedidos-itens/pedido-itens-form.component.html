@@ -1,0 +1,77 @@
+<div class="page-wrapper">
+  <div class="scroll-area">
+    <div class="card-form shadow p-4 rounded mx-auto mt-3" style="max-width: 700px;">
+
+      <h4 class="text-center mb-4 fw-semibold">
+        {{ isEdit ? 'Editar Item do Pedido' : 'Novo Item do Pedido' }}
+      </h4>
+
+      <form [formGroup]="form">
+
+        <!-- PRODUTO -->
+        <div class="mb-3">
+          <label class="form-label">Produto</label>
+          <select class="form-control" formControlName="seqProduto" [disabled]="isEdit">
+            <option [ngValue]="null">Selecione</option>
+            <option *ngFor="let p of produtos" [value]="p.seqProduto">
+              {{ p.nomeProduto }} - {{ p.complementoProduto }}
+            </option>
+          </select>
+        </div>
+
+        <!-- VALOR / QTD / UNP -->
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Valor</label>
+            <input type="number" class="form-control" formControlName="valorVenda">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Qtd Pedido</label>
+            <input type="number" class="form-control" formControlName="qtdItem">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">UNP</label>
+            <input class="form-control" formControlName="unpItem">
+          </div>
+        </div>
+
+        <div class="mt-2 text-primary fw-semibold">
+          Subtotal Pedido: {{ totalPedido | number:'1.2-2' }}
+        </div>
+
+        <hr>
+
+        <!-- ENTREGA -->
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Qtd Entregue</label>
+            <input type="number" class="form-control" formControlName="qtdEntregue">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">UNV</label>
+            <input class="form-control" formControlName="unvItem">
+          </div>
+        </div>
+
+        <div class="mt-2 text-danger fw-semibold">
+          Subtotal Entregue: {{ totalEntregue | number:'1.2-2' }}
+        </div>
+
+        <!-- BOTÕES -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button type="button" class="btn btn-primary" (click)="salvar()">
+            Salvar
+          </button>
+
+          <button type="button" class="btn btn-secondary" (click)="voltar()">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

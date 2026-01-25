@@ -125,4 +125,25 @@ export class PessoaService {
     );
   }
 
+  atualizarValorProduto(
+  idPessoa: number,
+  idProduto: number,
+  novoValor: number
+) {
+  return this.http.put<void>(
+    `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/${idProduto}/valor`,
+    null,
+    { params: { novoValor } }
+  );
+}
+
+listarProdutosPorPessoaEProduto(
+  idPessoa: number,
+  idProduto: number
+) {
+  return this.http.get<any[]>(
+    `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/produto/${idProduto}`
+  );
+}
+
 }

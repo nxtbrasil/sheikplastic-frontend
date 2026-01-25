@@ -1,0 +1,152 @@
+<div class="page-wrapper">
+  <div class="scroll-area">
+    <div class="card-form shadow p-4 rounded mx-auto mt-3" style="max-width: 90%;">
+
+      <!-- TÍTULO -->
+      <h4 class="text-center mb-4 fw-semibold">
+        📦 {{ isEdit ? 'Editar Pedido' : 'Novo Pedido' }}
+      </h4>
+
+      <form [formGroup]="form" (ngSubmit)="salvar()">
+
+        <!-- ================= DADOS DO PEDIDO ================= -->
+        <h5 class="fw-semibold mb-3">Dados do Pedido</h5>
+
+        <div class="row g-3 mb-3">
+
+          <!-- CLIENTE -->
+          <div class="col-md-4">
+            <label class="form-label">Cliente</label>
+            <select class="form-control" formControlName="idPessoa">
+              <option [ngValue]="null">Selecione</option>
+              <option *ngFor="let c of clientes" [ngValue]="c.id">
+                {{ c.nome }}
+              </option>
+            </select>
+          </div>
+
+          <!-- VENDEDOR -->
+          <div class="col-md-4">
+            <label class="form-label">Vendedor</label>
+            <select class="form-control" formControlName="idFuncionario">
+              <option [ngValue]="null">Selecione</option>
+              <option *ngFor="let f of funcionarios" [value]="f.idFuncionario">
+                {{ f.nomeFuncionario }}
+              </option>
+            </select>
+          </div>
+
+          <!-- CONDIÇÃO -->
+          <div class="col-md-4">
+            <label class="form-label">Condição de Pagamento</label>
+            <select class="form-control" formControlName="idCondicaoPagamento">
+              <option [ngValue]="null">Selecione</option>
+              <option *ngFor="let c of condicoesPagamento"
+                      [value]="c.idCondicaoPagamento">
+                {{ c.descricaoCondicaoPagamento }}
+              </option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- ================= DATAS ================= -->
+        <div class="row g-3 mb-3">
+
+          <!-- DATA DO PEDIDO (SÓ EDIÇÃO) -->
+          <div class="col-md-4" *ngIf="isEdit">
+            <label class="form-label">Data do Pedido</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="dtEntradaPedido"
+              readonly>
+          </div>
+
+          <!-- PREVISÃO -->
+          <div class="col-md-4">
+            <label class="form-label">Previsão de Entrega</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="dtPrevisaoPedido">
+          </div>
+
+          <!-- SOLICITANTE -->
+          <div class="col-md-4">
+            <label class="form-label">Pessoa Solicitante</label>
+            <input
+              class="form-control"
+              formControlName="nomeSolicitante">
+          </div>
+
+        </div>
+
+        <!-- ================= FLAGS ================= -->
+        <div class="row g-3 mb-3 align-items-center">
+
+          <div class="col-md-2">
+            <div class="form-check mt-4">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                formControlName="urgente">
+              <label class="form-check-label">
+                Urgente
+              </label>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ================= OBSERVAÇÃO ================= -->
+        <div class="row mb-3">
+          <div class="col-12">
+            <label class="form-label">Observação</label>
+            <textarea
+              rows="3"
+              class="form-control"
+              formControlName="observacao"></textarea>
+          </div>
+        </div>
+
+        <!-- ================= STATUS ================= -->
+        <div class="row g-3 mb-4">
+
+          <div class="col-md-3">
+            <label class="form-label">Situação</label>
+            <select class="form-control" formControlName="entregue">
+              <option [value]="false">Em Andamento</option>
+              <option [value]="true">Entregue</option>
+            </select>
+          </div>
+
+          <div class="col-md-3">
+            <label class="form-label">Ativo</label>
+            <select class="form-control" formControlName="ativo">
+              <option [value]="true">Sim</option>
+              <option [value]="false">Não</option>
+            </select>
+          </div>
+
+        </div>
+
+        <!-- ================= BOTÕES ================= -->
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button type="submit" class="btn btn-primary px-4">
+            {{ isEdit ? 'Atualizar' : 'Salvar' }}
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-secondary px-4"
+            (click)="cancelar()">
+            Cancelar
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>

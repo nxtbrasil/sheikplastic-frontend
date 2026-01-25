@@ -1,0 +1,177 @@
+<div class="page-wrapper">
+
+  <div class="scroll-area">
+    <div class="card-form shadow p-4 rounded mx-auto mt-3" style="max-width: 90%;">
+
+      <h4 class="text-center mb-4 fw-semibold">
+        📦 Gestão de Itens
+      </h4>
+
+
+      <!-- HEADER -->
+<div class="card-header d-flex justify-content-between align-items-center">
+  <strong>Itens do Pedido #{{ pessoaId }}</strong>
+
+  <div class="d-flex gap-2">
+    <button
+      class="btn btn-sm btn-primary"
+      (click)="novoItem()"
+      [disabled]="pedido?.entregue">
+      <i class="fa fa-plus"></i> Novo Item
+    </button>
+
+    <button
+      class="btn btn-sm btn-secondary"
+      (click)="cancelar()">
+      <i class="fa fa-arrow-left"></i> Cancelar
+    </button>
+  </div>
+</div>
+      <br>
+      <!-- BODY -->
+      <div class="card-body p-0">
+
+        <!-- RESUMO DO PEDIDO -->
+<div class="border rounded p-3 mb-3 bg-light">
+
+  <div class="row small">
+
+    <!-- COLUNA ESQUERDA -->
+    <div class="col-md-6">
+      <div><strong>Cliente:</strong> {{ pedido?.nomePessoa }}</div>
+      <div><strong>Vendedor:</strong> {{ pedido?.nomeFuncionario }}</div>
+      <div>
+        <strong>Data do Pedido:</strong>
+        {{ pedido?.dtEntradaPedido | date:'dd/MM/yyyy' }}
+      </div>
+      <div>
+        <strong>Entrega do Pedido:</strong>
+        {{ pedido?.dtEntregaPedido | date:'dd/MM/yyyy' }}
+      </div>
+    </div>
+
+    <!-- COLUNA DIREITA -->
+    <div class="col-md-6">
+      <div>
+        <strong>Situação:</strong>
+        <span
+          class="fw-semibold"
+          [ngClass]="pedido?.entregue ? 'text-success' : 'text-primary'">
+          {{ pedido?.entregue ? 'Entregue' : 'Novo' }}
+        </span>
+      </div>
+
+      <div>
+        <strong>Condição de Pagamento:</strong>
+        {{ pedido?.descricaoCondicaoPagamento }}
+      </div>
+
+      <div>
+        <strong>Previsão de Entrega:</strong>
+        {{ pedido?.dtPrevisaoPedido | date:'dd/MM/yyyy' }}
+      </div>
+
+      <div>
+        <strong>Urgente:</strong>
+        {{ pedido?.urgente ? 'Sim' : 'Não' }}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+        <table class="table table-striped">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Produto</th>
+              <th class="text-end">Valor</th>
+              <th class="text-end">Qtd</th>
+              <th class="text-center">UNP</th>
+              <th class="text-end">Subtotal</th>
+              <th class="text-end">Qtd Entregue</th>
+              <th class="text-center">UNV</th>
+              <th class="text-end">Subtotal</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+
+          <tbody *ngIf="itens?.length > 0; else vazio">
+
+            <tr *ngFor="let i of itens; let idx = index">
+              <td>{{ idx + 1 }}</td>
+
+              <td>
+                {{ i.nomeProduto }}
+                <small class="text-muted d-block">
+                  {{ i.complementoProduto }}
+                </small>
+              </td>
+
+              <td class="text-end">
+                {{ i.valorVenda | number:'1.2-2' }}
+              </td>
+
+              <td class="text-end">{{ i.qtdItem }}</td>
+
+              <td class="text-center">{{ i.unpItem }}</td>
+
+              <td class="text-end text-primary">
+                {{ i.qtdItem * i.valorVenda | number:'1.2-2' }}
+              </td>
+
+              <td class="text-end">{{ i.qtdEntregue }}</td>
+
+              <td class="text-center">{{ i.unvItem }}</td>
+
+              <td class="text-end text-danger">
+                {{ i.qtdEntregue * i.valorVenda | number:'1.2-2' }}
+              </td>
+
+              <td class="text-center">
+                <button class="btn btn-sm btn-warning me-1" (click)="editar(i)" [disabled]="pedido?.entregue"
+                  title="Editar">
+                  <i class="fa fa-edit"></i>
+                </button>
+
+                <button class="btn btn-sm btn-danger" (click)="excluir(i)"
+                  [disabled]="i.qtdEntregue > 0 || pedido?.entregue" title="Excluir">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+
+            <!-- TOTAL -->
+            <tr class="fw-bold bg-light">
+              <td colspan="5" class="text-end">Total do Pedido</td>
+
+              <td class="text-end text-primary">
+                {{ totalPedido | number:'1.2-2' }}
+              </td>
+
+              <td colspan="2"></td>
+
+              <td class="text-end text-danger">
+                {{ totalEntregue | number:'1.2-2' }}
+              </td>
+
+              <td></td>
+            </tr>
+
+          </tbody>
+        </table>
+        
+
+        <!-- VAZIO -->
+        <ng-template #vazio>
+          <div class="text-center p-4 text-muted">
+            Nenhum item cadastrado
+          </div>
+        </ng-template>
+
+      </div>
+    </div>
+  </div>
+</div>

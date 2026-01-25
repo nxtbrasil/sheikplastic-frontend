@@ -27,6 +27,14 @@
             PRODUTOS
           </button>
         </li>
+
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabPrecificacao" type="button"
+            (click)="carregarProdutosPrecificacao()">
+            PRECIFICAÇÃO
+          </button>
+        </li>
+
       </ul>
 
 
@@ -297,6 +305,111 @@
 
         </div>
 
+        <!-- ==================================================== -->
+<!-- ABA — PRECIFICAÇÃO -->
+<!-- ==================================================== -->
+<!-- ==================================================== -->
+<!-- ABA — PRECIFICAÇÃO -->
+<!-- ==================================================== -->
+<div class="tab-pane fade" id="tabPrecificacao">
+
+  <!-- FORMULÁRIO DE PRECIFICAÇÃO -->
+  <div class="row g-3 mb-4 align-items-end">
+
+    <!-- PRODUTO -->
+    <div class="col-md-6">
+      <label class="form-label">Produto</label>
+      <select class="form-control"
+              [(ngModel)]="produtoPrecificacao"
+              [ngModelOptions]="{ standalone: true }"
+              (change)="onProdutoPrecificacaoChange()">
+        <option [ngValue]="null">Selecione</option>
+        <option *ngFor="let p of produtosCatalogo"
+                [ngValue]="p">
+          {{ p.nomeProduto }}
+        </option>
+      </select>
+    </div>
+
+    <!-- NOVO VALOR -->
+    <div class="col-md-3">
+      <label class="form-label">Novo Valor</label>
+      <input type="number"
+             step="0.01"
+             class="form-control"
+             [(ngModel)]="novoValor"
+             [ngModelOptions]="{ standalone: true }">
+    </div>
+
+    <!-- BOTÕES -->
+    <div class="col-md-3 d-flex gap-2">
+      <button class="btn btn-primary w-100"
+              [disabled]="!produtoPrecificacao || !novoValor"
+              (click)="salvarPrecificacao()">
+        Salvar
+      </button>
+
+      <button class="btn btn-secondary w-100"
+              (click)="cancelar()">
+        Cancelar
+      </button>
+    </div>
+
+  </div>
+
+  <!-- LISTA DE PRODUTOS (GRADE) -->
+  <table *ngIf="listaPrecificacao.length > 0"
+         class="table table-bordered table-striped">
+
+    <thead class="table-primary">
+      <tr>
+        <th width="60">Seq</th>
+        <th>Produto</th>
+        <th>Complemento</th>
+        <th class="text-end" width="180">Valor de Venda Atual</th>
+        <th class="text-end" width="180">Novo Valor de Venda</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of listaPrecificacao">
+        <td class="text-center">{{ item.seqProduto }}</td>
+        <td>{{ item.nomeProduto }}</td>
+        <td>{{ item.complementoProduto }}</td>
+
+        <!-- VALOR ATUAL -->
+        <td class="text-end">
+          {{ item.valorVenda | currency:'BRL' }}
+        </td>
+
+        <!-- NOVO VALOR (SIMULAÇÃO) -->
+        <td class="text-end fw-semibold"
+            [ngClass]="{
+              'text-success': novoValor && novoValor != item.valorVenda
+            }">
+          {{ novoValor ? (novoValor | currency:'BRL')
+                       : (item.valorVenda | currency:'BRL') }}
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+
+  <!-- TOTAL -->
+  <div *ngIf="listaPrecificacao.length > 0"
+       class="text-muted mt-2">
+    Total: {{ listaPrecificacao.length }}
+  </div>
+
+  <!-- MENSAGEM QUANDO NÃO TEM PRODUTO -->
+  <div *ngIf="produtoPrecificacao && listaPrecificacao.length === 0"
+       class="alert alert-warning mt-3">
+    Nenhum produto encontrado para este item.
+  </div>
+
+</div>
+
+
       </div>
 
 
@@ -355,7 +468,7 @@
               <button class="btn btn-primary" (click)="salvarContato()">
                 Salvar
               </button>
-              <button class="btn btn-secondary" data-bs-dismiss="modal">
+              <button class="btn btn-secondary" (click)="cancelar()" data-bs-dismiss="modal">
                 Cancelar
               </button>
             </div>

@@ -46,6 +46,10 @@ import { GruposUsuariosEditarComponent } from './pages/grupos-usuarios/grupos-us
 import { VinculoRegraGrupoComponent } from './pages/grupos-usuarios/vinculo-regras/vinculo-regra-grupo.component';
 import { GrupoUsuarioHerancaComponent } from './pages/grupos-usuarios/grupo-usuario-heranca/grupo-usuario-heranca.component';
 import { VinculoFuncionarioGrupoComponent } from './pages/grupos-usuarios/vinculos-usuarios/vinculo-funcionario-grupo.component';
+import { PedidosListaComponent } from './pages/pedidos/pedidos-lista.component';
+import { PedidoFormComponent } from './pages/pedidos/pedidos-form/pedido-form.component';
+import { PedidoItensComponent } from './pages/pedidos/pedidos-itens/pedido-itens.component';
+import { PedidoItensFormComponent } from './pages/pedidos/pedidos-itens/pedido-itens-form.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +126,14 @@ import { VinculoFuncionarioGrupoComponent } from './pages/grupos-usuarios/vincul
             { path: 'vinculosusuario/:id', component: GruposUsuariosEditarComponent, },
             { path: 'herancausuario/:id', component: GrupoUsuarioHerancaComponent, },
             { path: 'vinculousuariogrupo/:id', component: VinculoFuncionarioGrupoComponent, },
+
+            { path: 'pedidos', component: PedidosListaComponent, },
+            { path: 'pedidosForm', component: PedidoFormComponent, },
+            { path: 'pedidosForm/:id', component: PedidoFormComponent, },
+            { path: 'pedidosItem/:id/:idPessoa', component: PedidoItensComponent, },
+            {path: 'pedidosItens/:id/:idPessoa/:seqProduto', component: PedidoItensFormComponent, },
+            // { path: 'gruposusuarioForm', component: GruposUsuariosEditarCompon
+            // ent, },
 
           ]
         },

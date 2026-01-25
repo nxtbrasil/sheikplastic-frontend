@@ -24,6 +24,8 @@ export class PessoaFormComponent implements OnInit {
   formProduto!: FormGroup;
   produtoEditando: any | null = null;
 
+  listaPrecificacao: PessoaProduto[] = [];  
+
   estados: any[] = [];
   cidades: any[] = [];
   condicoesPagamento: any[] = [];
@@ -34,7 +36,7 @@ export class PessoaFormComponent implements OnInit {
   produtos: any[] = [];
   produtosPaginados: any[] = [];
 
-  produtosCatalogo: Produto[] = [];
+  produtosCatalogo: any[] = [];
 
   paginaAtual = 1;
   tamanhoPagina = 10;
@@ -53,6 +55,9 @@ export class PessoaFormComponent implements OnInit {
   contatoEditando: any = null;
 
   tiposContato: any[] = []; // Lista dinâmica
+
+  produtoPrecificacao: any = null;
+  novoValor: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -94,6 +99,12 @@ export class PessoaFormComponent implements OnInit {
     this.onChangeTipoPessoa();
   }
 
+  carregarProdutosPrecificacao() {
+    if (!this.produtosCatalogo || this.produtosCatalogo.length === 0) {
+      this.carregarCatalogoProdutos();
+    }
+  }
+
   criarFormContato() {
     this.formContato = this.fb.group({
       seqContato: [0],
@@ -104,12 +115,38 @@ export class PessoaFormComponent implements OnInit {
   }
 
 
-  carregarCatalogoProdutos() {
-    this.produtoService.listar().subscribe({
-      next: (dados) => this.produtosCatalogo = dados,
-      error: () => this.produtosCatalogo = []
-    });
-  }
+ carregarCatalogoProdutos() {
+  this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
+
+  this.pessoaService.listarProdutosPessoa(this.pessoaId).subscribe({
+    next: (dados: any[]) => {
+      // 1. Criamos um Map usando o idProduto como chave para remover duplicados
+      const mapaUnicos = new Map();
+
+      dados.forEach(item => {
+        if (!mapaUnicos.has(item.idProduto)) {
+          mapaUnicos.set(item.idProduto, item);
+        }
+      });
+
+      // 2. Convertemos o Map de volta para um Array e tratamos os dados
+      this.produtosCatalogo = Array.from(mapaUnicos.values()).map(p => {
+        // Retornamos o objeto completo (incluindo nome e id) para não perdê-los
+        return {
+          idProduto: p.idProduto,
+          nomeProduto: p.nomeProduto,
+          complementoProduto: p.complementoProduto,
+          valorVenda: p.valorVenda,
+          qtdItens: p.qtdItens
+          // adicione outros campos se necessário
+        };
+      });
+    },
+    error: () => {
+      this.produtosCatalogo = [];
+    }
+  });
+}
 
   carregarProdutos() {
     this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
@@ -640,31 +677,127 @@ export class PessoaFormComponent implements OnInit {
       });
   }
 
-deletarProduto(produto: any) {
+  deletarProduto(produto: any) {
 
+    Swal.fire({
+      title: 'Confirmação',
+      text: `Deseja excluir o produto ${produto.nomeProduto}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir',
+      cancelButtonText: 'Cancelar'
+    }).then(result => {
+
+      if (result.isConfirmed) {
+        this.pessoaService
+          .deletarProduto(this.pessoaId, produto.seqProduto)
+          .subscribe({
+            next: () => {
+              Swal.fire('Sucesso', 'Produto excluído!', 'success');
+              this.carregarProdutos();
+            },
+            error: () => {
+              Swal.fire('Erro', 'Falha ao excluir produto', 'error');
+            }
+          });
+      }
+    });
+  }
+
+salvarPrecificacao(): void {
+  // 1. Definição segura das constantes
+  const id = this.pessoaId || this.idPessoa;
+  const idProd = this.produtoPrecificacao?.idProduto;
+  const novoPreco = this.novoValor;
+
+  // 2. Validações
+  if (!id) {
+    console.error('Erro: ID da Pessoa não encontrado.');
+    Swal.fire('Erro', 'ID da pessoa não encontrado.', 'error');
+    return;
+  }
+
+  if (!idProd || !novoPreco) {
+    console.warn('Dados de produto ou valor ausentes.');
+    Swal.fire('Atenção', 'Selecione um produto e informe o novo valor.', 'warning');
+    return;
+  }
+
+  // 3. CONFIRMAÇÃO
   Swal.fire({
-    title: 'Confirmação',
-    text: `Deseja excluir o produto ${produto.nomeProduto}?`,
-    icon: 'warning',
+    title: 'Confirmar atualização',
+    text: `Deseja atualizar o preço para ${novoPreco.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    })}?`,
+    icon: 'question',
     showCancelButton: true,
-    confirmButtonText: 'Sim, excluir',
-    cancelButtonText: 'Cancelar'
+    confirmButtonText: 'Sim, atualizar',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#0d6efd',
+    cancelButtonColor: '#6c757d',
   }).then(result => {
 
-    if (result.isConfirmed) {
-      this.pessoaService
-        .deletarProduto(this.pessoaId, produto.seqProduto)
-        .subscribe({
-          next: () => {
-            Swal.fire('Sucesso', 'Produto excluído!', 'success');
-            this.carregarProdutos();
-          },
-          error: () => {
-            Swal.fire('Erro', 'Falha ao excluir produto', 'error');
-          }
-        });
+    if (!result.isConfirmed) {
+      return;
     }
+
+    // 4. CHAMADA AO SERVIÇO
+    this.pessoaService
+      .atualizarValorProduto(id, idProd, novoPreco)
+      .subscribe({
+        next: () => {
+
+          // 🔄 Atualiza tela
+          this.limparPrecificacao();
+          this.carregarProdutos();
+          this.onProdutoPrecificacaoChange();
+
+          console.log(`Sucesso: Produto ${idProd} atualizado para ${novoPreco}`);
+
+          // ✅ SUCESSO
+          Swal.fire({
+            icon: 'success',
+            title: 'Preço atualizado!',
+            timer: 2000,
+            showConfirmButton: false,
+          });
+        },
+        error: (err) => {
+          console.error('Falha na API:', err);
+
+          Swal.fire(
+            'Erro',
+            'Não foi possível atualizar o preço.',
+            'error'
+          );
+        }
+      });
   });
 }
+  limparPrecificacao() {
+    this.produtoPrecificacao = null;
+    this.novoValor = null;
+  }
+
+  onProdutoPrecificacaoChange() {
+
+        this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
+
+  if (!this.produtoPrecificacao) {
+    this.listaPrecificacao = [];
+    return;
+  }
+
+  this.pessoaService
+    .listarProdutosPorPessoaEProduto(
+      this.pessoaId,
+      this.produtoPrecificacao.idProduto
+    )
+    .subscribe(res => {
+      this.listaPrecificacao = res;
+    });
+}
+
 
 }

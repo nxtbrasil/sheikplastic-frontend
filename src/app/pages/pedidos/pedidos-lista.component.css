@@ -1,0 +1,466 @@
+/* ===== CONTAINER DO FORM ===== */
+/* === Ajuste para o menu lateral fixo === */
+.page-wrapper {
+  height: calc(100vh - 56px); /* altura total menos a navbar */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* impede scroll externo */
+}
+
+/* ===== Área rolável apenas dentro da página ===== */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.card-form {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+  transition: all 0.3s ease;
+}
+
+.card-form:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== TÍTULO ===== */
+.card-form h4 {
+  color: #333;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+/* ===== LABELS E CAMPOS ===== */
+.card-form .form-label {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+.card-form input,
+.card-form select {
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ced4da;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-form input:focus,
+.card-form select:focus {
+  border-color: #5b8ef1;
+  box-shadow: 0 0 0 0.2rem rgba(91, 142, 241, 0.25);
+}
+
+/* ===== BOTÕES ===== */
+.card-form button {
+  border-radius: 8px;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #5b8ef1;
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #4a7de0;
+  opacity: 0.95;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  color: #fff;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  opacity: 0.95;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 576px) {
+  .card-form {
+    padding: 1.5rem;
+  }
+
+  .card-form .row {
+    flex-direction: column;
+  }
+}
+
+/* ===== STATUS MODERNO ===== */
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toggle-switch input {
+  display: none;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 24px;
+  background-color: #d0d0d0;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.switch::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 2px;
+  top: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input:checked + .switch {
+  background-color: #5b8ef1;
+}
+
+.toggle-switch input:checked + .switch::after {
+  transform: translateX(22px);
+}
+
+.status-text {
+  font-weight: 500;
+  color: #333;
+}
+
+
+/* === ÁREA DAS TABS === */
+.pessoa-tabs {
+  border-bottom: none; /* não precisa mais da linha */
+  gap: 4px;
+}
+
+.pessoa-tabs .nav-link {
+  font-weight: 600;
+  color: #6c757d;
+  padding: 10px 22px;
+
+  border: 1px solid #d1d1d1;      /* ⭐ borda em todas */
+  border-radius: 6px 6px 0 0;      /* quadrado superior */
+  background: #f8f9fa;             /* leve cinza */
+  transition: all .25s ease;
+}
+
+/* Hover */
+.pessoa-tabs .nav-link:hover {
+  color: #0d6efd;
+  background: #ffffff;
+  border-color: #0d6efd;
+}
+
+/* ⭐ Aba ativa com borda azul e fundo branco */
+.pessoa-tabs .nav-link.active {
+  color: #0d6efd;
+  background: #ffffff;
+  border-color: #0d6efd;
+
+  font-weight: 700;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.06);
+}
+.pessoa-tabs .nav-link.active:hover {
+  background: #ffffff;
+  border-color: #0d6efd;
+} 
+
+.nav-tabs .nav-link {
+  border: 1px solid #dcdcdc !important;
+  border-radius: 4px 4px 0 0 !important;
+  margin-right: -1px; /* une perfeitamente */
+}
+
+/* Divisor leve entre os botões */
+.nav-tabs .nav-item:not(:last-child) .nav-link {
+  border-right: 1px solid #e6e6e6 !important;
+}
+
+.nav-tabs {
+  border-bottom: none !important; /* remove borda padrão se existir */
+}
+
+.tabs-divider {
+  width: 100%;
+  height: 1px;
+  background: #e6e6e6; /* leve divisor */
+  margin-top: -1px;     /* cola na tab */
+  margin-bottom: 20px;  /* espaçamento pro conteúdo */
+}
+
+.btn-acao {
+  width: 38px;
+  height: 38px;
+  padding: 0 !important;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acoes-wrapper {
+  display: flex;
+  gap: 8px;   /* Espaço entre os botões */
+}
+
+.col-acoes {
+  width: 140px;
+}
+
+.acoes-wrapper {
+  display: flex;
+  justify-content: left;
+  gap: 6px;
+}
+
+.btn-acao {
+  padding: 4px 8px;
+  font-size: 13px;
+}
+.btn-acao i {
+  font-size: 16px;
+} 
+
+.status-bolinha {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* ATIVO = VERDE */
+.status-bolinha.ativo {
+  background-color: #28a745; /* verde bootstrap */
+}
+
+/* INATIVO = VERMELHO */
+.status-bolinha.inativo {
+  background-color: #dc3545; /* vermelho bootstrap */
+}
+
+
+
+/* Permite que a tabela se ajuste */
+.table-responsive,
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+}
+.container-funcionarios {
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+  min-height: calc(100vh - 70px); /* evita que o conteúdo "grude" no topo */
+}
+
+.container {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.header h2 {
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.btn-add {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-add:hover {
+  background-color: #0056b3;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  background-color: #f4f6f8;
+  color: #555;
+  font-weight: 600;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
+}
+
+.table td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* ===== BREADCRUMB COM BOTÃO ===== */
+.custom-breadcrumb {
+  background: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.custom-breadcrumb nav {
+  flex-grow: 1;
+}
+
+.custom-breadcrumb ol {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  flex-wrap: wrap;
+}
+
+.custom-breadcrumb li {
+  display: flex;
+  align-items: center;
+  color: #6c757d;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.custom-breadcrumb li i {
+  margin-right: 6px;
+  color: #0d6efd;
+}
+
+.custom-breadcrumb li:not(:last-child)::after {
+  content: "›";
+  color: #adb5bd;
+  margin: 0 8px;
+  font-weight: bold;
+}
+
+.custom-breadcrumb li a {
+  text-decoration: none;
+  color: #0d6efd;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.custom-breadcrumb li a:hover {
+  color: #0a58ca;
+  text-decoration: underline;
+}
+
+.custom-breadcrumb li.active {
+  color: #343a40;
+  font-weight: 600;
+}
+
+.custom-breadcrumb li.active i {
+  color: #343a40;
+}
+
+/* Botão dentro do breadcrumb */
+.btn-breadcrumb {
+  border-radius: 8px;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-breadcrumb:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.35);
+}
+.btn-breadcrumb:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(13, 110, 253, 0.25);
+}
+/* Container principal para garantir o fluxo vertical */
+.st-filter-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+/* Estilização da Label (Topo) */
+.st-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+}
+
+/* Estilização do Select (Debaixo) */
+.st-select {
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+/* Efeito de Foco (Amarelo StarTools) */
+.st-select:focus {
+    border-color: #FFB800;
+    box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.15);
+    outline: none;
+}
+
+/* Estilo para as opções dentro do select */
+.st-select option {
+    padding: 10px;
+}

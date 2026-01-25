@@ -1,0 +1,232 @@
+<div class="page-wrapper">
+  <div class="scroll-area">
+    <div class="container-funcionarios mt-4">
+
+      <!-- ===== BREADCRUMB COM BOTÃO ===== -->
+      <div class="custom-breadcrumb d-flex justify-content-between align-items-center mb-4">
+        <nav>
+          <ol>
+            <li>
+              <a routerLink="/home">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/home/_cad">
+                <i class="fa-solid fa-folder-open"></i>
+                <span>Vendas</span>
+              </a>
+            </li>
+            <li class="active">
+              <i class="fa-solid fa-receipt"></i>
+              <span>Pedidos</span>
+            </li>
+          </ol>
+        </nav>
+
+        <button class="btn btn-primary btn-breadcrumb" (click)="novo()">
+          <i class="fa-solid fa-plus"></i> Novo Pedido
+        </button>
+      </div>
+
+      <!-- ===== FILTROS ===== -->
+      <div class="row g-2 mb-3">
+
+        <!-- Ordenar -->
+        <div class="col-md-2">
+          <label class="st-label">Ordenar por</label>
+          <select class="form-select st-select" [(ngModel)]="filtro.ordenacao" (change)="buscar()">
+            <option value="idPedido">ID (Mais novos)</option>
+            <option value="nomePessoa">Cliente (A-Z)</option>
+            <option value="dtEntradaPedido">Data do Pedido</option>
+            <option value="dtPrevisaoPedido">Data de Entrega</option>
+            <option value="nomeFuncionario">Vendedor (A-Z)</option>
+          </select>
+        </div>
+
+        <!-- Pedido -->
+        <div class="col-md-2 st-filter-group">
+          <label for="idPedido"># Pedido</label>
+          <div class="st-input-container">
+            <select id="idPedido" class="form-select st-select" [(ngModel)]="filtro.idPedido">
+              <option [ngValue]="null">Todos os Pedidos</option>
+
+              <option *ngFor="let p of pedidos" [ngValue]="p.idPedido">
+                #{{ p.idPedido }} - {{ p.nomePessoa }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+
+        <!-- Situação -->
+        <div class="col-md-2">
+          <label>Situação</label>
+          <select class="form-select" [(ngModel)]="filtro.statusPedido">
+            <option [ngValue]="2">Todos</option>
+            <option [ngValue]="-1">Em Andamento</option>
+            <option [ngValue]="1">Entregue</option>
+          </select>
+        </div>
+
+        <!-- Cliente -->
+        <div class="col-md-3">
+          <label>Cliente</label>
+          <select class="form-select" [(ngModel)]="filtro.idPessoa">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let c of clientes" [ngValue]="c.id">
+              {{ c.nome }}
+            </option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="row g-2 mb-3">
+
+        <!-- Vendedor -->
+        <div class="col-md-3">
+          <label>Vendedor</label>
+          <select class="form-select" [(ngModel)]="filtro.idFuncionario">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let v of vendedores" [ngValue]="v.id">
+              {{ v.nome }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Data Pedido -->
+        <div class="col-md-3">
+          <label>Dt Pedido</label>
+          <div class="d-flex gap-1">
+            <input type="date" class="form-control" [(ngModel)]="filtro.dtEntradaIni">
+            <input type="date" class="form-control" [(ngModel)]="filtro.dtEntradaFim">
+          </div>
+        </div>
+
+        <!-- Data Entrega -->
+        <div class="col-md-3">
+          <label>Dt Entrega</label>
+          <div class="d-flex gap-1">
+            <input type="date" class="form-control" [(ngModel)]="filtro.dtEntregaIni">
+            <input type="date" class="form-control" [(ngModel)]="filtro.dtEntregaFim">
+          </div>
+        </div>
+
+        <!-- Validade -->
+        <div class="col-md-2">
+          <label>Validade</label>
+          <select class="form-select" [(ngModel)]="filtro.ativo">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="true">Ativo</option>
+            <option [ngValue]="false">Cancelado</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="mb-3">
+        <button class="btn btn-primary me-2" (click)="buscar()">Aplicar Filtro</button>
+        <button class="btn btn-secondary" (click)="limpar()">Limpar</button>
+        <button class="btn btn-danger ms-2" [disabled]="!temSelecionados()" (click)="excluirSelecionados()">
+          <i class="fa-solid fa-trash"></i>
+          Excluir Selecionados
+        </button>
+      </div>
+
+
+      <div *ngIf="loading">Carregando...</div>
+      <div *ngIf="error">{{ error }}</div>
+
+      <!-- ===== TABELA ===== -->
+      <table class="table table-striped" *ngIf="!loading && pedidos.length">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Urgente</th>
+            <th>Situação</th>
+            <th>Cliente</th>
+            <th>Vendedor</th>
+            <th>Valor</th>
+            <th>Dt Pedido</th>
+            <th>Dt Entrega</th>
+            <th>Ativo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let p of pedidosPaginados">
+            <td>{{ p.idPedido }}</td>
+            <td>
+              <span class="status-bolinha" [ngClass]="p.urgente ? 'ativo' : 'inativo'">
+              </span>
+            </td>
+
+
+            <td class="text-center">
+              <i class="fa-solid" [ngClass]="getStatusIcon(p)" [title]="getStatusLabel(p)">
+              </i>
+            </td>
+
+            <td>{{ p.nomePessoa }}</td>
+            <td>{{ p.nomeFuncionario }}</td>
+            <td>{{ p.valorPedido | currency:'BRL' }}</td>
+            <td>{{ p.dtEntradaPedido | date:'dd/MM/yyyy' }}</td>
+            <td>{{ p.dtPrevisaoPedido | date:'dd/MM/yyyy' }}</td>
+
+            <!-- COLUNA ATIVO -->
+            <td class="text-center">
+              <span class="status-bolinha" [ngClass]="p.ativo ? 'ativo' : 'inativo'"
+                [title]="p.ativo ? 'Ativo' : 'Inativo'">
+              </span>
+            </td>
+
+            <td>
+              <button class="btn btn-sm btn-warning me-2" (click)="editar(p.idPedido)">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+
+              <button class="btn btn-sm btn-primary me-1" (click)="itensPedido(p.idPedido, p.idPessoa)">
+                <i class="fa-solid fa-list"></i>
+              </button>
+
+              <button class="btn btn-sm btn-danger" (click)="excluir(p)">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+            <td>
+              <input type="checkbox" [(ngModel)]="p.selecionado" (change)="atualizarSelecionarTodos()" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+      <p *ngIf="!loading && !pedidos.length">Nenhum pedido encontrado.</p>
+
+      <!-- ===== PAGINAÇÃO ===== -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div class="text-muted small">
+          Mostrando {{ exibicaoInicio }} - {{ exibicaoFim }} de {{ totalItens }}
+        </div>
+
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+
+            <li class="page-item" [class.disabled]="paginaAtual === 0">
+              <button class="page-link" (click)="mudarPagina(paginaAtual - 1)">‹ Anterior</button>
+            </li>
+
+            <li class="page-item" [class.disabled]="paginaAtual === paginas.length - 1">
+              <button class="page-link" (click)="mudarPagina(paginaAtual + 1)">Próxima ›</button>
+            </li>
+
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+</div>
