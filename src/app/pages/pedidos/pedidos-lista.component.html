@@ -183,19 +183,37 @@
               </span>
             </td>
 
-            <td>
-              <button class="btn btn-sm btn-warning me-2" (click)="editar(p.idPedido)">
-                <i class="fa-solid fa-pen"></i>
-              </button>
+            <td class="acoes">
+              <div class="acoes-wrapper">
+                <button class="btn btn-sm btn-warning" (click)="editar(p.idPedido)">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
 
-              <button class="btn btn-sm btn-primary me-1" (click)="itensPedido(p.idPedido, p.idPessoa)">
-                <i class="fa-solid fa-list"></i>
-              </button>
+                <button class="btn btn-sm btn-primary" (click)="itensPedido(p.idPedido, p.idPessoa)">
+                  <i class="fa-solid fa-list"></i>
+                </button>
+                <button *ngIf="p.temItensEntregues && !p.entregue" class="btn btn-sm btn-success"
+                  title="Entregar Pedido" (click)="entregarPedido(p)">
+                  <i class="fa-solid fa-truck"></i>
+                </button>
 
-              <button class="btn btn-sm btn-danger" (click)="excluir(p)">
-                <i class="fa-solid fa-trash"></i>
-              </button>
+
+                <button class="btn btn-sm btn-danger" (click)="excluir(p)">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+
+                <button class="btn btn-sm btn-secondary" title="Imprimir produção"
+                  (click)="imprimirProducao(p.idPedido)">
+                  <i class="fa-solid fa-print"></i>
+                </button>
+
+                <button *ngIf="p.entregue === true" class="btn btn-sm btn-primary" title="Imprimir cliente"
+                  (click)="imprimirCliente(p.idPedido)">
+                  <i class="fa-solid fa-print"></i>
+                </button>
+              </div>
             </td>
+
             <td>
               <input type="checkbox" [(ngModel)]="p.selecionado" (change)="atualizarSelecionarTodos()" />
             </td>

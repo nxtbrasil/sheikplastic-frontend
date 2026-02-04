@@ -27,6 +27,12 @@ export class PedidoService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
+  buscarImpressao(idPedido: number) {
+  return this.http.get<any>(
+    `/api/pedidos/${idPedido}/impressao`
+  );
+}
+
   private formatarData(data: any): string | null {
   if (!data) return null;
 
@@ -156,6 +162,20 @@ listarPedidos(filtro: any): Observable<any[]> {
     );
   }
 
+buscarCabecalhoImpressao(id: any): Observable<any> {  
+  return this.http.get<any>(`${this.apiUrl}/${id}/cabecalho-impressao`);
+}
 
+listarItensImpressao(pedidoId: any): Observable<any[]> {  
+  return this.http.get<any[]>(`${this.apiUrl}/${pedidoId}/impressao`);  
+}
+
+listarItensPedido(idPedido: number) {
+  return this.http.get<any>(`${this.apiUrl}/${idPedido}/itens`);
+}
+
+entregarPedido(idPedido: number, payload: any): Observable<any> {
+  return this.http.put<any>(`${this.apiUrl}/${idPedido}`, payload);
+}
 
 }

@@ -50,7 +50,11 @@ import { PedidosListaComponent } from './pages/pedidos/pedidos-lista.component';
 import { PedidoFormComponent } from './pages/pedidos/pedidos-form/pedido-form.component';
 import { PedidoItensComponent } from './pages/pedidos/pedidos-itens/pedido-itens.component';
 import { PedidoItensFormComponent } from './pages/pedidos/pedidos-itens/pedido-itens-form.component';
-
+import { PedidoImpressaoComponent } from './pedido-impressao/pedido-impressao.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { PedidoImpressaoProducaoComponent } from './pedido-impressao/pedido-impressao-producao.component';
+import { TransportadoraFormComponent } from './pages/transportadora/transportadora-form/transportadora-form.component';
+import { TransportadoraListComponent } from './pages/transportadora/transportadora-list/transportadora-list.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +64,9 @@ import { PedidoItensFormComponent } from './pages/pedidos/pedidos-itens/pedido-i
     SubmenuComponent,
     NovoUsuarioComponent,
     MeuPerfilComponent,
-    TrocaSenhaComponent
+    TrocaSenhaComponent,
+    PedidoImpressaoComponent,
+    PedidoImpressaoProducaoComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +82,15 @@ import { PedidoItensFormComponent } from './pages/pedidos/pedidos-itens/pedido-i
         { path: '', redirectTo: 'home', pathMatch: 'full' },
 
         { path: 'login', component: LoginComponent },
+
+        {
+          path: 'impressao/producao/:idPedido',
+          component: PedidoImpressaoComponent
+        },
+                {
+          path: 'impressao/cliente/:idPedido',
+          component: PedidoImpressaoProducaoComponent
+        },
 
         {
           path: 'home',
@@ -131,13 +146,15 @@ import { PedidoItensFormComponent } from './pages/pedidos/pedidos-itens/pedido-i
             { path: 'pedidosForm', component: PedidoFormComponent, },
             { path: 'pedidosForm/:id', component: PedidoFormComponent, },
             { path: 'pedidosItem/:id/:idPessoa', component: PedidoItensComponent, },
-            {path: 'pedidosItens/:id/:idPessoa/:seqProduto', component: PedidoItensFormComponent, },
+            { path: 'pedidosItens/:id/:idPessoa/:seqProduto', component: PedidoItensFormComponent, },
             // { path: 'gruposusuarioForm', component: GruposUsuariosEditarCompon
             // ent, },
+            { path: 'transportadoras', component: TransportadoraListComponent, },
+            { path: 'transportadoraForm', component: TransportadoraFormComponent, },
+            { path: 'transportadoraForm/:id', component: TransportadoraFormComponent, },
 
           ]
         },
-
         { path: '**', redirectTo: 'home' }
       ],
       { scrollPositionRestoration: 'enabled' }
@@ -147,6 +164,7 @@ import { PedidoItensFormComponent } from './pages/pedidos/pedidos-itens/pedido-i
     AuthService,
     MenuService,
     AuthGuard,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
 
     provideAnimationsAsync(),

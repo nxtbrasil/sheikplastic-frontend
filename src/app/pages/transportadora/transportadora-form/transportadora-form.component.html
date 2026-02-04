@@ -1,0 +1,97 @@
+<div class="card-form shadow p-4 rounded mx-auto mt-5" style="max-width: 720px;">
+  <h4 class="text-center mb-4 fw-semibold">
+    🚚 {{ isEdit ? 'Editar Transportadora' : 'Nova Transportadora' }}
+  </h4>
+
+  <form [formGroup]="formTransportadora" (ngSubmit)="salvar()">
+
+    <!-- DADOS BÁSICOS -->
+    <div class="row g-3">
+
+      <div class="col-md-6">
+        <label class="form-label">Nome</label>
+        <input class="form-control" formControlName="nome"
+          [class.is-invalid]="formTransportadora.get('nome')?.invalid && formTransportadora.get('nome')?.touched">
+        <div class="invalid-feedback">O nome é obrigatório.</div>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">CNPJ</label>
+        <input class="form-control" formControlName="cnpj"
+          [class.is-invalid]="formTransportadora.get('cnpj')?.invalid && formTransportadora.get('cnpj')?.touched"
+          placeholder="Somente números">
+        <div class="invalid-feedback">
+          CNPJ deve ter exatamente 14 números.
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Telefone</label>
+        <input class="form-control" formControlName="telefone">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">E-mail</label>
+        <input class="form-control" formControlName="email">
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">CEP</label>
+        <input class="form-control" formControlName="cepEnderecoPessoa">
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Logradouro</label>
+        <input class="form-control" formControlName="logradouroEnderecoPessoa">
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">Número</label>
+        <input class="form-control" formControlName="numeroEnderecoPessoa">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Complemento</label>
+        <input class="form-control" formControlName="complementoEnderecoPessoa">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Bairro</label>
+        <input class="form-control" formControlName="bairroEnderecoPessoa">
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Cidade</label>
+        <select class="form-select" formControlName="idCidade"
+          [class.is-invalid]="formTransportadora.get('idCidade')?.invalid && formTransportadora.get('idCidade')?.touched">
+          <option [ngValue]="null">Selecione...</option>
+          <option *ngFor="let c of cidades" [ngValue]="c.idCidade">
+            {{ c.nomeCidade }}
+          </option>
+        </select>
+        <div class="invalid-feedback">Selecione uma cidade.</div>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label">Status</label>
+        <select class="form-control" formControlName="ativo">
+          <option [value]="true">Ativa</option>
+          <option [value]="false">Inativa</option>
+        </select>
+      </div>
+
+    </div>
+
+    <!-- AÇÕES -->
+    <div class="d-flex justify-content-end gap-2 mt-4">
+      <button type="submit" class="btn btn-primary">
+        Salvar
+      </button>
+      <button type="button" class="btn btn-secondary" (click)="cancelar()">
+        Cancelar
+      </button>
+    </div>
+
+  </form>
+
+</div>

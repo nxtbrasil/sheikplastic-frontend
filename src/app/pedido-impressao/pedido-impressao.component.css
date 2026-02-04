@@ -1,0 +1,157 @@
+/* ===============================
+   ESTILO PADRÃO (TELA)
+   =============================== */
+
+.print-page {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: #000;
+  padding: 10px;
+  background: #fff;
+}
+
+.top-bar {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: center;
+}
+
+.top-bar .left {
+  font-size: 11px;
+}
+
+.top-bar .center {
+  text-align: center;
+}
+
+.title {
+  font-size: 11px;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #0033cc;
+}
+
+.cnpj {
+  font-size: 10px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #000;
+  margin: 8px 0;
+}
+
+.pedido-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 20px;
+  margin-bottom: 10px;
+}
+
+.itens {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.itens th {
+  border-bottom: 2px solid #0033cc;
+  text-align: left;
+  padding: 4px;
+}
+
+.itens td {
+  border-bottom: 1px solid #0033cc;
+  padding: 4px;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.obs {
+  margin-top: 12px;
+  border-top: 1px solid #0033cc;
+  padding-top: 6px;
+}
+
+/* ===============================
+   IMPRESSÃO (PRINT)
+   =============================== */
+
+@media print {
+
+  /* Remove tudo que não é impressão */
+  app-navbar,
+  header,
+  .navbar,
+  .topbar,
+  .app-header {
+    display: none !important;
+  }
+
+  /* Configuração da página */
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    width: 100%;
+    height: auto;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  /* Área de impressão */
+  .print-page {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Evita páginas extras */
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Evita quebra errada */
+  table,
+  tr,
+  td,
+  th {
+    page-break-inside: avoid;
+  }
+
+  .obs {
+    page-break-inside: avoid;
+  }
+
+  /* Remove qualquer sombra ou efeito */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+/* ===============================
+   QUEBRA MANUAL (OPCIONAL)
+   =============================== */
+
+.quebra-pagina {
+  page-break-before: always;
+}
+.urgente {
+  color: red;
+  font-weight: bold;
+  margin-right: 6px;
+}

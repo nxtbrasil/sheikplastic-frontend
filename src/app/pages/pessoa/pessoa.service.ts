@@ -126,24 +126,50 @@ export class PessoaService {
   }
 
   atualizarValorProduto(
-  idPessoa: number,
-  idProduto: number,
-  novoValor: number
-) {
-  return this.http.put<void>(
-    `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/${idProduto}/valor`,
-    null,
-    { params: { novoValor } }
-  );
-}
+    idPessoa: number,
+    idProduto: number,
+    novoValor: number
+  ) {
+    return this.http.put<void>(
+      `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/${idProduto}/valor`,
+      null,
+      { params: { novoValor } }
+    );
+  }
 
-listarProdutosPorPessoaEProduto(
-  idPessoa: number,
-  idProduto: number
-) {
-  return this.http.get<any[]>(
-    `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/produto/${idProduto}`
-  );
-}
+  listarProdutosPorPessoaEProduto(
+    idPessoa: number,
+    idProduto: number
+  ) {
+    return this.http.get<any[]>(
+      `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/produto/${idProduto}`
+    );
+  }
+
+  listarCombo() {
+    return this.http.get<any[]>(`${environment.apiBaseUrl}/api/produtos/combo`);
+  }
+
+
+  buscarProdutoPessoa(idPessoa: number, idProduto: number, seqProduto: number) {
+    return this.http.get<any>(
+      `${environment.apiBaseUrl}/pessoas-produtos/${idPessoa}/produtos/${idProduto}/${seqProduto}`
+    );
+  }
+
+
+  buscarDetalheProduto(
+    idPessoa: number,
+    idProduto: number,
+    seqProduto: number
+  ) {
+    return this.http.get<any>(
+      `/api/pessoas-produtos/${idPessoa}/${idProduto}/${seqProduto}`
+    );
+  }
+
+  listarTransportadorasAtivas() {
+    return this.http.get<any[]>('/api/transportadoras');
+  }
 
 }

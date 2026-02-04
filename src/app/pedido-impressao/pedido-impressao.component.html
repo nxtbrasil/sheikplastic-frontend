@@ -1,0 +1,61 @@
+<div class="print-page">
+
+  <!-- TOPO -->
+  <div class="top-bar">
+    <div class="left">
+      {{ now | date:'dd/MM/yyyy, HH:mm' }}
+    </div>
+
+    <div class="center">
+      <div class="title">Sistema SheikPlastic - Impressão de Pedido para Produção</div>
+      <div class="logo">SHEIKPLASTIC</div>
+      <div class="cnpj">PAEX (41) 9 9211-9577</div>
+    </div>
+
+    <div class="right"></div>
+  </div>
+
+  <hr />
+
+  <!-- DADOS DO PEDIDO -->
+  <div class="pedido-info">
+    <div><strong>Pedido</strong> {{ pedido.idPedido }}</div>
+    <div><strong>Data do Pedido</strong> {{ pedido.dtEntradaPedido | date:'dd/MM/yyyy' }}</div>
+    <div><strong>Cliente</strong> {{ pedido.nomeCliente }}</div>
+          <div>
+                <strong>Vendedor:</strong>
+                <span *ngIf="pedido.urgente" class="urgente">URGENTE</span>
+                {{ pedido.nomeFuncionario }}
+            </div>
+
+    <div><strong>Situação</strong> {{ pedido.statusPedido }}</div>
+    <div><strong>Previsão de Entrega</strong> {{ pedido.dtPrevisaoPedido | date:'dd/MM/yyyy' }}</div>
+  </div>
+
+  <!-- TABELA -->
+  <table class="itens">
+    <thead>
+      <tr>
+        <th style="width: 40px">Item</th>
+        <th>Produto</th>
+        <th style="width: 80px">UNP</th>
+        <th style="width: 100px">Qtd Pedido</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let i of itens; let idx = index">
+        <td>{{ idx + 1 }}</td>
+        <td>{{ i.seqProduto }} - {{ i.nomeProduto }} - {{i.complementoProduto}}</td>
+        <td class="center">{{ i.unpItem }}</td>
+        <td class="right">{{ i.qtdItem | number:'1.2-2' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- OBS -->
+  <div class="obs">
+    <strong>Obs:</strong> {{ pedido.observacao }}
+  </div>
+
+</div>

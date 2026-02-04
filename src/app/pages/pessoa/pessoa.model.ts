@@ -27,5 +27,6 @@ export interface Pessoa {
   ativo: boolean;
   observacao?: string;
   identidadePessoa?: string; // RG ou Inscrição Estadual
+  idTransportadora?: number;
 
 }

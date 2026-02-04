@@ -30,7 +30,7 @@
             <label class="form-label">Vendedor</label>
             <select class="form-control" formControlName="idFuncionario">
               <option [ngValue]="null">Selecione</option>
-              <option *ngFor="let f of funcionarios" [value]="f.idFuncionario">
+              <option *ngFor="let f of funcionarios" [ngValue]="f.idFuncionario">
                 {{ f.nomeFuncionario }}
               </option>
             </select>
@@ -41,8 +41,7 @@
             <label class="form-label">Condição de Pagamento</label>
             <select class="form-control" formControlName="idCondicaoPagamento">
               <option [ngValue]="null">Selecione</option>
-              <option *ngFor="let c of condicoesPagamento"
-                      [value]="c.idCondicaoPagamento">
+              <option *ngFor="let c of condicoesPagamento" [value]="c.idCondicaoPagamento">
                 {{ c.descricaoCondicaoPagamento }}
               </option>
             </select>
@@ -56,28 +55,19 @@
           <!-- DATA DO PEDIDO (SÓ EDIÇÃO) -->
           <div class="col-md-4" *ngIf="isEdit">
             <label class="form-label">Data do Pedido</label>
-            <input
-              type="date"
-              class="form-control"
-              formControlName="dtEntradaPedido"
-              readonly>
+            <input type="date" class="form-control" formControlName="dtEntradaPedido" readonly>
           </div>
 
           <!-- PREVISÃO -->
           <div class="col-md-4">
             <label class="form-label">Previsão de Entrega</label>
-            <input
-              type="date"
-              class="form-control"
-              formControlName="dtPrevisaoPedido">
+            <input type="date" class="form-control" formControlName="dtPrevisaoPedido">
           </div>
 
           <!-- SOLICITANTE -->
           <div class="col-md-4">
             <label class="form-label">Pessoa Solicitante</label>
-            <input
-              class="form-control"
-              formControlName="nomeSolicitante">
+            <input class="form-control" formControlName="nomeSolicitante">
           </div>
 
         </div>
@@ -87,10 +77,7 @@
 
           <div class="col-md-2">
             <div class="form-check mt-4">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                formControlName="urgente">
+              <input type="checkbox" class="form-check-input" formControlName="urgente">
               <label class="form-check-label">
                 Urgente
               </label>
@@ -103,10 +90,7 @@
         <div class="row mb-3">
           <div class="col-12">
             <label class="form-label">Observação</label>
-            <textarea
-              rows="3"
-              class="form-control"
-              formControlName="observacao"></textarea>
+            <textarea rows="3" class="form-control" formControlName="observacao"></textarea>
           </div>
         </div>
 
@@ -137,10 +121,7 @@
             {{ isEdit ? 'Atualizar' : 'Salvar' }}
           </button>
 
-          <button
-            type="button"
-            class="btn btn-secondary px-4"
-            (click)="cancelar()">
+          <button type="button" class="btn btn-secondary px-4" (click)="cancelar()">
             Cancelar
           </button>
         </div>

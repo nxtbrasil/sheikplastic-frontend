@@ -145,4 +145,30 @@ carregarProdutosPessoa(): void {
   voltar() {
     this.router.navigate(['home/pedidosItem', this.pessoaId, this.pedidoId]);
   }
+
+  onProdutoSelecionado(): void {
+
+  const seqProduto = this.form.get('seqProduto')?.value;
+
+  if (!seqProduto) {
+    return;
+  }
+
+  const produto = this.produtos.find(
+    p => p.seqProduto === Number(seqProduto)
+  );
+
+  if (!produto) {
+    return;
+  }
+
+  // 🔥 Preenche automaticamente (igual ASP)
+  this.form.patchValue({
+    valorVenda: produto.valorVenda,
+    unpItem: produto.unpProduto,
+    unvItem: produto.unvProduto
+  });
+
+  this.calcularTotais();
+}
 }

@@ -8,6 +8,7 @@ import { PessoaContatoService } from '../pessoa-contato.service';
 import { PessoaProduto } from '../pessoa-produto.model';
 import { Produto } from '../../produtos/produto.model';
 import { ProdutoService } from '../../produtos/produto.service';
+import { TransportadoraService } from '../../transportadora/transportadora.service';
 declare var bootstrap: any;
 
 @Component({
@@ -23,8 +24,9 @@ export class PessoaFormComponent implements OnInit {
 
   formProduto!: FormGroup;
   produtoEditando: any | null = null;
+  transportadoras: any[] = [];
 
-  listaPrecificacao: PessoaProduto[] = [];  
+  listaPrecificacao: PessoaProduto[] = [];
 
   estados: any[] = [];
   cidades: any[] = [];
@@ -59,6 +61,9 @@ export class PessoaFormComponent implements OnInit {
   produtoPrecificacao: any = null;
   novoValor: number | null = null;
 
+
+
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -67,7 +72,7 @@ export class PessoaFormComponent implements OnInit {
     private tipoContatoService: TipoContatoService,
     private pessoaContatoService: PessoaContatoService,
     private produtoService: ProdutoService,
-
+    private transportadoraService: TransportadoraService
   ) { }
 
   ngOnInit(): void {
@@ -83,7 +88,7 @@ export class PessoaFormComponent implements OnInit {
     this.carregarTiposContato();
     this.carregarProdutos();
     this.criarFormProduto();
-
+    this.carregarTransportadoras();
 
     // Listener de estado
     this.form.get('estado')?.valueChanges.subscribe(idEstado => {
@@ -115,38 +120,19 @@ export class PessoaFormComponent implements OnInit {
   }
 
 
- carregarCatalogoProdutos() {
-  this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
+  carregarCatalogoProdutos(callback?: () => void) {
+    this.produtoService.listarCombo().subscribe({
+      next: (res) => {
+        this.produtosCatalogo = res || [];
+        callback?.(); // 🔥 avisa que terminou
+      },
+      error: () => {
+        this.produtosCatalogo = [];
+        callback?.();
+      }
+    });
+  }
 
-  this.pessoaService.listarProdutosPessoa(this.pessoaId).subscribe({
-    next: (dados: any[]) => {
-      // 1. Criamos um Map usando o idProduto como chave para remover duplicados
-      const mapaUnicos = new Map();
-
-      dados.forEach(item => {
-        if (!mapaUnicos.has(item.idProduto)) {
-          mapaUnicos.set(item.idProduto, item);
-        }
-      });
-
-      // 2. Convertemos o Map de volta para um Array e tratamos os dados
-      this.produtosCatalogo = Array.from(mapaUnicos.values()).map(p => {
-        // Retornamos o objeto completo (incluindo nome e id) para não perdê-los
-        return {
-          idProduto: p.idProduto,
-          nomeProduto: p.nomeProduto,
-          complementoProduto: p.complementoProduto,
-          valorVenda: p.valorVenda,
-          qtdItens: p.qtdItens
-          // adicione outros campos se necessário
-        };
-      });
-    },
-    error: () => {
-      this.produtosCatalogo = [];
-    }
-  });
-}
 
   carregarProdutos() {
     this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
@@ -192,36 +178,40 @@ export class PessoaFormComponent implements OnInit {
 
   editarProduto(produto: any) {
 
-    this.carregarCatalogoProdutos();
-
-    // garante que o catálogo já foi carregado
-    const produtoCatalogo = this.produtosCatalogo.find(
-      p => p.idProduto === produto.idProduto
-    );
-
     this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
-    this.pessoaService
-      .buscarPorPessoaESeq(this.pessoaId, produto.seqProduto)
-      .subscribe({
-        next: (res: any) => {
-          this.produtoEditando = res;
 
-          this.formProduto.patchValue({
-            seqProduto: res.seqProduto,
-            idProduto: res.idProduto, // <-- AGORA FUNCIONA
-            complementoProduto: res.complementoProduto,
-            unpProduto: res.unpProduto,
-            unvProduto: res.unvProduto,
-            valorVenda: res.valorVenda
-          });
+    // 1️⃣ Busca o produto da pessoa (API certa)
+    this.pessoaService.buscarProdutoPessoa(
+      this.pessoaId,
+      produto.idProduto,
+      produto.seqProduto
+    ).subscribe(res => {
 
-          const modal = new bootstrap.Modal(
-            document.getElementById('modalProduto')
-          );
-          modal.show();
-        }
+      this.produtoEditando = res;
+
+      // 2️⃣ Carrega o catálogo DEPOIS
+      this.carregarCatalogoProdutos(() => {
+
+        // 3️⃣ Agora o select já tem options
+        this.formProduto.patchValue({
+          seqProduto: res.seqProduto,
+          idProduto: res.idProduto,
+          complementoProduto: res.complementoProduto,
+          unpProduto: res.unpProduto,
+          unvProduto: res.unvProduto,
+          valorVenda: res.valorVenda
+        });
+
+        // 4️⃣ Abre modal
+        const modal = new bootstrap.Modal(
+          document.getElementById('modalProduto')!
+        );
+        modal.show();
       });
+
+    });
   }
+
 
   historicoProduto(produto: any) {
     console.log('Histórico', produto);
@@ -266,14 +256,35 @@ export class PessoaFormComponent implements OnInit {
   }
 
   criarFormulario() {
+
+    this.form = this.fb.group({
+      tipoPessoa: [''],
+      documentoPessoa: [''],
+      identidadePessoa: [''],
+      nomePessoa: [''],
+      apelidoPessoa: [''],
+      cepPessoaString: [''],
+      logradouroPessoa: [''],
+      numeroPessoa: [''],
+      complementoPessoa: [''],
+      bairroPessoa: [''],
+      estado: [''],
+      cidade: [''],
+      idCondicaoPagamento: [''],
+      status: [true],
+      observacao: [''],
+      idTransportadora: ['']
+    });
+
+
     this.form = this.fb.group({
       idPessoa: [null],
       tipoPessoa: [''],
 
-      documentoPessoa: ['', Validators.required],
-      identidadePessoa: ['', Validators.required],
+      documentoPessoa: ['',],
+      identidadePessoa: ['',],
 
-      nomePessoa: ['', Validators.required],
+      nomePessoa: ['',],
       apelidoPessoa: [''],
 
       cepPessoaString: [''],
@@ -282,12 +293,13 @@ export class PessoaFormComponent implements OnInit {
       complementoPessoa: [''],
       bairroPessoa: [''],
 
-      estado: ['', Validators.required],
-      cidade: ['', Validators.required],
+      estado: ['',],
+      cidade: ['',],
 
-      idCondicaoPagamento: ['', Validators.required],
+      idCondicaoPagamento: ['',],
       observacao: [''],
-      status: ['']
+      status: [''],
+       idTransportadora: ['']
     });
   }
 
@@ -380,7 +392,8 @@ export class PessoaFormComponent implements OnInit {
         cidade: idCidade,
         idCondicaoPagamento: p.idCondicaoPagamento,
         observacao: p.observacao,
-        status: p.ativo
+        status: p.ativo,
+        idTransportadora: p.idTransportadora ?? null
       });
 
       // Carrega cidades do estado e mantém a cidade
@@ -417,7 +430,8 @@ export class PessoaFormComponent implements OnInit {
       idCidade: Number(f.cidade),
       idCondicaoPagamento: Number(f.idCondicaoPagamento),
       ativo: f.status ?? "1",
-      observacao: f.observacao ?? ""
+      observacao: f.observacao ?? "",
+      idTransportadora: f.idTransportadora
     };
 
     if (this.isEdit) {
@@ -528,26 +542,15 @@ export class PessoaFormComponent implements OnInit {
     }
 
     const dados = this.formContato.value;
-    console.log('Form value:', this.formContato.value);
 
-    // Monta objeto que a API espera
     const payload = {
-      id: {
-        idPessoa: this.pessoaId,
-        seqContato: this.contatoEditando?.seqContato ?? 0, // backend ignora no POST
-      },
-      tipoContato: {
-        id: dados.idTipoContato,
-        descricao: dados.descricao
-      },
+      idPessoa: this.pessoaId,
+      idTipoContato: dados.idTipoContato,
       contato: dados.contato,
-      observacao: dados.observacao,
-      seqContato: this.contatoEditando?.seqContato ?? 0, // backend ignora no POST
+      observacao: dados.observacao
     };
 
-    // Se estiver editando → PUT
     if (this.contatoEditando) {
-      console.log('Atualizando contato com payload:', this.contatoEditando.seqContato, payload);
 
       this.pessoaContatoService
         .atualizar(this.pessoaId, this.contatoEditando.seqContato, payload)
@@ -561,7 +564,6 @@ export class PessoaFormComponent implements OnInit {
         });
 
     } else {
-      // Novo contato → POST
 
       this.pessoaContatoService
         .criar(payload)
@@ -574,8 +576,10 @@ export class PessoaFormComponent implements OnInit {
           error: () => Swal.fire('Erro', 'Falha ao adicionar contato!', 'error')
         });
     }
-
   }
+
+
+
 
   fecharModal() {
     const modalElement = document.getElementById('modalContato');
@@ -704,77 +708,77 @@ export class PessoaFormComponent implements OnInit {
     });
   }
 
-salvarPrecificacao(): void {
-  // 1. Definição segura das constantes
-  const id = this.pessoaId || this.idPessoa;
-  const idProd = this.produtoPrecificacao?.idProduto;
-  const novoPreco = this.novoValor;
+  salvarPrecificacao(): void {
+    // 1. Definição segura das constantes
+    const id = this.pessoaId || this.idPessoa;
+    const idProd = this.produtoPrecificacao?.idProduto;
+    const novoPreco = this.novoValor;
 
-  // 2. Validações
-  if (!id) {
-    console.error('Erro: ID da Pessoa não encontrado.');
-    Swal.fire('Erro', 'ID da pessoa não encontrado.', 'error');
-    return;
-  }
-
-  if (!idProd || !novoPreco) {
-    console.warn('Dados de produto ou valor ausentes.');
-    Swal.fire('Atenção', 'Selecione um produto e informe o novo valor.', 'warning');
-    return;
-  }
-
-  // 3. CONFIRMAÇÃO
-  Swal.fire({
-    title: 'Confirmar atualização',
-    text: `Deseja atualizar o preço para ${novoPreco.toLocaleString('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    })}?`,
-    icon: 'question',
-    showCancelButton: true,
-    confirmButtonText: 'Sim, atualizar',
-    cancelButtonText: 'Cancelar',
-    confirmButtonColor: '#0d6efd',
-    cancelButtonColor: '#6c757d',
-  }).then(result => {
-
-    if (!result.isConfirmed) {
+    // 2. Validações
+    if (!id) {
+      console.error('Erro: ID da Pessoa não encontrado.');
+      Swal.fire('Erro', 'ID da pessoa não encontrado.', 'error');
       return;
     }
 
-    // 4. CHAMADA AO SERVIÇO
-    this.pessoaService
-      .atualizarValorProduto(id, idProd, novoPreco)
-      .subscribe({
-        next: () => {
+    if (!idProd || !novoPreco) {
+      console.warn('Dados de produto ou valor ausentes.');
+      Swal.fire('Atenção', 'Selecione um produto e informe o novo valor.', 'warning');
+      return;
+    }
 
-          // 🔄 Atualiza tela
-          this.limparPrecificacao();
-          this.carregarProdutos();
-          this.onProdutoPrecificacaoChange();
+    // 3. CONFIRMAÇÃO
+    Swal.fire({
+      title: 'Confirmar atualização',
+      text: `Deseja atualizar o preço para ${novoPreco.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+      })}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, atualizar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#0d6efd',
+      cancelButtonColor: '#6c757d',
+    }).then(result => {
 
-          console.log(`Sucesso: Produto ${idProd} atualizado para ${novoPreco}`);
+      if (!result.isConfirmed) {
+        return;
+      }
 
-          // ✅ SUCESSO
-          Swal.fire({
-            icon: 'success',
-            title: 'Preço atualizado!',
-            timer: 2000,
-            showConfirmButton: false,
-          });
-        },
-        error: (err) => {
-          console.error('Falha na API:', err);
+      // 4. CHAMADA AO SERVIÇO
+      this.pessoaService
+        .atualizarValorProduto(id, idProd, novoPreco)
+        .subscribe({
+          next: () => {
 
-          Swal.fire(
-            'Erro',
-            'Não foi possível atualizar o preço.',
-            'error'
-          );
-        }
-      });
-  });
-}
+            // 🔄 Atualiza tela
+            this.limparPrecificacao();
+            this.carregarProdutos();
+            this.onProdutoPrecificacaoChange();
+
+            console.log(`Sucesso: Produto ${idProd} atualizado para ${novoPreco}`);
+
+            // ✅ SUCESSO
+            Swal.fire({
+              icon: 'success',
+              title: 'Preço atualizado!',
+              timer: 2000,
+              showConfirmButton: false,
+            });
+          },
+          error: (err) => {
+            console.error('Falha na API:', err);
+
+            Swal.fire(
+              'Erro',
+              'Não foi possível atualizar o preço.',
+              'error'
+            );
+          }
+        });
+    });
+  }
   limparPrecificacao() {
     this.produtoPrecificacao = null;
     this.novoValor = null;
@@ -782,22 +786,96 @@ salvarPrecificacao(): void {
 
   onProdutoPrecificacaoChange() {
 
-        this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
+    this.pessoaId = Number(this.route.snapshot.paramMap.get('id'));
 
-  if (!this.produtoPrecificacao) {
-    this.listaPrecificacao = [];
-    return;
+    if (!this.produtoPrecificacao) {
+      this.listaPrecificacao = [];
+      return;
+    }
+
+    this.pessoaService
+      .listarProdutosPorPessoaEProduto(
+        this.pessoaId,
+        this.produtoPrecificacao.idProduto
+      )
+      .subscribe(res => {
+        this.listaPrecificacao = res;
+      });
   }
 
-  this.pessoaService
-    .listarProdutosPorPessoaEProduto(
-      this.pessoaId,
-      this.produtoPrecificacao.idProduto
-    )
-    .subscribe(res => {
-      this.listaPrecificacao = res;
-    });
-}
 
+  onProdutoChange(event: any) {
+
+    const idProduto = this.formProduto.get('idProduto')?.value;
+    const idPessoa = this.pessoaId;
+
+    if (!idProduto) {
+      return;
+    }
+
+    // 🔍 Verifica se já existe na lista da pessoa
+    const produtoPessoa = this.produtos.find(
+      p => p.idProduto === idProduto
+    );
+
+    // ➕ PRODUTO NOVO (não existe para a pessoa)
+    if (!produtoPessoa) {
+
+      this.formProduto.patchValue({
+        seqProduto: 0
+      });
+
+      // 🔥 fallback: busca no catálogo de produtos
+      this.produtoService.buscarPorId(idProduto).subscribe(produto => {
+        this.formProduto.patchValue({
+          complementoProduto: '',
+          unpProduto: produto.unidadeProduto ?? '',
+          unvProduto: produto.unidadeProduto ?? '',
+          valorVenda: produto.valorVenda ?? null
+        });
+      });
+
+      return;
+    }
+
+    // ✏️ PRODUTO JÁ EXISTENTE PARA A PESSOA
+    const seqProduto = produtoPessoa.seqProduto;
+
+    this.formProduto.patchValue({
+      seqProduto
+    });
+
+    this.pessoaService
+      .buscarProdutoPessoa(idPessoa, idProduto, seqProduto)
+      .subscribe({
+        next: (res) => {
+          this.formProduto.patchValue({
+            complementoProduto: res.complementoProduto,
+            unpProduto: res.unpProduto,
+            unvProduto: res.unvProduto,
+            valorVenda: res.valorVenda
+          });
+        },
+        error: () => {
+          // 🛟 fallback de segurança (caso raro)
+          this.produtoService.buscarPorId(idProduto).subscribe(produto => {
+            this.formProduto.patchValue({
+              complementoProduto: '',
+              unpProduto: produto.unidadeProduto ?? '',
+              unvProduto: produto.unidadeProduto ?? '',
+              valorVenda: produto.valorVenda ?? null
+            });
+          });
+        }
+      });
+  }
+
+  carregarTransportadoras() {
+    this.transportadoraService.listar().subscribe({
+      next: (res: any[]) => this.transportadoras = res,
+      error: () => console.error("Erro ao buscar transportadoras")
+    });
+
+  }
 
 }

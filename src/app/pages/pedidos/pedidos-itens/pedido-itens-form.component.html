@@ -9,15 +9,12 @@
       <form [formGroup]="form">
 
         <!-- PRODUTO -->
-        <div class="mb-3">
-          <label class="form-label">Produto</label>
-          <select class="form-control" formControlName="seqProduto" [disabled]="isEdit">
-            <option [ngValue]="null">Selecione</option>
-            <option *ngFor="let p of produtos" [value]="p.seqProduto">
-              {{ p.nomeProduto }} - {{ p.complementoProduto }}
-            </option>
-          </select>
-        </div>
+        <select class="form-control" formControlName="seqProduto" [disabled]="isEdit" (change)="onProdutoSelecionado()">
+          <option [ngValue]="null">Selecione</option>
+          <option *ngFor="let p of produtos" [value]="p.seqProduto">
+            {{ p.nomeProduto }} - {{ p.complementoProduto }}
+          </option>
+        </select>
 
         <!-- VALOR / QTD / UNP -->
         <div class="row g-3">

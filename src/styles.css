@@ -37,3 +37,69 @@ header {
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+@media print {
+  body.print-mode app-navbar,
+  body.print-mode .navbar,
+  body.print-mode .topbar,
+  body.print-mode .app-header {
+    display: none !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+}
+
+/* ===============================
+   MODO IMPRESSÃO – REMOVER TOPO
+   =============================== */
+@media print {
+
+  /* ESCONDE APENAS O HEADER DO SISTEMA */
+  body > app-root > app-layout > app-header,
+  body > app-root > app-header,
+  .app-header,
+  .navbar,
+  .topbar,
+  .menu-top,
+  .layout-header,
+  .main-header {
+    display: none !important;
+  }
+
+  /* GARANTE QUE O CONTEÚDO DE IMPRESSÃO APAREÇA */
+  .pagina-impressao,
+  .pagina-impressao * {
+    visibility: visible !important;
+  }
+
+  /* REMOVE ESPAÇOS DE LAYOUT */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* POSICIONA A PÁGINA DE IMPRESSÃO */
+  .pagina-impressao {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+}
+

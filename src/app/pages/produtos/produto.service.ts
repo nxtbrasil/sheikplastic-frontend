@@ -34,4 +34,9 @@ listar(nomeProduto?: string): Observable<Produto[]> {
   excluir(id: number): Observable<void> {
     return this.http.delete<void>(`${this.API}/${id}`);
   }
+
+  listarCombo() {
+  return this.http.get<any[]>(`${this.API}/combo`);
+}
+
 }

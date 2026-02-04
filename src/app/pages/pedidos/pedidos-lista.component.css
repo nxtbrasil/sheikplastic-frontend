@@ -464,3 +464,13 @@
 .st-select option {
     padding: 10px;
 }
+td.acoes {
+  vertical-align: middle;
+  text-align: left;
+}
+
+.acoes-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px; /* espaço entre botões */
+}

@@ -1,0 +1,68 @@
+<div class="page-wrapper">
+  <div class="scroll-area">
+    <div class="container-funcionarios mt-4">
+
+      <div class="custom-breadcrumb d-flex justify-content-between align-items-center mb-4">
+        <nav>
+          <ol>
+            <li>
+              <a routerLink="/home">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+              </a>
+            </li>
+            <li>
+              <a routerLink="/home/_cad">
+                <i class="fa-solid fa-folder-open"></i>
+                <span>Cadastro</span>
+              </a>
+            </li>
+            <li class="active">
+              <i class="fa-solid fa-truck-fast"></i>
+              <span>transportadoras</span>
+            </li>
+          </ol>
+        </nav>
+
+        <button class="btn btn-primary btn-breadcrumb" (click)="nova()">
+          <i class="fa-solid fa-plus"></i> Nova Transportadora
+        </button>
+      </div>
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CNPJ</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th width="120">Ações</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let t of transportadoras">
+            <td>{{ t.nome }}</td>
+            <td>{{ t.cnpj }}</td>
+            <td>{{ t.telefone }}</td>
+            <td>{{ t.email }}</td>
+            <td>
+              <span class="badge" [ngClass]="t.ativo ? 'bg-success' : 'bg-secondary'">
+                {{ t.ativo ? 'Ativa' : 'Inativa' }}
+              </span>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-warning btn-sm" (click)="editar(t)">
+                <i class="fa fa-pen"></i>
+              </button>
+              <button class="btn btn-danger btn-sm ms-1" (click)="excluir(t)">
+                <i class="fa fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
