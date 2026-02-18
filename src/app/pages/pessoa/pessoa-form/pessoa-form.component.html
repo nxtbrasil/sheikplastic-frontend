@@ -65,7 +65,8 @@
                 <label class="form-label">
                   {{ form.get('tipoPessoa')?.value === 'F' ? 'CPF' : 'CNPJ' }}
                 </label>
-                <input class="form-control" formControlName="documentoPessoa">
+                <input class="form-control" formControlName="documentoPessoa"
+                  [mask]="form.get('tipoPessoa')?.value === 'F' ? '000.000.000-00' : '00.000.000/0000-00'">
               </div>
 
               <div class="col-md-5">
@@ -574,7 +575,7 @@
                     <label class="form-label">Produto</label>
                     <select class="form-control" formControlName="idProduto" (change)="onProdutoChange($event)">
                       <option [ngValue]="null">Selecione</option>
-                      <option *ngFor="let p of produtosCatalogo" [ngValue]="p.idProduto">
+                      <option *ngFor="let p of produtosFiltradosParaSelecao" [ngValue]="p.idProduto">
                         {{ p.nomeProduto }}
                       </option>
                     </select>

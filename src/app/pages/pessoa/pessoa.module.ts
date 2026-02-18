@@ -5,6 +5,7 @@ import { PessoaRoutingModule } from './pessoa-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { PessoaListComponent } from './pessoa-list/pessoa-list.component';
 import { PessoaFormComponent } from './pessoa-form/pessoa-form.component';
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 
 
 @NgModule({
@@ -17,7 +18,9 @@ import { PessoaFormComponent } from './pessoa-form/pessoa-form.component';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    PessoaRoutingModule
+    PessoaRoutingModule,
+    NgxMaskDirective, // ADICIONE AQUI
+    NgxMaskPipe       // ADICIONE AQUI
   ]
 })
 export class PessoaModule {}

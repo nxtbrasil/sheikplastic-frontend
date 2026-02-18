@@ -7,7 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { NgxCurrencyDirective } from 'ngx-currency';
 
 // COMPONENTES
@@ -66,14 +66,15 @@ import { TransportadoraListComponent } from './pages/transportadora/transportado
     MeuPerfilComponent,
     TrocaSenhaComponent,
     PedidoImpressaoComponent,
-    PedidoImpressaoProducaoComponent
+    PedidoImpressaoProducaoComponent,
+    
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-
+NgxMaskPipe,
     NgxMaskDirective,
     NgxCurrencyDirective,
 

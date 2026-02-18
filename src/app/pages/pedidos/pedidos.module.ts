@@ -6,18 +6,20 @@ import { PedidosListaComponent } from './pedidos-lista.component';
 import { PedidoFormComponent } from './pedidos-form/pedido-form.component';
 import { PedidoItensComponent } from './pedidos-itens/pedido-itens.component';
 import { PedidoItensFormComponent } from './pedidos-itens/pedido-itens-form.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
     PedidosListaComponent,
     PedidoFormComponent,
     PedidoItensComponent,
-    PedidoItensFormComponent
+    PedidoItensFormComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSelectModule
   ]
 })
 export class PedidosModule {}

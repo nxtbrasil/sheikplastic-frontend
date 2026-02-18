@@ -299,7 +299,7 @@ export class PessoaFormComponent implements OnInit {
       idCondicaoPagamento: ['',],
       observacao: [''],
       status: [''],
-       idTransportadora: ['']
+      idTransportadora: ['']
     });
   }
 
@@ -876,6 +876,22 @@ export class PessoaFormComponent implements OnInit {
       error: () => console.error("Erro ao buscar transportadoras")
     });
 
+  }
+
+  // Adicione este Getter para filtrar os produtos
+  get produtosFiltradosParaSelecao() {
+    if (!this.produtosCatalogo) return [];
+
+    // Pega todos os IDs que já estão na lista de produtos da pessoa
+    const idsJaCadastrados = this.produtos.map(p => p.idProduto);
+
+    // Se estivermos editando um produto existente, precisamos permitir que 
+    // o ID desse produto específico apareça na lista para não sumir do select
+    const idSendoEditado = this.formProduto.get('idProduto')?.value;
+
+    return this.produtosCatalogo.filter(p =>
+      !idsJaCadastrados.includes(p.idProduto) || p.idProduto === idSendoEditado
+    );
   }
 
 }

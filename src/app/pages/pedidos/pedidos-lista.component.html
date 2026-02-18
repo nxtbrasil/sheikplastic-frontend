@@ -153,6 +153,9 @@
             <th>Dt Entrega</th>
             <th>Ativo</th>
             <th>Ações</th>
+            <th>
+              <input type="checkbox" [(ngModel)]="selecionarTodos" (change)="toggleSelecionarTodos()" />
+            </th>
           </tr>
         </thead>
 

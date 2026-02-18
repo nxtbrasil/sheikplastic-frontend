@@ -279,52 +279,42 @@ export class PedidosListaComponent implements OnInit {
   }
 
   excluirSelecionados(): void {
+  const selecionados = this.pedidosPaginados.filter(p => p.selecionado);
 
-    const selecionados = this.pedidosPaginados
-      .filter(p => p.selecionado);
+  if (!selecionados.length) return;
 
-    if (!selecionados.length) {
-      return;
+  Swal.fire({
+    title: `Excluir ${selecionados.length} pedido(s)?`,
+    text: 'Essa ação não poderá ser desfeita e removerá todos os itens selecionados de uma vez.',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim, excluir tudo',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#dc3545'
+  }).then(result => {
+    if (result.isConfirmed) {
+      this.loading = true;
+      
+      // Criamos o array de IDs [id1, id2, id3...]
+      const idsParaExcluir = selecionados.map(p => p.idPedido);
+
+      // Chamada ÚNICA para o lote
+      this.service.excluirEmLote(idsParaExcluir).subscribe({
+        next: () => {
+          this.loading = false;
+          Swal.fire('Sucesso', 'Pedidos excluídos com sucesso!', 'success');
+          this.selecionarTodos = false; // Reseta o checkbox do cabeçalho
+          this.buscar(); // Recarrega a grid
+        },
+        error: (err) => {
+          this.loading = false;
+          console.error('Erro ao excluir lote:', err);
+          Swal.fire('Erro', 'Não foi possível excluir os pedidos selecionados.', 'error');
+        }
+      });
     }
-
-    Swal.fire({
-      title: `Excluir ${selecionados.length} pedido(s)?`,
-      text: 'Essa ação não poderá ser desfeita',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sim, excluir',
-      cancelButtonText: 'Cancelar'
-    }).then(result => {
-      if (result.isConfirmed) {
-        this.excluirRecursivo(selecionados, 0);
-      }
-    });
-  }
-
-  excluirRecursivo(lista: any[], index: number): void {
-
-    if (index >= lista.length) {
-      Swal.fire('Sucesso', 'Pedidos excluídos com sucesso', 'success');
-      this.buscar(); // recarrega grid
-      return;
-    }
-
-    const pedido = lista[index];
-
-    this.service.excluir(pedido.idPedido).subscribe({
-      next: () => {
-        // chama o próximo
-        this.excluirRecursivo(lista, index + 1);
-      },
-      error: () => {
-        Swal.fire(
-          'Erro',
-          `Erro ao excluir pedido ${pedido.idPedido}`,
-          'error'
-        );
-      }
-    });
-  }
+  });
+}
   imprimirProducao(idPedido: number) {
     window.open(`/#/impressao/producao/${idPedido}`, '_blank');
   }

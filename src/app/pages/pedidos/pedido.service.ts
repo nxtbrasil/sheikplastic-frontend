@@ -105,12 +105,10 @@ dtEntradaPedido: this.dataAtual(),
   // =============================
   // EXCLUIR EM LOTE
   // =============================
-  excluirEmLote(ids: number[]): Observable<void> {
-    return this.http.post<void>(
-      `${this.apiUrl}/excluir-lote`,
-      ids
-    );
-  }
+excluirEmLote(ids: number[]): Observable<void> {
+  // O Angular enviará o JSON: [id1, id2, ...]
+  return this.http.delete<void>(`${this.apiUrl}/lote`, { body: ids });
+}
 
 listarPedidos(filtro: any): Observable<any[]> {
   let httpParams = new HttpParams();

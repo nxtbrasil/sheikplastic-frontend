@@ -20,6 +20,8 @@ export class PedidoItensFormComponent implements OnInit {
   pedido: any;
   itens: any[] = []
 
+  salvando = false; 
+
 
   produtos: any[] = [];
   isEdit = false;
@@ -121,26 +123,43 @@ carregarProdutosPessoa(): void {
   }
 
   salvar() {
-    if (this.form.invalid) {
-      Swal.fire('Atenção', 'Preencha os campos obrigatórios', 'warning');
-      return;
-    }
-
-    const payload = {
-      idPedido: this.pedidoId,
-      idPessoa: this.pessoaId,
-      ...this.form.value
-    };
-
-    const acao = this.isEdit
-      ? this.service.atualizar(this.pedidoId, this.pessoaId, this.seqProduto!, payload)
-      : this.service.criar(this.pedidoId, this.pessoaId,payload);
-
-    acao.subscribe(() => {
-      Swal.fire('Sucesso', 'Item salvo com sucesso', 'success');
-      this.router.navigate(['home/pedidosItem', this.pessoaId, this.pedidoId]);
-    });
+  if (this.form.invalid) {
+    this.form.markAllAsTouched(); // Destaca os campos com erro para o usuário
+    Swal.fire('Atenção', 'Preencha os campos obrigatórios corretamente', 'warning');
+    return;
   }
+
+  this.salvando = true; // Bloqueia interações extras
+
+  const payload = {
+    ...this.form.getRawValue(), // getRawValue inclui campos desabilitados (como IDs)
+    idPedido: this.pedidoId,
+    idPessoa: this.pessoaId
+  };
+
+  const acao = this.isEdit
+    ? this.service.atualizar(this.pedidoId, this.pessoaId, this.seqProduto!, payload)
+    : this.service.criar(this.pedidoId, this.pessoaId, payload);
+
+  acao.subscribe({
+    next: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Sucesso',
+        text: 'Item salvo com sucesso',
+        timer: 1500,
+        showConfirmButton: false
+      }).then(() => {
+        this.router.navigate(['home/pedidosItem', this.pessoaId, this.pedidoId]);
+      });
+    },
+    error: (err) => {
+      this.salvando = false;
+      console.error(err);
+      Swal.fire('Erro', 'Produto já cadastrado no Pedido', 'error');
+    }
+  });
+}
 
   voltar() {
     this.router.navigate(['home/pedidosItem', this.pessoaId, this.pedidoId]);

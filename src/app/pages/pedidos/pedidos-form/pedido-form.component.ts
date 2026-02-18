@@ -33,7 +33,7 @@ export class PedidoFormComponent implements OnInit {
     private condicaoPagamento: CondicaoPagamentoService,
     private router: Router,
     private route: ActivatedRoute,
-      private auth: AuthService,
+    private auth: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -56,11 +56,11 @@ export class PedidoFormComponent implements OnInit {
 
     const usuarioLogado = localStorage.getItem('userName');
 
-    console.log('Usuário logado:', usuarioLogado);  
+    console.log('Usuário logado:', usuarioLogado);
 
     if (usuarioLogado) {
-     
-    const usuarioLogado = localStorage.getItem('userName');
+
+      const usuarioLogado = localStorage.getItem('userName');
 
       // 👇 SÓ PARA NOVO PEDIDO
       const id = this.route.snapshot.paramMap.get('id');
@@ -92,27 +92,37 @@ export class PedidoFormComponent implements OnInit {
         this.form.patchValue(p);
       });
     }
+
+
+    // 1. Escuta quando o cliente mudar
+    this.form.get('idPessoa')?.valueChanges.subscribe(id => {
+      if (id) {
+        this.buscarCondicaoPadraoCliente(id);
+      }
+    });
+
+
   }
 
-carregarCombos() {
-  this.carregarClientes();
-  this.carregarCondicoesPagamento();
+  carregarCombos() {
+    this.carregarClientes();
+    this.carregarCondicoesPagamento();
 
-  this.service.listarFuncionarios().subscribe(r => {
-    this.funcionarios = r;
+    this.service.listarFuncionarios().subscribe(r => {
+      this.funcionarios = r;
 
-    // 👇 NOVO PEDIDO
-    if (!this.isEdit) {
-      const idFuncionario = Number(this.auth.getIdFuncionario());
+      // 👇 NOVO PEDIDO
+      if (!this.isEdit) {
+        const idFuncionario = Number(this.auth.getIdFuncionario());
 
-      if (idFuncionario) {
-        this.form.patchValue({
-          idFuncionario: idFuncionario
-        });
+        if (idFuncionario) {
+          this.form.patchValue({
+            idFuncionario: idFuncionario
+          });
+        }
       }
-    }
-  });
-}
+    });
+  }
   carregarCondicoesPagamento() {
     this.condicaoPagamento.listar().subscribe({
       next: (data) => {
@@ -205,5 +215,25 @@ carregarCombos() {
 
     return resultado;
   }
+
+  buscarCondicaoPadraoCliente(idPessoa: number) {
+  this.servicePessoa.buscarPorId(idPessoa).subscribe({
+    next: (pessoa) => {
+      // Se a pessoa tiver uma condição de pagamento vinculada
+      if (pessoa && pessoa.idCondicaoPagamento) {
+        
+        // Faz o patch no formulário para selecionar automaticamente no select
+        this.form.patchValue({
+          idCondicaoPagamento: pessoa.idCondicaoPagamento
+        });
+
+        // Opcional: Se precisar de mais dados da API de condições, você pode chamar aqui:
+        // this.condicaoPagamento.buscarPorId(pessoa.idCondicaoPagamento).subscribe(...)
+      }
+    },
+    error: (err) => console.error('Erro ao buscar dados do cliente', err)
+  });
+}
+
 
 }

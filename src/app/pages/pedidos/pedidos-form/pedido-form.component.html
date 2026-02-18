@@ -17,12 +17,10 @@
           <!-- CLIENTE -->
           <div class="col-md-4">
             <label class="form-label">Cliente</label>
-            <select class="form-control" formControlName="idPessoa">
-              <option [ngValue]="null">Selecione</option>
-              <option *ngFor="let c of clientes" [ngValue]="c.id">
-                {{ c.nome }}
-              </option>
-            </select>
+            <ng-select [items]="clientes" bindLabel="nome" bindValue="id" formControlName="idPessoa"
+              placeholder="Pesquise pelo nome do cliente..." [virtualScroll]="true" [appendTo]="'body'"
+              class="custom-select">
+            </ng-select>
           </div>
 
           <!-- VENDEDOR -->
@@ -41,7 +39,7 @@
             <label class="form-label">Condição de Pagamento</label>
             <select class="form-control" formControlName="idCondicaoPagamento">
               <option [ngValue]="null">Selecione</option>
-              <option *ngFor="let c of condicoesPagamento" [value]="c.idCondicaoPagamento">
+              <option *ngFor="let c of condicoesPagamento" [ngValue]="c.idCondicaoPagamento">
                 {{ c.descricaoCondicaoPagamento }}
               </option>
             </select>
