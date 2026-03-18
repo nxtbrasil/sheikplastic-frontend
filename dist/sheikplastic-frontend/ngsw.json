@@ -1,0 +1,77 @@
+{
+  "configVersion": 1,
+  "timestamp": 1771944249469,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/index.html",
+        "/main.5fcd1e7456d88e2a.js",
+        "/polyfills.f0171f320fa93aec.js",
+        "/runtime.4cd1a01ced0189fc.js",
+        "/scripts.3472c412667d09f1.js",
+        "/styles.25003e17d472c31e.css",
+        "/vendor.15dbb22f2c29b6c4.js"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/img/cabecalho.png",
+        "/assets/img/persona.png",
+        "/fa-brands-400.27ef4111ee775ef5.woff2",
+        "/fa-regular-400.586044012116c300.woff2",
+        "/fa-solid-900.be3dfdfdf593abab.woff2",
+        "/fa-v4compatibility.8995e4d2c3a1aa41.woff2"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/img/cabecalho.png": "6bee29da59f3e05cc41a5b8e2fe30bc361468708",
+    "/assets/img/persona.png": "dbff4ad5ee2f31ded8394380174b89cc57abd1cc",
+    "/fa-brands-400.27ef4111ee775ef5.woff2": "ed94030ca212e1857a6014496e7a6a43e64789e4",
+    "/fa-regular-400.586044012116c300.woff2": "a1e663df38f3616e677a2ffd0c20cc58c87b7703",
+    "/fa-solid-900.be3dfdfdf593abab.woff2": "49c2d746beabbaa5b1a58d660b217feb34272636",
+    "/fa-v4compatibility.8995e4d2c3a1aa41.woff2": "ed95837812146abe9cb9293922f80205785e8c6b",
+    "/index.html": "b9120b6e6e30f4c9173b39e7ab72fd06b48681b1",
+    "/main.5fcd1e7456d88e2a.js": "407f0f735aee7f4bc4a19b4944c2580167591a65",
+    "/polyfills.f0171f320fa93aec.js": "e09d9cb211b5ef06c420d724c2ccf0199094c113",
+    "/runtime.4cd1a01ced0189fc.js": "9fb820f7ff53f4c95cdc918fb8f94f4c5d48d1f1",
+    "/scripts.3472c412667d09f1.js": "4e6e8f9eec91379afb688d3ecb5aad83b6f6c1c4",
+    "/styles.25003e17d472c31e.css": "e0eeba6832a47869b0f36edb734075654a1392e8",
+    "/vendor.15dbb22f2c29b6c4.js": "3239dcc4e11aed77bdb9fac8b9e9bedc7a2a792d"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

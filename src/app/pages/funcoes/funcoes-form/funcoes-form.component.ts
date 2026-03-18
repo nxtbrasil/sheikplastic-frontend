@@ -37,6 +37,7 @@ export class FuncoesFormComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/home/funcoes']);
+
+    console.log('Formulário de função cancelado, navegando de volta para a lista de funções.');
   }
 }

@@ -1,35 +1,30 @@
 <div class="page-wrapper">
   <div class="scroll-area">
-    <div class="container-funcionarios mt-4">
+    <div class="container-funcionarios">
 
-      <div class="custom-breadcrumb d-flex justify-content-between align-items-center mb-4">
-        <nav>
-          <ol>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb-minimal">
             <li>
-              <a routerLink="/home">
+              <a routerLink="/home" title="Home">
                 <i class="fa-solid fa-house"></i>
-                <span>Home</span>
               </a>
             </li>
             <li>
-              <a routerLink="/home/_cad">
-                <i class="fa-solid fa-folder-open"></i>
-                <span>Cadastro</span>
-              </a>
+              <a routerLink="/home/_cad">Cadastro</a>
             </li>
-            <li class="active">
-              <i class="fa-solid fa-truck-fast"></i>
-              <span>transportadoras</span>
-            </li>
+            <li class="active">Transportadoras</li>
           </ol>
         </nav>
 
-        <button class="btn btn-primary btn-breadcrumb" (click)="nova()">
-          <i class="fa-solid fa-plus"></i> Nova Transportadora
-        </button>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" (click)="nova()"
+            title="Cadastrar uma nova transportadora" data-bs-toggle="tooltip">
+            <i class="fa-solid fa-plus me-1"></i> Nova Transportadora
+          </button>
+        </div>
       </div>
-
-      <table class="table table-striped table-bordered">
+      <table class="table table-striped">
         <thead>
           <tr>
             <th>Nome</th>
@@ -37,7 +32,7 @@
             <th>Telefone</th>
             <th>Email</th>
             <th>Status</th>
-            <th width="120">Ações</th>
+            <th width="120" class="text-center">Ações</th>
           </tr>
         </thead>
 
@@ -48,18 +43,25 @@
             <td>{{ t.telefone }}</td>
             <td>{{ t.email }}</td>
             <td>
-              <span class="badge" [ngClass]="t.ativo ? 'bg-success' : 'bg-secondary'">
+              <span class="badge" [ngClass]="t.ativo ? 'bg-success' : 'bg-secondary'"
+                [title]="t.ativo ? 'Transportadora disponível para uso' : 'Transportadora desativada'"
+                data-bs-toggle="tooltip">
                 {{ t.ativo ? 'Ativa' : 'Inativa' }}
               </span>
             </td>
             <td class="text-center">
-              <button class="btn btn-warning btn-sm" (click)="editar(t)">
+              <button class="btn btn-warning btn-sm" (click)="editar(t)" title="Editar dados da transportadora"
+                data-bs-toggle="tooltip">
                 <i class="fa fa-pen"></i>
               </button>
-              <button class="btn btn-danger btn-sm ms-1" (click)="excluir(t)">
+              <button class="btn btn-danger btn-sm ms-1" (click)="excluir(t)" title="Excluir transportadora"
+                data-bs-toggle="tooltip">
                 <i class="fa fa-trash"></i>
               </button>
             </td>
+          </tr>
+          <tr *ngIf="transportadoras?.length === 0">
+            <td colspan="6" class="text-center text-muted">Nenhuma transportadora cadastrada.</td>
           </tr>
         </tbody>
       </table>

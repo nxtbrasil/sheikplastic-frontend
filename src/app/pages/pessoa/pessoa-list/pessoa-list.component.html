@@ -1,58 +1,49 @@
 <div class="page-wrapper">
   <div class="scroll-area">
-    <div class="container-funcionarios mt-4">
+    <div class="container-funcionarios">
 
-      <!-- ===== BREADCRUMB COM BOTÃO ===== -->
-      <div class="custom-breadcrumb d-flex justify-content-between align-items-center mb-4">
-        <nav>
-          <ol>
-            <li>
-              <a routerLink="/home">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/home/_cad">
-                <i class="fa-solid fa-folder-open"></i>
-                <span>Cadastro</span>
-              </a>
-            </li>
-            <li class="active">
-              <i class="fa-solid fa-solid fa-user"></i>
-              <span>Pessoas</span>
-            </li>
-          </ol>
-        </nav>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb-minimal">
+      <li>
+        <a routerLink="/home" title="Home">
+          <i class="fa-solid fa-house"></i>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/home/_cad">Cadastro</a>
+      </li>
+      <li class="active">Pessoas</li>
+    </ol>
+  </nav>
 
-        <button class="btn btn-primary btn-breadcrumb" (click)="novo()">
-          <i class="fa-solid fa-plus"></i> Nova Pessoa
-        </button>
-      </div>
+  <div class="d-flex align-items-center gap-2">
+    
+    <div style="width: 250px;">
+      <input type="text" 
+             class="form-control form-control-sm" 
+             [(ngModel)]="filtroNome" 
+             (keyup.enter)="filtrar()"
+             placeholder="Filtrar por nome..." />
+    </div>
 
-      <!-- CAMPO DE FILTRO -->
-      <!-- FILTRO POR NOME -->
-      <div class="row mb-3 align-items-end">
+    <button class="btn btn-primary btn-sm" (click)="filtrar()" title="Executar busca">
+      <i class="fa-solid fa-magnifying-glass"></i>
+    </button>
 
-        <div class="col-md-4">
-          <label class="form-label">Filtrar por nome</label>
-          <input type="text" class="form-control" [(ngModel)]="filtroNome" placeholder="Digite um nome" />
-        </div>
+    <button class="btn btn-outline-secondary btn-sm" (click)="limparFiltro()" title="Limpar">
+      <i class="fa-solid fa-eraser"></i>
+    </button>
 
-        <div class="col-md-4 d-flex gap-2">
+    <div class="vr mx-1" style="height: 20px;"></div>
 
-          <button class="btn btn-primary" (click)="filtrar()">
-            <i class="fa-solid fa-filter"></i> Filtrar
-          </button>
-
-          <button class="btn btn-secondary" (click)="limparFiltro()">
-            <i class="fa-solid fa-eraser"></i> Limpar
-          </button>
-
-        </div>
-
-      </div>
-
+    <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" 
+            (click)="novo()" 
+            title="Cadastrar nova pessoa">
+      <i class="fa-solid fa-plus me-1"></i> Nova Pessoa
+    </button>
+  </div>
+</div>
 
       <div *ngIf="loading">Carregando...</div>
       <div *ngIf="error">{{ error }}</div>
@@ -66,7 +57,7 @@
             <th>Estado</th>
             <th>Status</th>
             <th>Cadastro</th>
-            <th>Ações</th>
+            <th class="text-center">Ações</th>
           </tr>
         </thead>
 
@@ -74,22 +65,29 @@
           <tr *ngFor="let p of pessoasPaginadas">
             <td>
               <span [ngClass]="{
-              'icon-building': p.tipoPessoa === 'J',
-              'icon-house': p.tipoPessoa === 'F'
-          }"></span>
+                'icon-building': p.tipoPessoa === 'J',
+                'icon-house': p.tipoPessoa === 'F'
+              }" [title]="p.tipoPessoa === 'J' ? 'Pessoa Jurídica' : 'Pessoa Física'" data-bs-toggle="tooltip">
+              </span>
             </td>
             <td>{{ p.nome }}</td>
             <td>{{ p.cidade.nomeCidade }}</td>
             <td>{{ p.cidade.nomeEstado }}</td>
             <td>
-              <span class="status-bolinha" [ngClass]="p.ativo == 1 ? 'ativo' : 'inativo'">
+              <span class="status-bolinha" 
+                    [ngClass]="p.ativo == 1 ? 'ativo' : 'inativo'"
+                    [title]="p.ativo == 1 ? 'Cadastro Ativo' : 'Cadastro Inativo'" 
+                    data-bs-toggle="tooltip">
               </span>
             </td>
             <td>{{ p.dataCadastro | date:'dd/MM/yyyy' }}</td>
-            <td>
-              <button class="btn btn-sm btn-warning me-2" (click)="editar(p.id)"> <i
-                  class="fa-solid fa-pen"></i></button>
-              <button class="btn btn-sm btn-danger" (click)="excluir(p)"> <i class="fa-solid fa-trash"></i></button>
+            <td class="text-center">
+              <button class="btn btn-sm btn-warning me-2" (click)="editar(p.id)" title="Editar cadastro" data-bs-toggle="tooltip">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="excluir(p)" title="Excluir registro" data-bs-toggle="tooltip">
+                <i class="fa-solid fa-trash"></i>
+              </button>
             </td>
           </tr>
         </tbody>
@@ -97,7 +95,6 @@
 
       <p *ngIf="!loading && !pessoas.length">Nenhuma pessoa encontrada.</p>
 
-      <!-- ===== PAGINAÇÃO ===== -->
       <div class="d-flex justify-content-between align-items-center mt-3">
         <div class="text-muted small">
           Mostrando {{ exibicaoInicio }} - {{ exibicaoFim }} de {{ totalItens }}
@@ -105,46 +102,34 @@
 
         <nav>
           <ul class="pagination pagination-sm mb-0">
-
-
-
-            <!-- ANTERIOR -->
             <li class="page-item" [class.disabled]="paginaAtual === 0">
-              <button class="page-link" (click)="mudarPagina(paginaAtual - 1)" [disabled]="paginaAtual === 0">
-                ‹ Anterior
-              </button>
-            </li>
-            <!-- PRIMEIRA PÁGINA -->
-            <li class="page-item" [class.disabled]="paginaAtual === 0">
-              <button class="page-link" (click)="mudarPagina(0)" [disabled]="paginaAtual === 0">
+              <button class="page-link" (click)="mudarPagina(0)" [disabled]="paginaAtual === 0" title="Primeira página" data-bs-toggle="tooltip">
                 «
               </button>
             </li>
 
-
-
-            <!-- ÚLTIMA PÁGINA -->
-            <li class="page-item" [class.disabled]="paginaAtual >= paginas.length - 1">
-              <button class="page-link" (click)="mudarPagina(paginas.length - 1)"
-                [disabled]="paginaAtual >= paginas.length - 1">
-                »
+            <li class="page-item" [class.disabled]="paginaAtual === 0">
+              <button class="page-link" (click)="mudarPagina(paginaAtual - 1)" [disabled]="paginaAtual === 0" title="Página anterior" data-bs-toggle="tooltip">
+                ‹ Anterior
               </button>
             </li>
 
-            <!-- PRÓXIMA -->
             <li class="page-item" [class.disabled]="(paginaAtual + 1) * itensPorPagina >= pessoasFiltradas.length">
-              <button class="page-link" (click)="mudarPagina(paginaAtual + 1)"
-                [disabled]="(paginaAtual + 1) * itensPorPagina >= pessoasFiltradas.length">
+              <button class="page-link" (click)="mudarPagina(paginaAtual + 1)" 
+                      [disabled]="(paginaAtual + 1) * itensPorPagina >= pessoasFiltradas.length" title="Próxima página" data-bs-toggle="tooltip">
                 Próxima ›
               </button>
             </li>
 
-
-
+            <li class="page-item" [class.disabled]="paginaAtual >= paginas.length - 1">
+              <button class="page-link" (click)="mudarPagina(paginas.length - 1)"
+                      [disabled]="paginaAtual >= paginas.length - 1" title="Última página" data-bs-toggle="tooltip">
+                »
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
-
 
     </div>
   </div>

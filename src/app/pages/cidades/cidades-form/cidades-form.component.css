@@ -131,3 +131,64 @@
   font-weight: 500;
   color: #333;
 }
+/* 1. PADRONIZAÇÃO DAS LABELS (Texto acima do input) */
+.form-label {
+  display: block !important;
+  color: #6c757d !important;      /* Cinza médio que não "grita" */
+  font-weight: 500 !important;
+  font-size: 0.72rem !important;  /* Tamanho menor para a etiqueta */
+  letter-spacing: 0.3px !important;
+  margin-bottom: 4px !important;  /* Espaço curto entre label e input */
+  text-transform: none;           /* Mantém a escrita natural */
+}
+
+/* 2. PADRONIZAÇÃO DOS INPUTS E SELECTS (Altura de 28px) */
+.form-control, 
+.form-select {
+  height: 28px !important;
+  font-size: 0.8rem !important;    /* Texto interno um pouco maior que a label */
+  padding: 0 8px !important;
+  border: 1px solid #e0e6ed !important; /* Borda fina e clara */
+  border-radius: 6px !important;    /* Arredondamento moderno */
+  background-color: #ffffff !important;
+  color: #495057 !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* 3. EFEITO DE FOCO (Glow suave) */
+.form-control:focus, 
+.form-select:focus {
+  border-color: #a5c5f4 !important;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
+  outline: none !important;
+}
+
+/* 4. PADRONIZAÇÃO DOS BOTÕES */
+.btn {
+  height: 28px !important;
+  font-size: 0.8rem !important;
+  padding: 0 20px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Botão de Sucesso (Verde) */
+.btn-success {
+  background-color: #198754 !important;
+  border: none !important;
+}
+
+/* Botão Secundário (Cinza) */
+.btn-secondary {
+  background-color: #6c757d !important;
+  border: none !important;
+}
+
+/* 5. AJUSTE DE ESPAÇAMENTO DO CONTAINER */
+.mb-3 {
+  margin-bottom: 1rem !important; /* Distância entre os blocos de campo */
+}

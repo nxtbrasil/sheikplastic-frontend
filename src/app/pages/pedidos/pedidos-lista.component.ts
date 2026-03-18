@@ -7,6 +7,7 @@ import { from, of } from 'rxjs';
 import { mergeMap, toArray, catchError, map } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 
+
 @Component({
   selector: 'app-pedidos-lista',
   templateUrl: './pedidos-lista.component.html',
@@ -54,16 +55,15 @@ export class PedidosListaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.carregar();
-    this.buscarPedidos();
-    this.carregarClientes(); // Carrega o select de clientes
-
+    this.carregarClientes();
+    this.carregarVendedores();
+    this.buscar(); // Carrega a grid inicial já usando a lógica oficial
   }
 
   carregarVendedores() {
     this.service.listarFuncionarios().subscribe({
       next: (data) => {
-        this.vendedores = data;
+        this.vendedores = data.sort((a, b) => a.nome.localeCompare(b.nome));
       },
       error: (err) => console.error('Erro ao carregar vendedores', err)
     });
@@ -138,13 +138,23 @@ export class PedidosListaComponent implements OnInit {
     this.atualizarPaginacao();
   }
 
-  limparFiltro() {
-    this.filtroNumero = '';
-    this.filtroCliente = '';
-    this.filtroVendedor = '';
-    this.pedidosFiltrados = [...this.pedidos];
-    this.atualizarPaginacao();
-  }
+  limpar() {
+  this.filtro = {
+    idPedido: null,
+    idPessoa: null,
+    idFuncionario: null,
+    statusPedido: null,
+    ativo: null,
+    dtEntradaIni: null,
+    dtEntradaFim: null,
+    dtEntregaIni: null,
+    dtEntregaFim: null,
+    ordenacao: 'idPedido'
+  };
+
+  this.buscar();
+}
+
 
   novo() {
     this.router.navigate(['/home/pedidosForm']);
@@ -226,44 +236,48 @@ export class PedidosListaComponent implements OnInit {
     }
   }
 
-  buscar() {
-    // DEBUG: Verifique se o idPedido aparece aqui antes da chamada
-    console.log('Enviando filtros para API:', this.filtro);
+ buscar() {
+  this.loading = true;
 
-    this.loading = true;
-    this.service.listarPedidos(this.filtro).subscribe({
-      next: data => {
-        this.pedidosFiltrados = data.map((p: any) => ({
-          ...p,
-          ativo: p.ativo === true || p.ativo === 1 || p.ativo === 'S'
-        }));
-        this.paginaAtual = 0;
-        this.atualizarPaginacao();
-        this.loading = false;
-      },
-      error: () => {
-        this.error = 'Erro ao buscar pedidos';
-        this.loading = false;
-      }
-    });
-  }
+  // Criamos uma cópia para não mexer no objeto da tela
+  const parametros: any = { ...this.filtro };
 
-  limpar() {
-    this.filtro = {
-      idPedido: null,
-      idPessoa: null,
-      idFuncionario: null,
-      statusPedido: null,
-      ativo: null,
-      dtEntradaIni: null,
-      dtEntradaFim: null,
-      dtEntregaIni: null,
-      dtEntregaFim: null
-    };
+  Object.keys(parametros).forEach(key => {
+    const valor = parametros[key];
 
-    this.buscar();
-  }
+    // Limpeza aprimorada: remove se for null, undefined, string vazia ou a string "null"
+    if (
+      valor === null || 
+      valor === undefined || 
+      valor === '' || 
+      valor === 'null' || 
+      (typeof valor === 'string' && valor.trim() === '')
+    ) {
+      delete parametros[key];
+    }
+  });
 
+  // LOG de depuração: veja no console se o idPessoa aparece aqui
+  console.log('Parâmetros enviados para o service:', parametros);
+
+  this.service.listarPedidos(parametros).subscribe({
+    next: data => {
+      this.pedidos = data.map((p: any) => ({
+        ...p,
+        selecionado: false
+      }));
+      this.pedidosFiltrados = this.pedidos;
+      this.paginaAtual = 0;
+      this.selecionarTodos = false;
+      this.atualizarPaginacao();
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('Erro na busca:', err);
+      this.loading = false;
+    }
+  });
+}
 
   toggleSelecionarTodos(): void {
     this.pedidosPaginados.forEach(p => p.selecionado = this.selecionarTodos);
@@ -279,42 +293,42 @@ export class PedidosListaComponent implements OnInit {
   }
 
   excluirSelecionados(): void {
-  const selecionados = this.pedidosPaginados.filter(p => p.selecionado);
+    const selecionados = this.pedidosPaginados.filter(p => p.selecionado);
 
-  if (!selecionados.length) return;
+    if (!selecionados.length) return;
 
-  Swal.fire({
-    title: `Excluir ${selecionados.length} pedido(s)?`,
-    text: 'Essa ação não poderá ser desfeita e removerá todos os itens selecionados de uma vez.',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonText: 'Sim, excluir tudo',
-    cancelButtonText: 'Cancelar',
-    confirmButtonColor: '#dc3545'
-  }).then(result => {
-    if (result.isConfirmed) {
-      this.loading = true;
-      
-      // Criamos o array de IDs [id1, id2, id3...]
-      const idsParaExcluir = selecionados.map(p => p.idPedido);
+    Swal.fire({
+      title: `Excluir ${selecionados.length} pedido(s)?`,
+      text: 'Essa ação não poderá ser desfeita e removerá todos os itens selecionados de uma vez.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sim, excluir tudo',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#dc3545'
+    }).then(result => {
+      if (result.isConfirmed) {
+        this.loading = true;
 
-      // Chamada ÚNICA para o lote
-      this.service.excluirEmLote(idsParaExcluir).subscribe({
-        next: () => {
-          this.loading = false;
-          Swal.fire('Sucesso', 'Pedidos excluídos com sucesso!', 'success');
-          this.selecionarTodos = false; // Reseta o checkbox do cabeçalho
-          this.buscar(); // Recarrega a grid
-        },
-        error: (err) => {
-          this.loading = false;
-          console.error('Erro ao excluir lote:', err);
-          Swal.fire('Erro', 'Não foi possível excluir os pedidos selecionados.', 'error');
-        }
-      });
-    }
-  });
-}
+        // Criamos o array de IDs [id1, id2, id3...]
+        const idsParaExcluir = selecionados.map(p => p.idPedido);
+
+        // Chamada ÚNICA para o lote
+        this.service.excluirEmLote(idsParaExcluir).subscribe({
+          next: () => {
+            this.loading = false;
+            Swal.fire('Sucesso', 'Pedidos excluídos com sucesso!', 'success');
+            this.selecionarTodos = false; // Reseta o checkbox do cabeçalho
+            this.buscar(); // Recarrega a grid
+          },
+          error: (err) => {
+            this.loading = false;
+            console.error('Erro ao excluir lote:', err);
+            Swal.fire('Erro', 'Não foi possível excluir os pedidos selecionados.', 'error');
+          }
+        });
+      }
+    });
+  }
   imprimirProducao(idPedido: number) {
     window.open(`/#/impressao/producao/${idPedido}`, '_blank');
   }
@@ -353,9 +367,9 @@ export class PedidosListaComponent implements OnInit {
             idFuncionario: pedido.idFuncionario,
             idCondicaoPagamento: pedido.idCondicaoPagamento,
 
-            dtEntradaPedido: this.dataAtual(),
+            dtEntradaPedido: this.formatarData(pedido.dtEntradaPedido),
             dtPrevisaoPedido: this.formatarData(pedido.dtPrevisaoPedido),
-            dtEntregaPedido: this.formatarData(pedido.dtEntregaPedido),
+            dtEntregaPedido: this.dataAtual(),
 
             nomeSolicitante: pedido.nomeSolicitante,
             urgente: pedido.urgente ?? false,
@@ -363,6 +377,8 @@ export class PedidosListaComponent implements OnInit {
             entregue: true,
             ativo: pedido.ativo ?? true
           };
+
+          console.log("Atualizar: ", payload)
 
           this.service.entregarPedido(p.idPedido, payload).subscribe({
             next: () => {
@@ -429,6 +445,13 @@ export class PedidosListaComponent implements OnInit {
     const d = new Date(data);
     return d.toISOString().substring(0, 10);
   }
+
+temFiltroAtivo(): boolean {
+  return Object.entries(this.filtro).some(([key, value]) => {
+    if (key === 'ordenacao') return false; // não conta como filtro
+    return value !== null && value !== '';
+  });
+}
 
 
 }

@@ -10,4 +10,5 @@ export interface Pedido {
   qtdItens: number;
   qtdEntregue: number;
   valorPedido: number;
+  status: string;
 }

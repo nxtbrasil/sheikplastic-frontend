@@ -46,159 +46,111 @@
         <!-- ==================================================== -->
         <!-- ABA 1 — EDIÇÃO DE TODOS OS DADOS DA PESSOA -->
         <!-- ==================================================== -->
-        <div class="tab-pane fade show active" id="tabEdicao">
-          <form [formGroup]="form" (ngSubmit)="salvar()">
+<div class="tab-pane fade show active" id="tabEdicao">
+  <form [formGroup]="form" (ngSubmit)="salvar()" class="container-fluid p-0">
 
-            <!-- DADOS PESSOAIS -->
-            <h5 class="fw-semibold mt-3 mb-3">Dados Pessoais</h5>
+    <div class="row g-3 mb-2">
+      <div class="col-md-3">
+        <label class="form-label-sm">Tipo de Pessoa</label>
+        <select class="form-select form-select-sm" formControlName="tipoPessoa">
+          <option value="F">Pessoa Física</option>
+          <option value="J">Pessoa Jurídica</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">{{ form.get('tipoPessoa')?.value === 'F' ? 'CPF' : 'CNPJ' }}</label>
+        <input class="form-control form-control-sm" formControlName="documentoPessoa"
+          [mask]="form.get('tipoPessoa')?.value === 'F' ? '000.000.000-00' : '00.000.000/0000-00'">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">{{ form.get('tipoPessoa')?.value === 'F' ? 'RG' : 'Insc. Estadual' }}</label>
+        <input class="form-control form-control-sm" formControlName="identidadePessoa">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Status do Cadastro</label>
+        <select class="form-select form-select-sm" formControlName="status">
+          <option [value]="true">Ativa</option>
+          <option [value]="false">Inativa</option>
+        </select>
+      </div>
+    </div>
 
-            <div class="row g-3 mb-3">
-              <div class="col-md-3">
-                <label class="form-label">Tipo de Pessoa</label>
-                <select class="form-control" formControlName="tipoPessoa">
-                  <option value="F">Pessoa Física</option>
-                  <option value="J">Pessoa Jurídica</option>
-                </select>
-              </div>
+    <div class="row g-3 mb-2">
+      <div class="col-md-3">
+        <label class="form-label-sm">Nome / Razão Social</label>
+        <input class="form-control form-control-sm" formControlName="nomePessoa">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Apelido / Fantasia</label>
+        <input class="form-control form-control-sm" formControlName="apelidoPessoa">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">CEP</label>
+        <input class="form-control form-control-sm" formControlName="cepPessoaString" (blur)="buscarCep()">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Logradouro</label>
+        <input class="form-control form-control-sm" formControlName="logradouroPessoa">
+      </div>
+    </div>
 
-              <div class="col-md-4">
-                <label class="form-label">
-                  {{ form.get('tipoPessoa')?.value === 'F' ? 'CPF' : 'CNPJ' }}
-                </label>
-                <input class="form-control" formControlName="documentoPessoa"
-                  [mask]="form.get('tipoPessoa')?.value === 'F' ? '000.000.000-00' : '00.000.000/0000-00'">
-              </div>
+    <div class="row g-3 mb-2">
+      <div class="col-md-3">
+        <label class="form-label-sm">Número</label>
+        <input class="form-control form-control-sm" formControlName="numeroPessoa">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Bairro</label>
+        <input class="form-control form-control-sm" formControlName="bairroPessoa">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Cidade</label>
+        <select class="form-select form-select-sm" formControlName="cidade">
+          <option *ngFor="let c of cidades" [value]="c.idCidade">{{ c.nomeCidade }}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Estado (UF)</label>
+        <select class="form-select form-select-sm" formControlName="estado">
+          <option *ngFor="let uf of estados" [value]="uf.idEstado">{{ uf.nomeEstado }}</option>
+        </select>
+      </div>
+    </div>
 
-              <div class="col-md-5">
-                <label class="form-label">
-                  {{ form.get('tipoPessoa')?.value === 'F' ? 'RG' : 'Inscrição Estadual' }}
-                </label>
-                <input class="form-control" formControlName="identidadePessoa">
-              </div>
-            </div>
+    <div class="row g-3 mb-2">
+      <div class="col-md-3">
+        <label class="form-label-sm">Complemento</label>
+        <input class="form-control form-control-sm" formControlName="complementoPessoa">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Transportadora</label>
+        <select class="form-select form-select-sm" formControlName="idTransportadora">
+          <option *ngFor="let t of transportadoras" [value]="t.idTransportadora">{{ t.nome }}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Condição de Pagamento</label>
+        <select class="form-select form-select-sm" formControlName="idCondicaoPagamento">
+          <option *ngFor="let cond of condicoesPagamento" [value]="cond.idCondicaoPagamento">
+            {{ cond.descricaoCondicaoPagamento }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label class="form-label-sm">Observação</label>
+        <input class="form-control form-control-sm" formControlName="observacao" placeholder="...">
+      </div>
+    </div>
 
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Nome</label>
-                <input class="form-control" formControlName="nomePessoa">
-              </div>
+    <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+      <button type="button" class="btn btn-sm btn-light border px-4" (click)="cancelar()">Cancelar</button>
+      <button type="submit" class="btn btn-sm btn-primary px-5 shadow-sm">
+        <i class="fa-solid fa-save me-2"></i>{{ isEdit ? 'Atualizar' : 'Salvar' }}
+      </button>
+    </div>
 
-              <div class="col-md-6">
-                <label class="form-label">Apelido</label>
-                <input class="form-control" formControlName="apelidoPessoa">
-              </div>
-            </div>
-
-            <!-- ENDEREÇO -->
-            <h5 class="fw-semibold mt-4 mb-3">Endereço</h5>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-3">
-                <label class="form-label">CEP</label>
-                <input class="form-control" formControlName="cepPessoaString" maxlength="8" (blur)="buscarCep()">
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label">Logradouro</label>
-                <input class="form-control" formControlName="logradouroPessoa">
-              </div>
-
-              <div class="col-md-3">
-                <label class="form-label">Número</label>
-                <input class="form-control" formControlName="numeroPessoa">
-              </div>
-            </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-3">
-                <label class="form-label">Complemento</label>
-                <input class="form-control" formControlName="complementoPessoa">
-              </div>
-
-              <div class="col-md-3">
-                <label class="form-label">Bairro</label>
-                <input class="form-control" formControlName="bairroPessoa">
-              </div>
-
-              <div class="col-md-3">
-                <label class="form-label">Estado</label>
-                <select class="form-control" formControlName="estado">
-                  <option value="">Selecione</option>
-                  <option *ngFor="let uf of estados" [value]="uf.idEstado">{{ uf.nomeEstado }}</option>
-                </select>
-              </div>
-
-              <div class="col-md-3">
-                <label class="form-label">Cidade</label>
-                <select class="form-control" formControlName="cidade">
-                  <option value="">Selecione</option>
-                  <option *ngFor="let c of cidades" [value]="c.idCidade">{{ c.nomeCidade }}</option>
-                </select>
-              </div>
-            </div>
-            <div class="row g-3 mt-2">
-              <div class="col-md-12">
-                <h5 class="fw-semibold">Transportadora Padrão</h5>
-                <div class="input-group">
-                  <span class="input-group-text bg-light"><i class="fa-solid fa-truck-fast"></i></span>
-                  <select class="form-select" formControlName="idTransportadora">
-                    <option [ngValue]="null">Selecione uma transportadora</option>
-                    <option *ngFor="let t of transportadoras" [value]="t.idTransportadora">
-                      {{ t.nome }} - CNPJ: {{ t.cnpj }}
-                    </option>
-                  </select>
-                </div>
-                <small class="text-muted">Selecione a transportadora que costuma atender este cliente.</small>
-              </div>
-            </div>
-
-            <!-- FINANCEIRO -->
-            <h5 class="fw-semibold mt-4 mb-3">Financeiro</h5>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <label class="form-label">Condição de Pagamento</label>
-                <select class="form-control" formControlName="idCondicaoPagamento">
-                  <option value="">Selecione</option>
-                  <option *ngFor="let cond of condicoesPagamento" [value]="cond.idCondicaoPagamento">
-                    {{ cond.descricaoCondicaoPagamento }}
-                  </option>
-                </select>
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label">Status</label>
-                <select class="form-control" formControlName="status">
-                  <option [value]="true">Ativa</option>
-                  <option [value]="false">Inativa</option>
-                </select>
-              </div>
-            </div>
-
-            <!-- OBSERVAÇÃO -->
-            <div class="row mb-3">
-              <div class="col-12">
-                <label class="form-label">Observação</label>
-                <textarea rows="3" class="form-control" formControlName="observacao"></textarea>
-              </div>
-            </div>
-
-
-            <!-- BOTÕES -->
-            <div class="d-flex justify-content-center gap-3 mt-4">
-              <button type="submit" class="btn btn-primary px-4">
-                {{ isEdit ? 'Atualizar' : 'Salvar' }}
-              </button>
-              <button type="button" class="btn btn-secondary px-4" (click)="cancelar()">
-                Cancelar
-              </button>
-            </div>
-
-
-
-
-          </form>
-        </div>
+  </form>
+</div>
 
         <!-- ==================================================== -->
         <!-- ABA 3 — PRODUTOS -->

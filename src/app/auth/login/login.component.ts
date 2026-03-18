@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
@@ -16,12 +16,27 @@ export class LoginComponent {
 
   error = '';
   loading = false;
+  deferredPrompt: any; // Captura o evento de instalação
 
-  constructor(
-    private fb: FormBuilder,
-    private auth: AuthService,
-    private router: Router
-  ) {}
+  constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) { }
+
+  @HostListener('window:beforeinstallprompt', ['$event'])
+  onBeforeInstallPrompt(e: any) {
+    console.log('Evento de instalação capturado!', e); // Adicione este log
+    e.preventDefault();
+    this.deferredPrompt = e;
+  }
+
+  instalarApp() {
+    if (this.deferredPrompt) {
+      this.deferredPrompt.prompt();
+      this.deferredPrompt.userChoice.then((choiceResult: any) => {
+        if (choiceResult.outcome === 'accepted') {
+          this.deferredPrompt = null;
+        }
+      });
+    }
+  }
 
   submit() {
     this.error = '';
@@ -29,28 +44,16 @@ export class LoginComponent {
       this.error = 'Preencha e-mail e senha corretamente.';
       return;
     }
-
-    const { email, senha } = this.form.value;
     this.loading = true;
-
-    this.auth.login(email, senha).subscribe({
+    const { email, senha } = this.form.value;
+    this.auth.login(email!, senha!).subscribe({
       next: () => {
         this.loading = false;
         this.router.navigate(['/home']);
       },
       error: (err) => {
         this.loading = false;
-
-        // Tratamento específico de erros
-        if (err.status === 403 && err.error?.erro === 'senha') {
-          this.error = 'Senha incorreta. Tente novamente.';
-        } else if (err.status === 404) {
-          this.error = 'Usuário não encontrado.';
-        } else if (err.status === 0) {
-          this.error = 'Não foi possível conectar ao servidor. Verifique sua conexão.';
-        } else {
-          this.error = err.error?.mensagem || 'Erro ao tentar fazer login.';
-        }
+        this.error = 'Credenciais inválidas.';
       }
     });
   }

@@ -104,3 +104,509 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
+.table-container, .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.table th {
+  background-color: #f4f6f8;
+  color: #555;
+  font-weight: 600;
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #eee;
+  vertical-align: middle;
+}
+
+.table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* ==========================================================================
+   4. BOTÕES E AÇÕES
+   ========================================================================== */
+
+.btn-breadcrumb, .btn-primary {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-breadcrumb:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(13, 110, 253, 0.3);
+}
+
+.btn-acao {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 6px;
+  font-size: 16px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-acao:hover {
+  opacity: 0.7;
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   5. STATUS E BADGES
+   ========================================================================== */
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.badge.ativo {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.badge.inativo {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Painel de Bolinha de Status (Pessoas) */
+.status-bolinha {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-bolinha.ativo { background-color: #28a745; }
+.status-bolinha.inativo { background-color: #dc3545; }
+
+/* ==========================================================================
+   6. PAGINAÇÃO E AUXILIARES
+   ========================================================================== */
+
+.pagination .page-link {
+  color: #0d6efd;
+  border-radius: 6px;
+  margin: 0 2px;
+  border: none;
+  background: #f8f9fa;
+}
+
+.page-item.active .page-link {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.vr {
+  width: 1px;
+  height: 40px;
+  background-color: #dee2e6;
+}
+
+/* ==========================================================================
+   7. RESPONSIVIDADE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .custom-breadcrumb {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  
+  .painel-detalhes {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .vr, .painel-divider {
+    display: none;
+  }
+  
+  .btn-breadcrumb {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+/* Reduz o padding das células para o mínimo funcional */
+.table td, .table th {
+  padding: 6px 4px !important; /* Diminuído de 12px para 6px */
+  vertical-align: middle;
+  font-size: 13px; /* Fonte levemente menor para ganhar espaço */
+}
+
+/* Impede que o texto das colunas quebre linha se não houver espaço */
+.table th, .table td {
+  white-space: nowrap; 
+  overflow: hidden;
+  text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+}
+
+/* Permite que colunas de texto (como Nome) ocupem o espaço que sobrar */
+.col-expansiva {
+  white-space: normal !important; /* Permite quebra apenas aqui se necessário */
+  min-width: 150px;
+}
+
+/* Ajuste específico para a coluna de ações para ela ficar bem justa */
+.acoes-col {
+  width: 1px;
+  white-space: nowrap;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+/* Container da tabela sem margens sobrando */
+.container-funcionarios {
+  padding: 10px 15px !important;
+}
+
+
+/* Breadcrumb Minimalista */
+.breadcrumb-minimal {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+  font-size: 0.85rem;
+  align-items: center;
+}
+
+.breadcrumb-minimal li a {
+  text-decoration: none;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.breadcrumb-minimal li:not(:last-child)::after {
+  content: "/";
+  color: #adb5bd;
+  margin-left: 10px;
+}
+
+.breadcrumb-minimal .active {
+  color: #212529;
+  font-weight: 700;
+}
+/* Tabela de Ultra Alta Densidade */
+.table {
+  font-size: 0.8rem; /* Fonte levemente menor */
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Redução agressiva da altura da linha */
+.table td, 
+.table th {
+  padding: 4px 5px !important; /* Espaçamento vertical mínimo */
+  line-height: 1.2 !important;  /* Altura da linha de texto reduzida */
+  vertical-align: middle;
+}
+
+/* Ajuste nos botões de ação para não "esticarem" a linha */
+.btn-action {
+  background: none;
+  border: none;
+  padding: 2px 5px !important; /* Padding interno do botão quase zero */
+  color: #adb5bd;
+  transition: all 0.2s;
+  font-size: 0.85rem; /* Ícone um pouco menor */
+  height: 24px;      /* Altura fixa para não empurrar a célula */
+  line-height: 1;
+}
+
+/* Ajuste das bolinhas de status */
+.dot, .status-bolinha {
+  height: 7px;
+  width: 7px;
+  margin-bottom: 2px; /* Alinhamento óptico */
+}
+
+/* Hover na linha mais discreto */
+.table-hover tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.04) !important;
+}
+
+/* Cabeçalho ainda mais compacto */
+.table thead th {
+  padding: 6px 5px !important;
+  font-size: 0.80rem;
+  background-color: #f1f4f9;
+}
+
+/* Bolinhas de status menores */
+.dot {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* BOTÕES DE AÇÃO - O SEGREDO DO ESPAÇO */
+.btn-action {
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  color: #adb5bd;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.btn-action:hover { transform: scale(1.2); }
+.btn-action.edit:hover { color: #ffc107; }
+.btn-action.view:hover { color: #0d6efd; }
+.btn-action.delete:hover { color: #dc3545; }
+.btn-action.print:hover { color: #6c757d; }
+
+/* Remove scroll desnecessário */
+.page-wrapper {
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f4f7f9;
+}
+
+
+/* Customização da Modal */
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-header {
+  border-bottom: 1px solid #f0f0f0;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-footer {
+  border-top: 1px solid #f0f0f0;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Ajuste das labels dentro da modal */
+.modal-body .st-label {
+  font-size: 10px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+/* Deixa os inputs de data mais harmônicos */
+.input-group > .st-select {
+  flex: 1;
+}
+
+.modal-body .form-select, 
+.modal-body .form-control {
+  border-color: #dee2e6;
+  font-size: 13px;
+}
+
+/* PADRÃO GLOBAL DE TAMANHO E FONTE */
+:root {
+  --compact-height: 28px;
+  --font-main: 0.8rem;
+  --font-label: 0.68rem;
+}
+
+/* Aplicação em todos os componentes de entrada e botões */
+.form-control-sm, 
+.form-select-sm, 
+.input-group-text, 
+.btn-compact {
+  height: var(--compact-height) !important;
+  font-size: var(--font-main) !important;
+  padding: 2px 8px !important;
+  border: 1px solid #dcdde1 !important;
+  border-radius: 6px !important; /* Arredondamento moderno que você escolheu */
+  background-color: #ffffff;
+  color: #495057;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+}
+
+/* Foco Profissional com Glow Suave */
+.form-control-sm:focus, 
+.form-select-sm:focus {
+  border-color: #a5c5f4 !important;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
+  outline: none;
+  background-color: #fff;
+}
+
+/* Labels Inline Padronizadas */
+.label-inline {
+  font-size: var(--font-label) !important;
+  font-weight: 700 !important;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  text-align: right;
+  padding-right: 10px;
+  white-space: nowrap;
+  margin-bottom: 0 !important;
+  height: var(--compact-height);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Ajuste específico para Botões para seguirem a altura */
+.btn-compact {
+  line-height: 1;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Container do Card */
+.card-form {
+  max-width: 500px; /* Reduzi para não ficar muito espalhado */
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+/* Alinhamento Horizontal Forçado */
+.field-row {
+  display: flex !important;
+  align-items: center !important;
+  width: 100%;
+}
+
+/* Label Fixa à Esquerda (80px de largura para alinhamento vertical) */
+.label-inline-fixed {
+  width: 80px !important;
+  min-width: 80px !important;
+  margin-bottom: 0 !important;
+  text-align: right;
+  padding-right: 12px;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  color: #7f8c8d !important;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Padronização de Tamanho: 28px para Tudo */
+.custom-input, 
+.btn-custom-height {
+  height: 28px !important;
+  font-size: 0.8rem !important;
+  padding: 2px 8px !important;
+  border: 1px solid #dcdde1 !important;
+  border-radius: 6px !important;
+  flex: 1; /* Faz o input ocupar o resto da linha */
+  transition: all 0.2s ease-in-out;
+}
+
+/* Estilo do Botão Principal */
+.btn-primary.btn-custom-height {
+  flex: none; /* Botão não deve esticar */
+  background-color: #4a80ef;
+  border: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+/* Efeito de Foco Profissional */
+.custom-input:focus {
+  border-color: #a5c5f4 !important;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
+  outline: none;
+}/* 1. PADRONIZAÇÃO DAS LABELS (Texto acima do input) */
+.form-label {
+  display: block !important;
+  color: #6c757d !important;      /* Cinza médio que não "grita" */
+  font-weight: 500 !important;
+  font-size: 0.72rem !important;  /* Tamanho menor para a etiqueta */
+  letter-spacing: 0.3px !important;
+  margin-bottom: 4px !important;  /* Espaço curto entre label e input */
+  text-transform: none;           /* Mantém a escrita natural */
+}
+
+/* 2. PADRONIZAÇÃO DOS INPUTS E SELECTS (Altura de 28px) */
+.form-control, 
+.form-select {
+  height: 28px !important;
+  font-size: 0.8rem !important;    /* Texto interno um pouco maior que a label */
+  padding: 0 8px !important;
+  border: 1px solid #e0e6ed !important; /* Borda fina e clara */
+  border-radius: 6px !important;    /* Arredondamento moderno */
+  background-color: #ffffff !important;
+  color: #495057 !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* 3. EFEITO DE FOCO (Glow suave) */
+.form-control:focus, 
+.form-select:focus {
+  border-color: #a5c5f4 !important;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
+  outline: none !important;
+}
+
+/* 4. PADRONIZAÇÃO DOS BOTÕES */
+.btn {
+  height: 28px !important;
+  font-size: 0.8rem !important;
+  /* padding: 0 20px !important; */
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+/* Botão de Sucesso (Verde) */
+.btn-success {
+  background-color: #198754 !important;
+  border: none !important;
+}
+
+/* Botão Secundário (Cinza) */
+.btn-secondary {
+  background-color: #6c757d !important;
+  border: none !important;
+}
+/* Coluna de ações com largura mínima apenas para os botões */
+.col-acoes {
+  width: 1%;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Botões de ação ultra compactos (quadrados) */
+.btn-acao-tabela {
+  width: 28px !important;   /* Largura igual à altura para ser quadrado */
+  height: 28px !important;
+  padding: 0 !important;    /* Remove padding para centralizar o ícone */
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 0.75rem !important;
+  border-radius: 6px !important;
+}
+
+/* Ajuste do tamanho do ícone dentro do botão */
+.btn-acao-tabela i {
+  font-size: 0.75rem;
+}

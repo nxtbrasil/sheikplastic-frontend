@@ -263,3 +263,56 @@
     z-index: 1050 !important;
     border: 1px solid #ccc !important;
 }
+
+
+
+/* Container Principal do ng-select */
+.custom-select .ng-select-container {
+  min-height: 28px !important;
+  height: 28px !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e0e6ed !important; /* Mesma cor dos seus outros inputs */
+  border-radius: 6px !important;       /* Mesmo arredondamento moderno */
+  font-size: 0.8rem !important;        /* Padronização da fonte */
+  box-shadow: none !important;
+}
+
+/* Alinhamento do texto e placeholder interno */
+.custom-select .ng-select-container .ng-value-container {
+  padding: 0 8px !important;
+  align-items: center !important;
+  display: flex !important;
+}
+
+/* Ajuste da altura do texto selecionado e do placeholder */
+.custom-select .ng-value-label, 
+.custom-select .ng-placeholder {
+  line-height: 26px !important; 
+  color: #495057 !important;
+}
+
+/* Ajuste das setas e do botão 'X' de limpar */
+.custom-select .ng-clear-wrapper,
+.custom-select .ng-arrow-wrapper {
+  align-self: center !important;
+  bottom: 0 !important;
+}
+
+/* Efeito de Foco (Glow suave) igual aos seus outros campos */
+.custom-select.ng-select-opened > .ng-select-container {
+  border-color: #a5c5f4 !important;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
+}
+
+/* Ajuste da Label para manter o padrão das outras telas */
+.form-label {
+  color: #6c757d !important;
+  font-weight: 500 !important;
+  font-size: 0.72rem !important;
+  margin-bottom: 4px !important;
+}
+input[type="date"].form-control-sm {
+  line-height: 1 !important;
+  display: flex;
+  align-items: center;
+}

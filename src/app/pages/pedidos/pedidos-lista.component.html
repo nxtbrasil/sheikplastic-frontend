@@ -1,146 +1,44 @@
 <div class="page-wrapper">
   <div class="scroll-area">
-    <div class="container-funcionarios mt-4">
+    <div class="container-funcionarios">
 
-      <!-- ===== BREADCRUMB COM BOTÃO ===== -->
-      <div class="custom-breadcrumb d-flex justify-content-between align-items-center mb-4">
-        <nav>
-          <ol>
-            <li>
-              <a routerLink="/home">
-                <i class="fa-solid fa-house"></i>
-                <span>Home</span>
-              </a>
-            </li>
-            <li>
-              <a routerLink="/home/_cad">
-                <i class="fa-solid fa-folder-open"></i>
-                <span>Vendas</span>
-              </a>
-            </li>
-            <li class="active">
-              <i class="fa-solid fa-receipt"></i>
-              <span>Pedidos</span>
-            </li>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb-minimal">
+            <li><a routerLink="/home"><i class="fa-solid fa-house"></i></a></li>
+            <li><a routerLink="/home/_cad">Vendas</a></li>
+            <li class="active">Pedidos</li>
           </ol>
         </nav>
 
-        <button class="btn btn-primary btn-breadcrumb" (click)="novo()">
-          <i class="fa-solid fa-plus"></i> Novo Pedido
-        </button>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-primary btn-sm px-3 position-relative" data-bs-toggle="modal"
+            data-bs-target="#modalFiltros">
+            <i class="fa-solid fa-filter me-1"></i> Filtrar
+            <span *ngIf="temFiltroAtivo()"
+              class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+          </button>
+
+          <button class="btn btn-outline-secondary btn-sm" (click)="limpar()" title="Limpar filtros"
+            data-bs-toggle="tooltip">
+            Limpar
+          </button>
+
+          <button class="btn btn-outline-danger btn-sm" [disabled]="!temSelecionados()" (click)="excluirSelecionados()"
+            title="Excluir selecionados" data-bs-toggle="tooltip">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+
+          <div class="vr mx-1" style="height: 20px;"></div>
+
+          <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" (click)="novo()">
+            <i class="fa-solid fa-plus me-1"></i> Novo Pedido
+          </button>
+        </div>
       </div>
 
-      <!-- ===== FILTROS ===== -->
-      <div class="row g-2 mb-3">
-
-        <!-- Ordenar -->
-        <div class="col-md-2">
-          <label class="st-label">Ordenar por</label>
-          <select class="form-select st-select" [(ngModel)]="filtro.ordenacao" (change)="buscar()">
-            <option value="idPedido">ID (Mais novos)</option>
-            <option value="nomePessoa">Cliente (A-Z)</option>
-            <option value="dtEntradaPedido">Data do Pedido</option>
-            <option value="dtPrevisaoPedido">Data de Entrega</option>
-            <option value="nomeFuncionario">Vendedor (A-Z)</option>
-          </select>
-        </div>
-
-        <!-- Pedido -->
-        <div class="col-md-2 st-filter-group">
-          <label for="idPedido"># Pedido</label>
-          <div class="st-input-container">
-            <select id="idPedido" class="form-select st-select" [(ngModel)]="filtro.idPedido">
-              <option [ngValue]="null">Todos os Pedidos</option>
-
-              <option *ngFor="let p of pedidos" [ngValue]="p.idPedido">
-                #{{ p.idPedido }} - {{ p.nomePessoa }}
-              </option>
-            </select>
-          </div>
-        </div>
-
-
-        <!-- Situação -->
-        <div class="col-md-2">
-          <label>Situação</label>
-          <select class="form-select" [(ngModel)]="filtro.statusPedido">
-            <option [ngValue]="2">Todos</option>
-            <option [ngValue]="-1">Em Andamento</option>
-            <option [ngValue]="1">Entregue</option>
-          </select>
-        </div>
-
-        <!-- Cliente -->
-        <div class="col-md-3">
-          <label>Cliente</label>
-          <select class="form-select" [(ngModel)]="filtro.idPessoa">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let c of clientes" [ngValue]="c.id">
-              {{ c.nome }}
-            </option>
-          </select>
-        </div>
-
-      </div>
-
-      <div class="row g-2 mb-3">
-
-        <!-- Vendedor -->
-        <div class="col-md-3">
-          <label>Vendedor</label>
-          <select class="form-select" [(ngModel)]="filtro.idFuncionario">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let v of vendedores" [ngValue]="v.id">
-              {{ v.nome }}
-            </option>
-          </select>
-        </div>
-
-        <!-- Data Pedido -->
-        <div class="col-md-3">
-          <label>Dt Pedido</label>
-          <div class="d-flex gap-1">
-            <input type="date" class="form-control" [(ngModel)]="filtro.dtEntradaIni">
-            <input type="date" class="form-control" [(ngModel)]="filtro.dtEntradaFim">
-          </div>
-        </div>
-
-        <!-- Data Entrega -->
-        <div class="col-md-3">
-          <label>Dt Entrega</label>
-          <div class="d-flex gap-1">
-            <input type="date" class="form-control" [(ngModel)]="filtro.dtEntregaIni">
-            <input type="date" class="form-control" [(ngModel)]="filtro.dtEntregaFim">
-          </div>
-        </div>
-
-        <!-- Validade -->
-        <div class="col-md-2">
-          <label>Validade</label>
-          <select class="form-select" [(ngModel)]="filtro.ativo">
-            <option [ngValue]="null"></option>
-            <option [ngValue]="true">Ativo</option>
-            <option [ngValue]="false">Cancelado</option>
-          </select>
-        </div>
-
-      </div>
-
-      <div class="mb-3">
-        <button class="btn btn-primary me-2" (click)="buscar()">Aplicar Filtro</button>
-        <button class="btn btn-secondary" (click)="limpar()">Limpar</button>
-        <button class="btn btn-danger ms-2" [disabled]="!temSelecionados()" (click)="excluirSelecionados()">
-          <i class="fa-solid fa-trash"></i>
-          Excluir Selecionados
-        </button>
-      </div>
-
-
-      <div *ngIf="loading">Carregando...</div>
-      <div *ngIf="error">{{ error }}</div>
-
-      <!-- ===== TABELA ===== -->
-      <table class="table table-striped" *ngIf="!loading && pedidos.length">
+      <table class="table table-striped" *ngIf="!loading && pedidosPaginados.length">
         <thead>
           <tr>
             <th>#</th>
@@ -151,10 +49,11 @@
             <th>Valor</th>
             <th>Dt Pedido</th>
             <th>Dt Entrega</th>
-            <th>Ativo</th>
-            <th>Ações</th>
+            <th class="text-center">Ativo</th>
+            <th class="text-center">Ações</th>
             <th>
-              <input type="checkbox" [(ngModel)]="selecionarTodos" (change)="toggleSelecionarTodos()" />
+              <input type="checkbox" [(ngModel)]="selecionarTodos" (change)="toggleSelecionarTodos()"
+                title="Selecionar/Desmarcar todos os pedidos desta página" data-bs-toggle="tooltip" />
             </th>
           </tr>
         </thead>
@@ -163,71 +62,69 @@
           <tr *ngFor="let p of pedidosPaginados">
             <td>{{ p.idPedido }}</td>
             <td>
-              <span class="status-bolinha" [ngClass]="p.urgente ? 'ativo' : 'inativo'">
+              <span class="status-bolinha" [ngClass]="p.urgente ? 'ativo' : 'inativo'"
+                [title]="p.urgente ? 'Pedido definido como Urgente' : 'Prioridade Normal'" data-bs-toggle="tooltip">
               </span>
             </td>
 
-
             <td class="text-center">
-              <i class="fa-solid" [ngClass]="getStatusIcon(p)" [title]="getStatusLabel(p)">
-              </i>
+              <i class="fa-solid" [ngClass]="getStatusIcon(p)" [title]="getStatusLabel(p)" data-bs-toggle="tooltip"></i>
             </td>
 
             <td>{{ p.nomePessoa }}</td>
             <td>{{ p.nomeFuncionario }}</td>
-            <td>{{ p.valorPedido | currency:'BRL' }}</td>
+            <td>{{ p.valorPedido | currency:'BRL':'symbol':'1.2-2' }}</td>
             <td>{{ p.dtEntradaPedido | date:'dd/MM/yyyy' }}</td>
             <td>{{ p.dtPrevisaoPedido | date:'dd/MM/yyyy' }}</td>
 
-            <!-- COLUNA ATIVO -->
             <td class="text-center">
               <span class="status-bolinha" [ngClass]="p.ativo ? 'ativo' : 'inativo'"
-                [title]="p.ativo ? 'Ativo' : 'Inativo'">
+                [title]="p.ativo ? 'Pedido Ativo' : 'Pedido Cancelado'" data-bs-toggle="tooltip">
               </span>
             </td>
 
             <td class="acoes">
               <div class="acoes-wrapper">
-                <button class="btn btn-sm btn-warning" (click)="editar(p.idPedido)">
+                <button class="btn btn-sm btn-warning" (click)="editar(p.idPedido)" title="Editar dados do pedido"
+                  data-bs-toggle="tooltip">
                   <i class="fa-solid fa-pen"></i>
                 </button>
 
-                <button class="btn btn-sm btn-primary" (click)="itensPedido(p.idPedido, p.idPessoa)">
+                <button class="btn btn-sm btn-primary" (click)="itensPedido(p.idPedido, p.idPessoa)"
+                  title="Gerenciar itens deste pedido" data-bs-toggle="tooltip">
                   <i class="fa-solid fa-list"></i>
                 </button>
+
                 <button *ngIf="p.temItensEntregues && !p.entregue" class="btn btn-sm btn-success"
-                  title="Entregar Pedido" (click)="entregarPedido(p)">
+                  title="Marcar pedido como Entregue" (click)="entregarPedido(p)" data-bs-toggle="tooltip">
                   <i class="fa-solid fa-truck"></i>
                 </button>
 
-
-                <button class="btn btn-sm btn-danger" (click)="excluir(p)">
+                <button class="btn btn-sm btn-danger" (click)="excluir(p)" title="Excluir pedido permanentemente"
+                  data-bs-toggle="tooltip">
                   <i class="fa-solid fa-trash"></i>
                 </button>
 
-                <button class="btn btn-sm btn-secondary" title="Imprimir produção"
-                  (click)="imprimirProducao(p.idPedido)">
+                <button class="btn btn-sm btn-secondary" title="Imprimir ordem de produção"
+                  (click)="imprimirProducao(p.idPedido)" data-bs-toggle="tooltip">
                   <i class="fa-solid fa-print"></i>
                 </button>
 
-                <button *ngIf="p.entregue === true" class="btn btn-sm btn-primary" title="Imprimir cliente"
-                  (click)="imprimirCliente(p.idPedido)">
-                  <i class="fa-solid fa-print"></i>
+                <button *ngIf="p.entregue === true" class="btn btn-sm btn-info" title="Imprimir recibo para o cliente"
+                  (click)="imprimirCliente(p.idPedido)" data-bs-toggle="tooltip">
+                  <i class="fa-solid fa-receipt"></i>
                 </button>
               </div>
             </td>
 
             <td>
-              <input type="checkbox" [(ngModel)]="p.selecionado" (change)="atualizarSelecionarTodos()" />
+              <input type="checkbox" [(ngModel)]="p.selecionado" (change)="atualizarSelecionarTodos()"
+                title="Selecionar pedido para ação em massa" data-bs-toggle="tooltip" />
             </td>
           </tr>
         </tbody>
       </table>
 
-
-      <p *ngIf="!loading && !pedidos.length">Nenhum pedido encontrado.</p>
-
-      <!-- ===== PAGINAÇÃO ===== -->
       <div class="d-flex justify-content-between align-items-center mt-3">
         <div class="text-muted small">
           Mostrando {{ exibicaoInicio }} - {{ exibicaoFim }} de {{ totalItens }}
@@ -235,19 +132,103 @@
 
         <nav>
           <ul class="pagination pagination-sm mb-0">
-
             <li class="page-item" [class.disabled]="paginaAtual === 0">
-              <button class="page-link" (click)="mudarPagina(paginaAtual - 1)">‹ Anterior</button>
+              <button class="page-link" (click)="mudarPagina(paginaAtual - 1)" title="Ir para a página anterior"
+                data-bs-toggle="tooltip">‹ Anterior</button>
             </li>
-
             <li class="page-item" [class.disabled]="paginaAtual === paginas.length - 1">
-              <button class="page-link" (click)="mudarPagina(paginaAtual + 1)">Próxima ›</button>
+              <button class="page-link" (click)="mudarPagina(paginaAtual + 1)" title="Ir para a próxima página"
+                data-bs-toggle="tooltip">Próxima ›</button>
             </li>
-
           </ul>
         </nav>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modalFiltros" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold"><i class="fa-solid fa-filter me-2 text-primary"></i>Filtros Avançados</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <form #f="ngForm">
+          <div class="row g-3 mb-3">
+            <div class="col-md-6 st-filter-group">
+              <label class="st-label">Ordenar Por</label>
+              <select class="form-select st-select" name="ordenacao" [(ngModel)]="filtro.ordenacao">
+                <option value="idPedido">ID (Mais novos)</option>
+                <option value="dtEntradaPedido">Data de Entrada</option>
+                <option value="valorPedido">Valor do Pedido</option>
+              </select>
+            </div>
+            <div class="col-md-6 st-filter-group">
+              <label class="st-label"># ID Pedido</label>
+              <input type="number" class="form-control st-select" name="idPedido" [(ngModel)]="filtro.idPedido"
+                placeholder="Ex: 18426">
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-4 st-filter-group">
+              <label class="st-label">Status (Ativo)</label>
+              <select class="form-select st-select" name="ativo" [(ngModel)]="filtro.ativo">
+                <option [ngValue]="null">Todos</option>
+                <option [ngValue]="true">Ativos</option>
+                <option [ngValue]="false">Cancelados/Inativos</option>
+              </select>
+            </div>
+            <div class="col-md-8 st-filter-group">
+              <label class="st-label">Cliente</label>
+              <select class="form-select st-select" name="idPessoa" [(ngModel)]="filtro.idPessoa">
+                <option [ngValue]="null">Todos os Clientes</option>
+                <option *ngFor="let c of clientes" [ngValue]="c.id"> {{ c.nome }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-12 st-filter-group">
+              <label class="st-label">Vendedor</label>
+              <select class="form-select st-select" name="idFuncionario" [(ngModel)]="filtro.idFuncionario">
+                <option [ngValue]="null">Todos os Vendedores</option>
+                <option *ngFor="let v of vendedores" [ngValue]="v.idFuncionario">
+                  {{ v.nome }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6 st-filter-group">
+              <label class="st-label">Período de Entrada</label>
+              <div class="input-group">
+                <input type="date" class="form-control st-select" name="dtEntradaIni" [(ngModel)]="filtro.dtEntradaIni">
+                <input type="date" class="form-control st-select" name="dtEntradaFim" [(ngModel)]="filtro.dtEntradaFim">
+              </div>
+            </div>
+            <div class="col-md-6 st-filter-group">
+              <label class="st-label">Período de Entrega</label>
+              <div class="input-group">
+                <input type="date" class="form-control st-select" name="dtEntregaIni" [(ngModel)]="filtro.dtEntregaIni">
+                <input type="date" class="form-control st-select" name="dtEntregaFim" [(ngModel)]="filtro.dtEntregaFim">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer bg-light border-0">
+        <button type="button" class="btn btn-outline-secondary btn-sm px-4" (click)="limpar()">Limpar</button>
+        <button type="button" class="btn btn-primary btn-sm px-4 shadow-sm" (click)="buscar()"
+          data-bs-dismiss="modal">Aplicar Filtros</button>
+      </div>
     </div>
   </div>
 </div>

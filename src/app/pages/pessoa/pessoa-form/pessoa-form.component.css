@@ -15,11 +15,10 @@
 }
 
 .card-form {
+  display: table; /* Faz o card ter a largura exata do grid interno */
+  min-width: 95%; /* Garante que não fique estreito demais em telas grandes */
   background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-  padding: 2rem;
-  transition: all 0.3s ease;
+  padding: 10px 20px;
 }
 
 .card-form:hover {
@@ -240,3 +239,127 @@
 .btn-acao i {
   font-size: 16px;
 } 
+
+/* Garante que o conteúdo das abas ocupe o espaço restante do card sem transbordar */
+.tab-content {
+  height: calc(100vh - 320px); /* Ajuste esse valor conforme o tamanho do seu cabeçalho/tabs */
+  height: 100%;
+}
+
+/* Customização da barra de scroll para ficar discreta */
+.form-body-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-body-scroll::-webkit-scrollbar-thumb {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+}
+
+.form-body-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Títulos das seções internos mais limpos */
+h5.fw-semibold {
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+/* Fundo da página mais suave para destacar o card branco */
+.page-wrapper {
+  background-color: #f8f9fa; 
+}
+
+/* Campos com bordas mais finas e arredondamento moderno */
+.form-control-sm, .form-select-sm, .input-group-text {
+  border: 1px solid #e0e6ed !important;
+  border-radius: 6px !important;
+  background-color: #ffffff;
+  color: #495057;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efeito de foco profissional (glow suave em vez de borda grossa) */
+.form-control-sm:focus, .form-select-sm:focus {
+  border-color: #a5c5f4 !important;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1) !important;
+  outline: none;
+}
+
+/* Labels com cinza médio para não "gritar" na tela */
+.form-label-sm {
+  color: #6c757d;
+  font-weight: 500;
+  font-size: 0.72rem;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+/* Ajuste das Tabs para parecerem botões de navegação */
+.pessoa-tabs .nav-link {
+  border: none !important;
+  color: #6c757d;
+  background: transparent;
+  font-size: 0.8rem;
+  padding: 8px 20px;
+  border-bottom: 2px solid transparent !important;
+}
+
+.pessoa-tabs .nav-link.active {
+  color: #0d6efd !important;
+  font-weight: 700;
+  border-bottom: 2px solid #0d6efd !important;
+  background: transparent !important;
+}
+
+/* Botões com sombra leve */
+.btn-primary {
+  background-color: #4a80ef;
+  border: none;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(74, 128, 239, 0.2);
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border: 1px solid #dee2e6;
+}
+/* Label Inline Profissional */
+.label-inline {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #7f8c8d;
+  text-transform: uppercase;
+  text-align: right;
+  padding-right: 10px;
+  white-space: nowrap;
+}
+
+/* Inputs ultra compactos */
+.form-control-sm, .form-select-sm {
+  height: 28px !important;
+  font-size: 0.8rem !important;
+  padding: 2px 8px !important;
+  border: 1px solid #dcdde1 !important;
+}
+
+.form-control-sm:focus {
+  border-color: #3498db !important;
+  box-shadow: none !important;
+}
+
+/* Tabs Estilo "Material" para economizar altura */
+.pessoa-tabs .nav-link {
+  border: none !important;
+  padding: 5px 15px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600;
+  color: #95a5a6;
+}
+
+.pessoa-tabs .nav-link.active {
+  color: #2980b9 !important;
+  border-bottom: 3px solid #2980b9 !important;
+  background: transparent !important;
+}

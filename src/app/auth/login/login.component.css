@@ -160,3 +160,41 @@ label {
   font-size: 14px;
   border: 1px solid #f5b7b1;
 }
+
+.pwa-install-container {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin-bottom: 15px;
+}
+
+.btn-pwa {
+  background: transparent;
+  border: 1px solid #4a80ef;
+  color: #4a80ef;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%; /* Para alinhar com o botão de entrar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-pwa:hover {
+  background-color: rgba(74, 128, 239, 0.05);
+  border-color: #3566cc;
+  color: #3566cc;
+}
+
+.btn-pwa i {
+  font-size: 1rem;
+}

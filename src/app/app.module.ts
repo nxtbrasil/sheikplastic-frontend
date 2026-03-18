@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -55,6 +55,16 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { PedidoImpressaoProducaoComponent } from './pedido-impressao/pedido-impressao-producao.component';
 import { TransportadoraFormComponent } from './pages/transportadora/transportadora-form/transportadora-form.component';
 import { TransportadoraListComponent } from './pages/transportadora/transportadora-list/transportadora-list.component';
+import { FuncoesFormComponent } from './pages/funcoes/funcoes-form/funcoes-form.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { DashboardComponent } from './pages/acompanhamento/dashboard.component';
+
+import { LOCALE_ID } from '@angular/core';
+import localePt from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localePt);
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -67,16 +77,20 @@ import { TransportadoraListComponent } from './pages/transportadora/transportado
     TrocaSenhaComponent,
     PedidoImpressaoComponent,
     PedidoImpressaoProducaoComponent,
-    
+
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-NgxMaskPipe,
+    NgxMaskPipe,
     NgxMaskDirective,
     NgxCurrencyDirective,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
 
     RouterModule.forRoot(
       [
@@ -88,7 +102,7 @@ NgxMaskPipe,
           path: 'impressao/producao/:idPedido',
           component: PedidoImpressaoComponent
         },
-                {
+        {
           path: 'impressao/cliente/:idPedido',
           component: PedidoImpressaoProducaoComponent
         },
@@ -98,6 +112,9 @@ NgxMaskPipe,
           component: HomeComponent,
           canActivate: [AuthGuard],
           children: [
+
+            { path: '', component: DashboardComponent },
+
             { path: 'troca-senha', component: TrocaSenhaComponent },
             { path: 'novo-usuario', component: NovoUsuarioComponent },
             { path: 'meu-perfil', component: MeuPerfilComponent },
@@ -115,8 +132,8 @@ NgxMaskPipe,
             { path: 'estadosForm/:id', component: EstadosFormComponent, },
 
             { path: 'funcoes', component: FuncoesListComponent, },
-            { path: 'funcoesForm', component: FuncionarioFormComponent, },
-            { path: 'funcoesForm/:id', component: FuncionarioFormComponent, },
+            { path: 'funcoesForm', component: FuncoesFormComponent, },
+            { path: 'funcoesForm/:id', component: FuncoesFormComponent, },
 
             { path: 'pessoas', component: PessoaListComponent, },
             { path: 'pessoasForm', component: PessoaFormComponent, },
@@ -154,12 +171,20 @@ NgxMaskPipe,
             { path: 'transportadoraForm', component: TransportadoraFormComponent, },
             { path: 'transportadoraForm/:id', component: TransportadoraFormComponent, },
 
+            { path: 'pedidosacompanhar', component: DashboardComponent, },
+
           ]
         },
-        { path: '**', redirectTo: 'home' }
+        { path: '**', redirectTo: 'pedidosacompanhar' }
       ],
       { scrollPositionRestoration: 'enabled' }
-    )
+    ),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [
     AuthService,
@@ -167,6 +192,7 @@ NgxMaskPipe,
     AuthGuard,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'pt-BR' },
 
     provideAnimationsAsync(),
     provideNgxMask()

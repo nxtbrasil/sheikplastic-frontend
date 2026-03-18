@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { PedidoItem } from './pedidos-itens/pedido-item.model';
+import { Pedido } from './models/pedido.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,20 @@ export class PedidoService {
   listarTodos(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
+
+listarTodosData(inicio: string, fim: string): Observable<any[]> {
+  // Garante que não enviamos undefined
+  const ini = inicio || '';
+  const f = fim || '';
+
+  const params = new HttpParams()
+    .set('dtEntradaIni', ini)
+    .set('dtEntradaFim', f);
+
+  console.log("URL de chamada:", `${this.apiUrl}?${params.toString()}`);
+
+  return this.http.get<any[]>(`${this.apiUrl}`, { params });
+}
 
   // =============================
   // BUSCAR POR ID

@@ -1,0 +1,329 @@
+:host {
+  display: block;
+  background: #f1f5f9;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* CONTAINER */
+.dashboard-container {
+  padding: 12px;
+}
+
+/* TOP BAR */
+.top-bar {
+  background: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+}
+
+.filter input {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+}
+
+/* BUTTONS */
+.btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.btn.primary {
+  background: #0284c7;
+  color: white;
+}
+
+.btn.ghost {
+  background: #e2e8f0;
+}
+
+/* KPI */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.kpi-card {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kpi-card span {
+  font-size: 10px;
+  color: #64748b;
+}
+
+.kpi-card h2 {
+  margin: 2px 0;
+  font-size: 18px;
+}
+
+.kpi-card small {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.kpi-card.highlight {
+  background: #0284c7;
+  color: white;
+}
+
+.kpi-card.success h2 {
+  color: #16a34a;
+}
+
+.kpi-card.danger h2 {
+  color: #dc2626;
+}
+
+/* GRID PRINCIPAL */
+.main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* CARDS */
+.card {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  flex-direction: column;
+  height: 210px;
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+}
+
+/* CHARTS */
+.chart {
+  height: 140px;
+}
+
+.card-body.chart {
+  height: 150px;
+  padding: 4px;
+}
+
+.card-body.chart canvas {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+/* SIDEBAR */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* CLIENTES */
+.client-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+
+.left {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+
+.pos {
+  color: #0284c7;
+  font-weight: bold;
+}
+
+.info {
+  flex: 1;
+}
+
+.bar {
+  background: #e2e8f0;
+  height: 4px;
+  border-radius: 10px;
+  margin-top: 3px;
+}
+
+.fill {
+  background: #0284c7;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.value {
+  font-weight: bold;
+}
+
+/* PIE */
+.pie {
+  height: 150px;
+}
+
+/* LOADING */
+.loading-state {
+  text-align: center;
+  padding: 20px;
+}
+
+.spinner {
+  border: 3px solid #e2e8f0;
+  border-top: 3px solid #0284c7;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* RISCO */
+.risco {
+  border-left: 4px solid #dc2626;
+}
+
+.risco-total {
+  font-size: 22px;
+  color: #dc2626;
+  margin-bottom: 8px;
+}
+
+.risco-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  padding: 4px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* ================= MINI KPIs ================= */
+
+.mini-kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* CARD */
+.mini-card {
+  background: white;
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  height: 70px; /* 🔥 compacto */
+  transition: all 0.2s ease;
+}
+
+/* HOVER leve (UX mais premium) */
+.mini-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+/* LABEL */
+.mini-card span {
+  font-size: 11px;
+  color: #64748b;
+}
+
+/* VALOR */
+.mini-card h3 {
+  font-size: 18px;
+  margin: 2px 0 0;
+  font-weight: 700;
+}
+
+/* ================= CORES ================= */
+
+/* RISCO */
+.mini-card.danger {
+  border-left: 4px solid #dc2626;
+}
+
+.mini-card.danger h3 {
+  color: #dc2626;
+}
+
+/* SUCESSO */
+.mini-card.success {
+  border-left: 4px solid #16a34a;
+}
+
+.mini-card.success h3 {
+  color: #16a34a;
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media (max-width: 768px) {
+  .mini-kpis {
+    grid-template-columns: 1fr; /* empilha no mobile */
+  }
+
+  .mini-card {
+    height: 65px;
+  }
+
+  .mini-card h3 {
+    font-size: 16px;
+  }
+}

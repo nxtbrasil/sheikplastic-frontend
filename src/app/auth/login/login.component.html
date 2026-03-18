@@ -1,16 +1,13 @@
 <div class="login-page">
-  <!-- Cabeçalho com logo -->
   <header class="login-header">
     <img src="assets/img/cabecalho.png" alt="SheikPlastic" class="login-logo" />
   </header>
 
-  <!-- Topo com texto e botão "Criar conta" -->
-<div class="signup-header">
-  <span>Não possui credenciais?</span>
-  <button class="signup-btn" routerLink="/cadastro">Solicitar novo acesso</button>
-</div>
+  <div class="signup-header">
+    <span>Não possui credenciais?</span>
+    <button class="signup-btn" routerLink="/cadastro">Solicitar novo acesso</button>
+  </div>
 
-  <!-- Conteúdo principal -->
   <main class="login-content">
     <div class="login-card">
       <h2 class="login-title">Olá!</h2>
@@ -18,37 +15,28 @@
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div class="form-group">
           <label for="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            class="form-control"
-            formControlName="email"
-            placeholder="Digite seu email"
-          />
+          <input id="email" type="email" class="form-control" formControlName="email" placeholder="Digite seu email" />
         </div>
 
         <div class="form-group">
           <label for="senha">Senha</label>
-          <div class="password-wrapper">
-            <input
-              id="senha"
-              type="password"
-              class="form-control"
-              formControlName="senha"
-              placeholder="Digite sua senha"
-            />
-          </div>
+          <input id="senha" type="password" class="form-control" formControlName="senha" placeholder="Digite sua senha" />
         </div>
 
-        <a class="forgot-password" routerLink="/recuperar-senha">
-          Esqueceu sua senha?
-        </a>
+        <a class="forgot-password" routerLink="/recuperar-senha">Esqueceu sua senha?</a>
+        <button class="btn-login" type="submit" [disabled]="loading">
+          {{ loading ? 'Entrando...' : 'Entrar' }}
+        </button>
+      </form>
 
-        <button class="btn-login" type="submit">Entrar</button>
-
-
-      </form><br>
-              <div *ngIf="error" class="alert-error">{{ error }}</div>
+      <div *ngIf="error" class="alert-error mt-3">{{ error }}</div>
+      
+      <div class="pwa-container">
+        <hr class="divider">
+        <button type="button" class="btn-pwa" (click)="instalarApp()">
+          <i class="fa-solid fa-laptop"></i> Instalar Sheik CRM no Desktop
+        </button>
+      </div>
     </div>
   </main>
 </div>

@@ -8,6 +8,7 @@ import { PedidoItensComponent } from './pedidos-itens/pedido-itens.component';
 import { PedidoItensFormComponent } from './pedidos-itens/pedido-itens-form.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 
+
 @NgModule({
   declarations: [
     PedidosListaComponent,
